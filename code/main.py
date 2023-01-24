@@ -7,6 +7,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.main_screen = pygame.display.set_mode((WIDTH,HEIGHT))
+        self.clock = pygame.time.Clock()
 
 
     def run(self):
@@ -17,6 +18,7 @@ class Game:
 
             self.main_screen.fill("black")
             pygame.display.update()
+            self.clock.tick(FPS)
 
 
 if __name__ == "__main__":
