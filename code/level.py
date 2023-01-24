@@ -1,6 +1,7 @@
 import pygame
 from pytmx.util_pygame import load_pygame
 from settings import *
+from tile import Tile
 
 class Level:
     def __init__(self, map_path: str) -> None:
@@ -16,5 +17,13 @@ class Level:
         self.transition_sprites = pygame.sprite.Group()
 
 
+    def create_map(self):
+        """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data"""
+        for layer in self.tmx_data.visible_layers:
+            if hasattr(layer, "data"):
+                for x, y, surf in layer.tiles():
+                    position = (x * TILE_SIZE, y * TILE_SIZE)
+                    Tile(position, surf, [self.visible_sprites], layer.name)
+
     def run(self):
-        pass
+        self.visible_sprites.draw(self.display_surface)
