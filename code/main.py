@@ -13,6 +13,7 @@ class Game:
         # create a single level for testing
         # to be removed later
         self.level = Level(os.path.join(MAPS_FILE_PATH, "0.tmx"))
+
     def run(self):
         while True:
             for event in pygame.event.get():

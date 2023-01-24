@@ -12,3 +12,4 @@ WIDTH, HEIGHT = TILE_SIZE * MAX_SCREEN_WIDTH, TILE_SIZE * MAX_SCREEN_HEIGHT
 FPS = 60
 MAPS_FILE_PATH = os.path.join(ROOT_DIR, "maps")
 PLAYER_IMAGES_FILE_PATH = os.path.join(ROOT_DIR, "graphics", "player")
+TEST_PLAYER_IMAGE_FILE_PATH = os.path.join(ROOT_DIR, "rawAssets", "man.png")
