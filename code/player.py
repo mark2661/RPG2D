@@ -12,6 +12,7 @@ class Player(pygame.sprite.Sprite):
 
         # movement
         self.direction = pygame.math.Vector2()
+        self.speed = 6
 
     def input(self):
         keys= pygame.key.get_pressed()
@@ -34,3 +35,15 @@ class Player(pygame.sprite.Sprite):
 
         else:
             self.direction.x = 0
+
+    def move(self, speed):
+        # normalise the direction vector so both diagonal speeds always have a magnitude of 1
+        if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
+
+        self.rect.x += self.direction.x * speed
+        self.rect.y += self.direction.y * speed
+
+
+    def update(self):
+        self.input()
+        self.move(self.speed)
