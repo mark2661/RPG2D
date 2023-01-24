@@ -16,9 +16,13 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
         self.transition_sprites = pygame.sprite.Group()
 
+        self.create_map()
+
 
     def create_map(self):
-        """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data"""
+        """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
+            and adds them to a pygame sprite group
+        """
         for layer in self.tmx_data.visible_layers:
             if hasattr(layer, "data"):
                 for x, y, surf in layer.tiles():
