@@ -1,11 +1,12 @@
 import pygame
 import sys
 import os
+from settings import *
 
 class Game:
     def __init__(self):
         pygame.init()
-        self.main_screen = pygame.display.set_mode((500,500))
+        self.main_screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
 
     def run(self):
