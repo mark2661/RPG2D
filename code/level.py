@@ -3,6 +3,8 @@ from pytmx.util_pygame import load_pygame
 from settings import *
 from tile import Tile
 from player import Player
+from hitbox import HitBox
+from transitionBox import TransitionBox
 
 
 class Level:
@@ -34,6 +36,13 @@ class Level:
                 for x, y, surf in layer.tiles():
                     position = (x * TILE_SIZE, y * TILE_SIZE)
                     Tile(position, surf, [self.visible_sprites], layer.name)
+
+        # create hitbox objects for collidable tiles
+        collidable_tiles = self.tmx_data.get_layer_by_name("Collision_Objects")
+        for collidable_tile in collidable_tiles:
+            position = (collidable_tile.x, collidable_tile.y)
+            size = (collidable_tile.width, collidable_tile.height)
+            HitBox(position, size, [self.obstacle_sprites])
 
 
 
