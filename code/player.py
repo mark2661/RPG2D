@@ -17,6 +17,12 @@ class Player(pygame.sprite.Sprite):
         # general setup
         self.animations = defaultdict(lambda: [])
         self.import_player_assests()
+        # status keeps track of the current action and direction of the player
+        self.status = "down"
+
+        # attacking monitors wheather or not the player is attacking
+        # attack mechanics not currently implemented
+        self.attacking = False
 
         # movement
         self.direction = pygame.math.Vector2()
@@ -43,21 +49,32 @@ class Player(pygame.sprite.Sprite):
 
         if up:
             self.direction.y = -1
+            self.status = "up"
 
         elif down:
             self.direction.y = 1
+            self.status = "down"
 
         else:
             self.direction.y = 0
 
         if right:
             self.direction.x = 1
+            self.status = "right"
 
         elif left:
             self.direction.x = -1
+            self.status = "left"
 
         else:
             self.direction.x = 0
+
+    def get_status(self):
+        # idle status
+        if all(velocity == 0 for velocity in self.direction) and \
+           all(word not in self.status for word in ["idle", "attack"]):
+
+            self.status += "_idle"
 
     def move(self, speed: float):
         # normalise the direction vector so both diagonal speeds always have a magnitude of 1
