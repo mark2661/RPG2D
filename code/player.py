@@ -111,6 +111,18 @@ class Player(pygame.sprite.Sprite):
                     # player moving to the up
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
+    def animate(self):
+        animation = self.animations[self.status]
+
+        # loop over frame index
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation): self.frame_index = 0
+
+        # change the current player image
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center=self.rect.center)
     def update(self):
         self.input()
+        self.get_status()
+        self.animate()
         self.move(self.speed)
