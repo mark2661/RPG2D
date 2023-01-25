@@ -35,6 +35,8 @@ class Level:
                     position = (x * TILE_SIZE, y * TILE_SIZE)
                     Tile(position, surf, [self.visible_sprites], layer.name)
 
+
+
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
