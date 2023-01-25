@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite]):
         super().__init__(groups)
@@ -15,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 6
 
     def input(self):
-        keys= pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()
         up, down, left, right = keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]
 
         if up:
@@ -42,7 +43,6 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.x += self.direction.x * speed
         self.rect.y += self.direction.y * speed
-
 
     def update(self):
         self.input()
