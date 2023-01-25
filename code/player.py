@@ -3,7 +3,8 @@ from settings import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite]):
+    def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite],
+                 obstacle_sprites: pygame.sprite.Group):
         super().__init__(groups)
         # player sprite
         self.image = pygame.image.load(image_path).convert_alpha()
@@ -14,6 +15,9 @@ class Player(pygame.sprite.Sprite):
         # movement
         self.direction = pygame.math.Vector2()
         self.speed = 6
+
+        # collisions
+        self.obstacle_sprites = obstacle_sprites
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -37,12 +41,40 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-    def move(self, speed):
+    def move(self, speed: float):
         # normalise the direction vector so both diagonal speeds always have a magnitude of 1
         if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
 
+        # update horizontal velocity
         self.rect.x += self.direction.x * speed
+
+        # check for horizontal collision
+        self.collision("horizontal")
+
+        # update vertical velocity
         self.rect.y += self.direction.y * speed
+
+        # check for vertical collision
+        self.collision("vertical")
+
+    def collision(self, direction: str):
+        if direction == "horizontal":
+            for sprite in self.obstacle_sprites:
+                if sprite.rect.colliderect(self.rect):
+                    # player moving to the right
+                    if self.direction.x > 0: self.rect.right = sprite.rect.left
+
+                    # player moving to the left
+                    if self.direction.x < 0: self.rect.left = sprite.rect.right
+
+        if direction == "vertical":
+            for sprite in self.obstacle_sprites:
+                if sprite.rect.colliderect(self.rect):
+                    # player moving to the down
+                    if self.direction.y > 0: self.rect.bottom = sprite.rect.top
+
+                    # player moving to the up
+                    if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
     def update(self):
         self.input()
