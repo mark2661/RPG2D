@@ -25,7 +25,8 @@ class Level:
         # create player object
         player_spawn_position = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
         self.player = Player(player_spawn_position, TEST_PLAYER_IMAGE_FILE_PATH,
-                             [self.visible_sprites], self.obstacle_sprites)  # change TEST_PLAYER_IMAGE_FILE_PATH at later data
+                             [self.visible_sprites],
+                             self.obstacle_sprites)  # change TEST_PLAYER_IMAGE_FILE_PATH at later data
 
     def create_map(self):
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
@@ -43,8 +44,6 @@ class Level:
             position = (collidable_tile.x, collidable_tile.y)
             size = (collidable_tile.width, collidable_tile.height)
             HitBox(position, size, [self.obstacle_sprites])
-
-
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)

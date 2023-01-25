@@ -1,5 +1,7 @@
+import os
 import pygame
 from settings import *
+from collections import defaultdict
 
 
 class Player(pygame.sprite.Sprite):
@@ -12,12 +14,28 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
         self.rect = self.image.get_rect(topleft=pos)
 
+        # general setup
+        self.animations = defaultdict(lambda: [])
+        self.import_player_assests()
+
         # movement
         self.direction = pygame.math.Vector2()
         self.speed = 6
+        self.frame_index = 0
+        self.animation_speed = 0.15
 
         # collisions
         self.obstacle_sprites = obstacle_sprites
+
+    def import_player_assests(self):
+        for folder in os.listdir(PLAYER_IMAGES_FILE_PATH):
+            folder_path = os.path.join(PLAYER_IMAGES_FILE_PATH, folder)
+            for image in os.listdir(folder_path):
+                image_path = os.path.join(folder_path, image)
+                surf = pygame.image.load(image_path).convert_alpha()
+                # scale player image up to fit map size
+                surf = pygame.transform.scale(surf, (TILE_SIZE, TILE_SIZE))
+                self.animations[folder].append(surf)
 
     def input(self):
         keys = pygame.key.get_pressed()
