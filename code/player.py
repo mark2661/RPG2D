@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
 
         # general setup
         self.animations = defaultdict(lambda: [])
-        self.import_player_assests()
+        self.import_player_assets()
         # status keeps track of the current action and direction of the player
         self.status = "down"
 
@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         # collisions
         self.obstacle_sprites = obstacle_sprites
 
-    def import_player_assests(self):
+    def import_player_assets(self):
         for folder in os.listdir(PLAYER_IMAGES_FILE_PATH):
             folder_path = os.path.join(PLAYER_IMAGES_FILE_PATH, folder)
             for image in os.listdir(folder_path):
@@ -72,8 +72,7 @@ class Player(pygame.sprite.Sprite):
     def get_status(self):
         # idle status
         if all(velocity == 0 for velocity in self.direction) and \
-           all(word not in self.status for word in ["idle", "attack"]):
-
+                all(word not in self.status for word in ["idle", "attack"]):
             self.status += "_idle"
 
     def move(self, speed: float):
@@ -121,6 +120,7 @@ class Player(pygame.sprite.Sprite):
         # change the current player image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.rect.center)
+
     def update(self):
         self.input()
         self.get_status()

@@ -4,10 +4,11 @@ import os
 from settings import *
 from level import Level
 
+
 class Game:
     def __init__(self):
         pygame.init()
-        self.main_screen = pygame.display.set_mode((WIDTH,HEIGHT))
+        self.main_screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
 
         # create a single level for testing

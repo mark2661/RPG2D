@@ -1,5 +1,5 @@
 import os
-from definitions import  ROOT_DIR
+from definitions import ROOT_DIR
 
 
 ORIGINAL_TILE_SIZE = 16
