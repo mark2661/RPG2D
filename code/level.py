@@ -39,11 +39,19 @@ class Level:
                     Tile(position, surf, [self.visible_sprites], layer.name)
 
         # create hitbox objects for collidable tiles
-        collidable_tiles = self.tmx_data.get_layer_by_name("Collision_Objects")
-        for collidable_tile in collidable_tiles:
-            position = (collidable_tile.x, collidable_tile.y)
-            size = (collidable_tile.width, collidable_tile.height)
+        collidable_objects = self.tmx_data.get_layer_by_name("Collision_Objects")
+        for collidable_object in collidable_objects:
+            position = (collidable_object.x, collidable_object.y)
+            size = (collidable_object.width, collidable_object.height)
             HitBox(position, size, [self.obstacle_sprites])
+
+        # crate transition box objects to trigger level changes when collided with
+        transition_objects = self.tmx_data.get_layer_by_name("Transition_Objects")
+        for transition_object in transition_objects:
+            position = (transition_object.x, transition_object.y)
+            size = (transition_object.width, transition_object.height)
+            # currently passes spawn point as none - need to fix this
+            TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code, None)
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
