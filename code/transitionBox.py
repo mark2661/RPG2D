@@ -8,3 +8,9 @@ class TransitionBox(HitBox):
         super().__init__(pos, size, groups)
         self.transition_code = transition_code
         self.transition_spawn_point = transition_spawn_point
+
+    def get_transition_code(self):
+        return self.transition_code
+
+    def get_transition_spawn_point(self):
+        return self.transition_spawn_point
