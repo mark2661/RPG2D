@@ -3,6 +3,7 @@ import sys
 import os
 from settings import *
 from level import Level
+from levelHandler import LevelHandler
 
 
 class Game:
@@ -11,9 +12,7 @@ class Game:
         self.main_screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
 
-        # create a single level for testing
-        # to be removed later
-        self.level = Level(os.path.join(MAPS_FILE_PATH, "0.tmx"))
+        self.level_handler = LevelHandler()
 
     def run(self):
         while True:
@@ -22,7 +21,7 @@ class Game:
                     sys.exit()
 
             self.main_screen.fill("black")
-            self.level.run()
+            self.level_handler.run()
             pygame.display.update()
             self.clock.tick(FPS)
 
