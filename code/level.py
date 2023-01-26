@@ -8,7 +8,7 @@ from transitionBox import TransitionBox
 
 
 class Level:
-    def __init__(self, map_path: str) -> None:
+    def __init__(self, map_path: str, player: Player = None) -> None:
         # load map
         self.tmx_data = load_pygame(map_path)
 
@@ -20,13 +20,10 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
         self.transition_sprites = pygame.sprite.Group()
 
+        # initialise map
         self.create_map()
 
-        # create player object
-        player_spawn_position = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
-        self.player = Player(player_spawn_position, TEST_PLAYER_IMAGE_FILE_PATH,
-                             [self.visible_sprites],
-                             self.obstacle_sprites)  # change TEST_PLAYER_IMAGE_FILE_PATH at later data
+        self.player = player
 
     def create_map(self):
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
@@ -53,8 +50,18 @@ class Level:
             # currently passes spawn point as none - need to fix this
             TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code, None)
 
+    def get_level_groups(self):
+        return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites]
+
+    def set_player(self, player: Player):
+        self.player = player
+
     def run(self):
-        self.visible_sprites.custom_draw(self.player)
+        try:
+            self.visible_sprites.custom_draw(self.player)
+        except Exception as e:
+            print(e)
+
         self.visible_sprites.update()
 
 
