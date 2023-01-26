@@ -6,7 +6,8 @@ from collections import defaultdict
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite],
-                 obstacle_sprites: pygame.sprite.Group):
+                 obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
+                 initial_level_code: int):
         super().__init__(groups)
         # player sprite
         self.image = pygame.image.load(image_path).convert_alpha()
@@ -19,6 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.import_player_assets()
         # status keeps track of the current action and direction of the player
         self.status = "down"
+        self.current_level_code = initial_level_code
 
         # attacking monitors wheather or not the player is attacking
         # attack mechanics not currently implemented
@@ -32,6 +34,7 @@ class Player(pygame.sprite.Sprite):
 
         # collisions
         self.obstacle_sprites = obstacle_sprites
+        self.transition_sprites = transition_sprites
 
     def import_player_assets(self):
         for folder in os.listdir(PLAYER_IMAGES_FILE_PATH):
