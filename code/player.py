@@ -82,6 +82,9 @@ class Player(pygame.sprite.Sprite):
         # normalise the direction vector so both diagonal speeds always have a magnitude of 1
         if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
 
+        # check for collision with a TransitionBox object
+        self.collision("transition")
+        
         # update horizontal velocity
         self.rect.x += self.direction.x * speed
 
@@ -95,6 +98,12 @@ class Player(pygame.sprite.Sprite):
         self.collision("vertical")
 
     def collision(self, direction: str):
+        if direction == "transition":
+            for transition_sprite in self.transition_sprites:
+                if transition_sprite.rect.colliderect(self.rect):
+                    self.current_level_code = transition_sprite.get_transition_code()
+                    # self.rect.center = transition_sprite.get_transition_spawn_point()
+
         if direction == "horizontal":
             for sprite in self.obstacle_sprites:
                 if sprite.rect.colliderect(self.rect):
