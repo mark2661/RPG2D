@@ -30,9 +30,23 @@ class LevelHandler:
         self.player = Player(player_spawn_position, player_spawn_image_file_path, [self.visible_sprites_group],
                              self.obstacle_sprites_group, self.transition_sprites_group, self.current_level_code)
 
+        # pass the player instace to the current level
         self.current_level.set_player(self.player)
+
+    def transition(self):
+        # if player has collided with a transition object
+        if self.current_level != self.player.get_current_level_code():
+            # update current level code
+            self.current_level_code = self.player.get_current_level_code()
+            # change current level
+            self.current_level = self.levels[self.current_level_code]
+            # move player instance to new level
+            self.current_level.set_player(self.player)
+            # update player object groups
+            self.player.set_groups(self.current_level.get_level_groups())
 
     def run(self):
         self.current_level.run()
+        self.transition()
 
 

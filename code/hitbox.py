@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class HitBox(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], size: tuple[float, float], groups: list[pygame.sprite.Group]):
         super().__init__(groups)

@@ -91,6 +91,9 @@ class Player(pygame.sprite.Sprite):
                 all(word not in self.status for word in ["idle", "attack"]):
             self.status += "_idle"
 
+    def get_current_level_code(self):
+        return self.current_level_code
+
     def move(self, speed: float):
         # normalise the direction vector so both diagonal speeds always have a magnitude of 1
         if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
