@@ -46,6 +46,19 @@ class Player(pygame.sprite.Sprite):
                 surf = pygame.transform.scale(surf, (TILE_SIZE, TILE_SIZE))
                 self.animations[folder].append(surf)
 
+    def set_groups(self, groups: list[pygame.sprite.Group]):
+        new_visible_sprites_group = groups[0]
+        new_obstacle_sprites_group = groups[1]
+        new_transiton_sprites_group = groups[2]
+
+        # remove player from previous visible sprites group
+        self.kill()
+
+        # update groups
+        self.add(new_visible_sprites_group)
+        self.obstacle_sprites = new_obstacle_sprites_group
+        self.transition_sprites = new_transiton_sprites_group
+
     def input(self):
         keys = pygame.key.get_pressed()
         up, down, left, right = keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]
@@ -84,7 +97,7 @@ class Player(pygame.sprite.Sprite):
 
         # check for collision with a TransitionBox object
         self.collision("transition")
-        
+
         # update horizontal velocity
         self.rect.x += self.direction.x * speed
 
