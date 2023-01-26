@@ -5,19 +5,30 @@
     ],
     "fileStates": {
         "0.tmx": {
-            "scale": 1.7891666666666666,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                7,
+                8
+            ],
+            "scale": 3,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 239.77643223102007,
-                "y": 240.33535165346998
+                "x": 154,
+                "y": 49
             }
         },
         "1.tmx": {
+            "expandedGroupLayers": [
+                9
+            ],
+            "expandedObjectLayers": [
+                6,
+                8
+            ],
             "scale": 4,
-            "selectedLayer": 0,
+            "selectedLayer": 6,
             "viewCenter": {
                 "x": 118.25,
-                "y": 81.5
+                "y": 78.25
             }
         },
         "C:/Users/Mark Cartwright/Desktop/pygame/test/Interior.tsx": {
@@ -25,6 +36,14 @@
         },
         "C:/Users/Mark Cartwright/Desktop/pygame/test/Overworld.tsx": {
             "scaleInDock": 1
+        },
+        "C:/Users/Mark Cartwright/Desktop/pygame/test/maps/1.tmx": {
+            "scale": 4.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 119.99999999999999,
+                "y": 79.99999999999999
+            }
         }
     },
     "map.lastUsedFormat": "tmx",
@@ -33,8 +52,10 @@
         "1.tmx"
     ],
     "project": "TiledMapProject.tiled-project",
+    "property.type": "int",
     "recentFiles": [
         "1.tmx",
+        "C:/Users/Mark Cartwright/Desktop/pygame/test/maps/1.tmx",
         "0.tmx"
     ]
 }

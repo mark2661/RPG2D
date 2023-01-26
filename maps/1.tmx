@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="15">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="15">
  <tileset firstgid="1" source="../../pygame/test/Interior.tsx"/>
  <layer id="1" name="Ground" width="15" height="10">
   <data encoding="base64">
@@ -40,22 +40,20 @@
  <objectgroup id="6" name="Transition_Objects">
   <object id="7" name="outside" class="transition" x="214.875" y="147" width="17.25" height="12.75">
    <properties>
-    <property name="transition_code" type="int" value="0"/>
-    <property name="transition_spawn_point" type="object" value="13"/>
+    <property name="transition_code" type="int" value="2"/>
    </properties>
   </object>
   <object id="6" name="upstairs" class="transition" x="212.25" y="1.25" width="24.75" height="21.5">
    <properties>
-    <property name="transition_code" type="int" value="3"/>
-    <property name="transition_spawn_point" type="object" value="14"/>
+    <property name="transition_code" type="int" value="-1"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="8" name="Spawn_Points">
-  <object id="13" name="entrance_spawn_point" class="spawn_point" x="224" y="126.25">
+  <object id="13" name="player_house_entrance_spawn_point" class="spawn_point" x="224" y="126.25">
    <point/>
   </object>
-  <object id="14" name="upstairs_spawn_point" class="spawn_point" x="224.25" y="63.5">
+  <object id="14" name="player_house_upstairs_spawn_point" class="spawn_point" x="224.25" y="63.5">
    <point/>
   </object>
  </objectgroup>

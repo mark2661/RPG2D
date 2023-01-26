@@ -34,14 +34,12 @@
  <objectgroup id="7" name="Transition_Objects">
   <object id="16" name="player_house_entrance" class="transition" x="434.042" y="54.375" width="12.125" height="24.0417">
    <properties>
-    <property name="transition_code" type="int" value="1"/>
-    <property name="transition_spawn_point" type="object" value="18"/>
+    <property name="transition_code" type="int" value="3"/>
    </properties>
   </object>
   <object id="15" name="inn_entrance" class="transition" x="31.6061" y="55.4545" width="16.7273" height="21.6061">
    <properties>
-    <property name="transition_code" type="int" value="2"/>
-    <property name="transition_spawn_point" type="object" value="17"/>
+    <property name="transition_code" type="int" value="-1"/>
    </properties>
   </object>
  </objectgroup>

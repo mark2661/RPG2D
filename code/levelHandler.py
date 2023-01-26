@@ -14,7 +14,7 @@ class LevelHandler:
         self.levels = {
                         0: Level(os.path.join(MAPS_FILE_PATH, "0.tmx")),
                         1: Level(os.path.join(MAPS_FILE_PATH, "1.tmx"))
-                      }
+                      } # need to automate
 
         # initialise current level to the starting level
         self.current_level_code = 0

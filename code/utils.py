@@ -15,10 +15,11 @@ def get_spawn_point_object_data(spawn_point_code: int) -> tuple[int, pytmx.pytmx
 
         # print(data["spawn_point_mapping"])
         spawn_point_information = [info for info in data["spawn_point_mapping"] if info[0] == spawn_point_code][0]
-        print(spawn_point_information)
         code, spawn_point_name, map_file, obj_id = spawn_point_information
         map_data = load_pygame(os.path.join(MAPS_FILE_PATH, map_file))
         spawn_point_object = map_data.get_object_by_id(obj_id)
+        print(dir(spawn_point_object))
+        print(spawn_point_object.x, spawn_point_object.y)
         map_id = int(map_file.split('.')[0])
         return (map_id, spawn_point_object)
 

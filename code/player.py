@@ -2,6 +2,7 @@ import os
 import pygame
 from settings import *
 from collections import defaultdict
+from utils import get_spawn_point_object_data
 
 
 class Player(pygame.sprite.Sprite):
@@ -49,7 +50,7 @@ class Player(pygame.sprite.Sprite):
     def set_groups(self, groups: list[pygame.sprite.Group]):
         new_visible_sprites_group = groups[0]
         new_obstacle_sprites_group = groups[1]
-        new_transiton_sprites_group = groups[2]
+        new_transition_sprites_group = groups[2]
 
         # remove player from previous visible sprites group
         self.kill()
@@ -57,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         # update groups
         self.add(new_visible_sprites_group)
         self.obstacle_sprites = new_obstacle_sprites_group
-        self.transition_sprites = new_transiton_sprites_group
+        self.transition_sprites = new_transition_sprites_group
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -91,7 +92,7 @@ class Player(pygame.sprite.Sprite):
                 all(word not in self.status for word in ["idle", "attack"]):
             self.status += "_idle"
 
-    def get_current_level_code(self):
+    def get_current_level_code(self) -> int:
         return self.current_level_code
 
     def move(self, speed: float):
@@ -117,8 +118,10 @@ class Player(pygame.sprite.Sprite):
         if direction == "transition":
             for transition_sprite in self.transition_sprites:
                 if transition_sprite.rect.colliderect(self.rect):
-                    self.current_level_code = transition_sprite.get_transition_code()
-                    # self.rect.center = transition_sprite.get_transition_spawn_point()
+                    new_map_id, new_spawn_point = get_spawn_point_object_data(transition_sprite.get_transition_code())
+                    self.current_level_code = new_map_id
+                    print(self.rect.centerx, self.rect.centery)
+                    self.rect.center = (new_spawn_point.x, new_spawn_point.y)
 
         if direction == "horizontal":
             for sprite in self.obstacle_sprites:

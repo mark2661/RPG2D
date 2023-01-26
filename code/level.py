@@ -48,7 +48,7 @@ class Level:
             position = (transition_object.x, transition_object.y)
             size = (transition_object.width, transition_object.height)
             # currently passes spawn point as none - need to fix this
-            TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code, None)
+            TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code)
 
     def get_level_groups(self):
         return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites]
