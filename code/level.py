@@ -59,7 +59,7 @@ class Level:
             position = (spawn_point.x, spawn_point.y)
             SpawnPoint(position, [self.spawn_points], spawn_point.id)
 
-    def get_level_groups(self):
+    def get_level_groups(self) -> list[pygame.sprite.Group]:
         return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites, self.spawn_points]
 
     def set_player(self, player: Player):
@@ -73,7 +73,6 @@ class Level:
 
         self.visible_sprites.update()
         debug(self.player.rect.center)
-        # debug(pygame.mouse.get_pos())
 
 
 class YSortCameraGroup(pygame.sprite.Group):

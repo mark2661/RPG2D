@@ -10,6 +10,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite],
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
                  spawn_points: pygame.sprite.Group, initial_level_code: int):
+
         super().__init__(groups)
         # player sprite
         self.image = pygame.image.load(image_path).convert_alpha()

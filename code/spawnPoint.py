@@ -8,7 +8,7 @@ class SpawnPoint(HitBox):
         super().__init__(pos, (1, 1), groups)
         self.spawn_point_id = spawn_point_id
 
-    def get_spawn_point_id(self):
+    def get_spawn_point_id(self) -> int:
         return self.spawn_point_id
 
 
