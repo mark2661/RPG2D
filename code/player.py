@@ -147,14 +147,6 @@ class Player(pygame.sprite.Sprite):
                     # player moving to the up
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
-    def get_spawn_point(self, spawn_point_id: int) -> SpawnPoint:
-        for sprite in self.spawn_points:
-            print(sprite)
-            if sprite.get_spawn_point_id() == spawn_point_id:
-                return sprite
-
-        return None
-
     def animate(self):
         animation = self.animations[self.status]
 

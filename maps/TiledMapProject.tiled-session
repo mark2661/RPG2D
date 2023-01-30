@@ -1,5 +1,9 @@
 {
     "activeFile": "1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "0.tmx": {
             "expandedObjectLayers": [
@@ -24,8 +28,8 @@
             "scale": 4,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 120,
-                "y": 80
+                "x": 119.25,
+                "y": 70
             }
         },
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx": {
@@ -47,9 +51,22 @@
             }
         }
     },
+    "last.imagePath": "C:/Users/Mark Cartwright/Desktop/RPG2D/rawAssets",
     "openFiles": [
         "0.tmx",
         "1.tmx",
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx"
-    ]
+    ],
+    "project": "TiledMapProject.tiled-project",
+    "recentFiles": [
+        "0.tmx",
+        "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx",
+        "1.tmx",
+        "C:/Users/Mark Cartwright/Desktop/pygame/test/maps/1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
 }
