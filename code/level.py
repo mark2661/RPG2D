@@ -8,7 +8,6 @@ from transitionBox import TransitionBox
 from spawnPoint import SpawnPoint
 from debug import debug
 
-
 class Level:
     def __init__(self, map_path: str, player: Player = None) -> None:
         # load map
@@ -26,6 +25,7 @@ class Level:
         # initialise map
         self.create_map()
 
+        # set player
         self.player = player
 
     def create_map(self):
@@ -50,7 +50,6 @@ class Level:
         for transition_object in transition_objects:
             position = (transition_object.x, transition_object.y)
             size = (transition_object.width, transition_object.height)
-            # currently passes spawn point as none - need to fix this
             TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code)
 
         # create hit boxes for spawn points

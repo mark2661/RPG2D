@@ -5,6 +5,7 @@ from settings import *
 class Tile(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], surf: pygame.Surface, groups: pygame.sprite.Group,
                  tiled_layer: str):
+
         super().__init__(groups)
         self.tiled_layer = tiled_layer
         self.image = pygame.transform.scale(surf, (TILE_SIZE, TILE_SIZE))
