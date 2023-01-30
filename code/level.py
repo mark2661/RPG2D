@@ -5,6 +5,8 @@ from tile import Tile
 from player import Player
 from hitbox import HitBox
 from transitionBox import TransitionBox
+from spawnPoint import SpawnPoint
+from debug import debug
 
 
 class Level:
@@ -50,6 +52,12 @@ class Level:
             # currently passes spawn point as none - need to fix this
             TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code)
 
+        # create hit boxes for spawn points
+        spawn_point_objects = self.tmx_data.get_layer_by_name("Spawn_Points")
+        for spawn_point in spawn_point_objects:
+            position = (spawn_point.x, spawn_point.y)
+            SpawnPoint(position, [self.transition_sprites], spawn_point.id)
+
     def get_level_groups(self):
         return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites]
 
@@ -63,6 +71,8 @@ class Level:
             print(e)
 
         self.visible_sprites.update()
+        debug(self.player.rect.center)
+        # debug(pygame.mouse.get_pos())
 
 
 class YSortCameraGroup(pygame.sprite.Group):

@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         # status keeps track of the current action and direction of the player
         self.status = "down"
         self.current_level_code = initial_level_code
+        self.display_surface = pygame.display.get_surface()
 
         # attacking monitors wheather or not the player is attacking
         # attack mechanics not currently implemented
@@ -120,8 +121,9 @@ class Player(pygame.sprite.Sprite):
                 if transition_sprite.rect.colliderect(self.rect):
                     new_map_id, new_spawn_point = get_spawn_point_object_data(transition_sprite.get_transition_code())
                     self.current_level_code = new_map_id
-                    print(self.rect.centerx, self.rect.centery)
+                    # print(new_spawn_point.x, new_spawn_point.y)
                     self.rect.center = (new_spawn_point.x, new_spawn_point.y)
+                    # self.rect.center = (self.display_surface.get_width() // 2, self.display_surface.get_height() // 2)
 
         if direction == "horizontal":
             for sprite in self.obstacle_sprites:
