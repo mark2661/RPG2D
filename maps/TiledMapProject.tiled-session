@@ -12,8 +12,8 @@
             "scale": 3,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 154,
-                "y": 49
+                "x": 239.99999999999997,
+                "y": 239.83333333333331
             }
         },
         "1.tmx": {
@@ -27,9 +27,13 @@
             "scale": 4,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 118.25,
-                "y": 78.25
+                "x": 118,
+                "y": 78
             }
+        },
+        "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "C:/Users/Mark Cartwright/Desktop/pygame/test/Interior.tsx": {
             "scaleInDock": 1
@@ -55,7 +59,8 @@
     "property.type": "int",
     "recentFiles": [
         "1.tmx",
-        "C:/Users/Mark Cartwright/Desktop/pygame/test/maps/1.tmx",
-        "0.tmx"
+        "0.tmx",
+        "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx",
+        "C:/Users/Mark Cartwright/Desktop/pygame/test/maps/1.tmx"
     ]
 }
