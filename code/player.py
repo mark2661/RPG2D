@@ -124,13 +124,13 @@ class Player(pygame.sprite.Sprite):
         self.collision("vertical")
 
     def collision(self, direction: str):
-        if direction == "transition":
+        def transition_collision():
             for transition_sprite in self.transition_sprites:
                 if transition_sprite.rect.colliderect(self.rect):
                     self.current_level_code = transition_sprite.get_new_level_code()
                     self.next_level_spawn_id = get_spawn_point_id(transition_sprite.get_transition_code())
 
-        if direction == "horizontal":
+        def horizontal_collision():
             for sprite in self.obstacle_sprites:
                 if sprite.rect.colliderect(self.rect):
                     # player moving to the right
@@ -139,7 +139,7 @@ class Player(pygame.sprite.Sprite):
                     # player moving to the left
                     if self.direction.x < 0: self.rect.left = sprite.rect.right
 
-        if direction == "vertical":
+        def vertical_collision():
             for sprite in self.obstacle_sprites:
                 if sprite.rect.colliderect(self.rect):
                     # player moving to the down
@@ -147,6 +147,11 @@ class Player(pygame.sprite.Sprite):
 
                     # player moving to the up
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
+
+        direction_map = {"transition": transition_collision, "horizontal": horizontal_collision,
+                         "vertical": vertical_collision}
+
+        direction_map[direction]()
 
     def animate(self):
         animation = self.animations[self.status]
