@@ -2,13 +2,14 @@ import os
 import pygame
 from settings import *
 from collections import defaultdict
-from utils import get_spawn_point_object_data
+from utils import get_spawn_point_object_data, get_spawn_point_id
+from spawnPoint import SpawnPoint
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite],
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
-                 initial_level_code: int):
+                 spawn_points: pygame.sprite.Group, initial_level_code: int):
         super().__init__(groups)
         # player sprite
         self.image = pygame.image.load(image_path).convert_alpha()
@@ -37,6 +38,10 @@ class Player(pygame.sprite.Sprite):
         # collisions
         self.obstacle_sprites = obstacle_sprites
         self.transition_sprites = transition_sprites
+        self.spawn_points = spawn_points
+
+        # temp
+        self.next_level_spawn_id = None
 
     def import_player_assets(self):
         for folder in os.listdir(PLAYER_IMAGES_FILE_PATH):
@@ -52,6 +57,7 @@ class Player(pygame.sprite.Sprite):
         new_visible_sprites_group = groups[0]
         new_obstacle_sprites_group = groups[1]
         new_transition_sprites_group = groups[2]
+        new_spawn_point_group = groups[3]
 
         # remove player from previous visible sprites group
         self.kill()
@@ -60,6 +66,7 @@ class Player(pygame.sprite.Sprite):
         self.add(new_visible_sprites_group)
         self.obstacle_sprites = new_obstacle_sprites_group
         self.transition_sprites = new_transition_sprites_group
+        self.spawn_points = new_spawn_point_group
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -119,11 +126,8 @@ class Player(pygame.sprite.Sprite):
         if direction == "transition":
             for transition_sprite in self.transition_sprites:
                 if transition_sprite.rect.colliderect(self.rect):
-                    new_map_id, new_spawn_point = get_spawn_point_object_data(transition_sprite.get_transition_code())
-                    self.current_level_code = new_map_id
-                    # print(new_spawn_point.x, new_spawn_point.y)
-                    self.rect.center = (new_spawn_point.x, new_spawn_point.y)
-                    # self.rect.center = (self.display_surface.get_width() // 2, self.display_surface.get_height() // 2)
+                    self.current_level_code = transition_sprite.get_new_level_code()
+                    self.next_level_spawn_id = get_spawn_point_id(transition_sprite.get_transition_code())
 
         if direction == "horizontal":
             for sprite in self.obstacle_sprites:
@@ -142,6 +146,14 @@ class Player(pygame.sprite.Sprite):
 
                     # player moving to the up
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
+
+    def get_spawn_point(self, spawn_point_id: int) -> SpawnPoint:
+        for sprite in self.spawn_points:
+            print(sprite)
+            if sprite.get_spawn_point_id() == spawn_point_id:
+                return sprite
+
+        return None
 
     def animate(self):
         animation = self.animations[self.status]

@@ -21,6 +21,7 @@ class Level:
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
         self.transition_sprites = pygame.sprite.Group()
+        self.spawn_points = pygame.sprite.Group()
 
         # initialise map
         self.create_map()
@@ -56,10 +57,10 @@ class Level:
         spawn_point_objects = self.tmx_data.get_layer_by_name("Spawn_Points")
         for spawn_point in spawn_point_objects:
             position = (spawn_point.x, spawn_point.y)
-            SpawnPoint(position, [self.transition_sprites], spawn_point.id)
+            SpawnPoint(position, [self.spawn_points], spawn_point.id)
 
     def get_level_groups(self):
-        return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites]
+        return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites, self.spawn_points]
 
     def set_player(self, player: Player):
         self.player = player
@@ -106,3 +107,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         for non_floor_tile in sorted(non_floor_tiles, key=lambda tile: tile.rect.centery):
             offset = non_floor_tile.rect.topleft - self.offset
             self.display_surface.blit(non_floor_tile.image, offset)
+
+    def regular_draw(self):
+        for sprite in self.sprites():
+            self.display_surface.blit(sprite.image, sprite.rect.topleft)

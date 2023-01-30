@@ -10,3 +10,5 @@ class SpawnPoint(HitBox):
 
     def get_spawn_point_id(self):
         return self.spawn_point_id
+
+
