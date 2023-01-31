@@ -88,10 +88,9 @@ class Entity(pygame.sprite.Sprite):
                     # player moving to the up
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
-        direction_map = {"horizontal": horizontal_collision,
-                         "vertical": vertical_collision}
+        collision_type_map = {"horizontal": horizontal_collision, "vertical": vertical_collision}
 
-        direction_map[direction]()
+        collision_type_map[direction]()
 
     def animate(self):
         animation = self.animations[self.status]

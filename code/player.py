@@ -82,12 +82,13 @@ class Player(Entity):
                     self.current_level_code = transition_sprite.get_new_level_code()
                     self.next_level_spawn_id = get_spawn_point_id(transition_sprite.get_transition_code())
 
-        direction_map = {"transition": transition_collision,
+        collision_type_map = {
+                         "transition": transition_collision,
                          "horizontal": lambda: super(Player, self).collision("horizontal"),
                          "vertical": lambda: super(Player, self).collision("vertical")
                          }
 
-        direction_map[direction]()
+        collision_type_map[direction]()
 
     # @Override
     def update(self):
