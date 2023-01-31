@@ -90,28 +90,31 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
     def custom_draw(self, player: Player):
+        def draw_floor_tiles(tile: list[pygame.sprite.Sprite]):
+            # draw floor tiles before non-floor tiles (painters algorithm)
+            for tile in tile:
+                offset = tile.rect.topleft - self.offset
+                self.display_surface.blit(tile.image, offset)
+
+        def draw_non_floor_tiles(tiles: list[pygame.sprite.Sprite]):
+            # draw non-floor tiles on top of floor tiles using Y-sort algorithm
+            for tile in sorted(tiles, key=lambda tile: tile.rect.centery):
+                offset = tile.rect.topleft - self.offset
+                self.display_surface.blit(tile.image, offset)
 
         # offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
-        # separate ground tiles and non-ground tiles
+        # separate floor tiles and non-floor tiles
         floor_tiles = [sprite for sprite in self.sprites() if type(sprite) != Player and
                        sprite.tiled_layer in ["Ground", "Carpet", "Shadows"]]
 
         non_floor_tiles = [sprite for sprite in self.sprites() if type(sprite) == Player or
                            sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"]]
 
-        # draw floor tiles before non-floor tiles (painters algorithm)
-        for floor_tile in floor_tiles:
-            offset = floor_tile.rect.topleft - self.offset
-            self.display_surface.blit(floor_tile.image, offset)
-
-        # draw non-floor tiles on top of floor tiles
-        # draw tiles using Y-sort algorithm
-        for non_floor_tile in sorted(non_floor_tiles, key=lambda tile: tile.rect.centery):
-            offset = non_floor_tile.rect.topleft - self.offset
-            self.display_surface.blit(non_floor_tile.image, offset)
+        draw_floor_tiles(floor_tiles)
+        draw_non_floor_tiles(non_floor_tiles)
 
     def regular_draw(self):
         for sprite in self.sprites():
