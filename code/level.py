@@ -90,9 +90,9 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
     def custom_draw(self, player: Player):
-        def draw_floor_tiles(tile: list[pygame.sprite.Sprite]):
+        def draw_floor_tiles(tiles: list[pygame.sprite.Sprite]):
             # draw floor tiles before non-floor tiles (painters algorithm)
-            for tile in tile:
+            for tile in tiles:
                 offset = tile.rect.topleft - self.offset
                 self.display_surface.blit(tile.image, offset)
 
