@@ -8,6 +8,7 @@ from transitionBox import TransitionBox
 from spawnPoint import SpawnPoint
 from debug import debug
 
+
 class Level:
     def __init__(self, map_path: str, player: Player = None) -> None:
         # load map
