@@ -33,31 +33,37 @@ class Level:
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
             and adds them to a pygame sprite group
         """
-        for layer in self.tmx_data.visible_layers:
-            if hasattr(layer, "data"):
-                for x, y, surf in layer.tiles():
-                    position = (x * TILE_SIZE, y * TILE_SIZE)
-                    Tile(position, surf, [self.visible_sprites], layer.name)
+        def create_tile_objects():
+            for layer in self.tmx_data.visible_layers:
+                if hasattr(layer, "data"):
+                    for x, y, surf in layer.tiles():
+                        position = (x * TILE_SIZE, y * TILE_SIZE)
+                        Tile(position, surf, [self.visible_sprites], layer.name)
 
-        # create hitbox objects for collidable tiles
-        collidable_objects = self.tmx_data.get_layer_by_name("Collision_Objects")
-        for collidable_object in collidable_objects:
-            position = (collidable_object.x, collidable_object.y)
-            size = (collidable_object.width, collidable_object.height)
-            HitBox(position, size, [self.obstacle_sprites])
+        def create_collidable_objects():
+            collidable_objects = self.tmx_data.get_layer_by_name("Collision_Objects")
+            for collidable_object in collidable_objects:
+                position = (collidable_object.x, collidable_object.y)
+                size = (collidable_object.width, collidable_object.height)
+                HitBox(position, size, [self.obstacle_sprites])
 
-        # crate transition box objects to trigger level changes when collided with
-        transition_objects = self.tmx_data.get_layer_by_name("Transition_Objects")
-        for transition_object in transition_objects:
-            position = (transition_object.x, transition_object.y)
-            size = (transition_object.width, transition_object.height)
-            TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code)
+        def create_transition_objects():
+            transition_objects = self.tmx_data.get_layer_by_name("Transition_Objects")
+            for transition_object in transition_objects:
+                position = (transition_object.x, transition_object.y)
+                size = (transition_object.width, transition_object.height)
+                TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code)
 
-        # create hit boxes for spawn points
-        spawn_point_objects = self.tmx_data.get_layer_by_name("Spawn_Points")
-        for spawn_point in spawn_point_objects:
-            position = (spawn_point.x, spawn_point.y)
-            SpawnPoint(position, [self.spawn_points], spawn_point.id)
+        def create_spawn_point_objects():
+            spawn_point_objects = self.tmx_data.get_layer_by_name("Spawn_Points")
+            for spawn_point in spawn_point_objects:
+                position = (spawn_point.x, spawn_point.y)
+                SpawnPoint(position, [self.spawn_points], spawn_point.id)
+
+        create_tile_objects()
+        create_collidable_objects()
+        create_transition_objects()
+        create_spawn_point_objects()
 
     def get_level_groups(self) -> list[pygame.sprite.Group]:
         return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites, self.spawn_points]
