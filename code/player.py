@@ -94,26 +94,10 @@ class Player(Entity):
                     self.current_level_code = transition_sprite.get_new_level_code()
                     self.next_level_spawn_id = get_spawn_point_id(transition_sprite.get_transition_code())
 
-        def horizontal_collision():
-            for sprite in self.obstacle_sprites:
-                if sprite.rect.colliderect(self.rect):
-                    # player moving to the right
-                    if self.direction.x > 0: self.rect.right = sprite.rect.left
-
-                    # player moving to the left
-                    if self.direction.x < 0: self.rect.left = sprite.rect.right
-
-        def vertical_collision():
-            for sprite in self.obstacle_sprites:
-                if sprite.rect.colliderect(self.rect):
-                    # player moving to the down
-                    if self.direction.y > 0: self.rect.bottom = sprite.rect.top
-
-                    # player moving to the up
-                    if self.direction.y < 0: self.rect.top = sprite.rect.bottom
-
-        direction_map = {"transition": transition_collision, "horizontal": horizontal_collision,
-                         "vertical": vertical_collision}
+        direction_map = {"transition": transition_collision,
+                         "horizontal": lambda: super(Player, self).collision("horizontal"),
+                         "vertical": lambda: super(Player, self).collision("vertical")
+                         }
 
         direction_map[direction]()
 
