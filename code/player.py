@@ -3,12 +3,14 @@ import pygame
 from settings import *
 from utils import get_spawn_point_id
 from entity import Entity
+from observable import Observable
+from observer import Observer
 
 
-class Player(Entity):
+class Player(Entity, Observable):
     def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite],
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
-                 spawn_points: pygame.sprite.Group, initial_level_code: int):
+                 spawn_points: pygame.sprite.Group, initial_level_code: int, **kwargs):
 
         super().__init__(pos, image_path, groups, obstacle_sprites)
 
@@ -21,6 +23,14 @@ class Player(Entity):
 
         # temp
         self.next_level_spawn_id = None
+
+        # add observers
+        self.__set_observers(kwargs.get("observers", None))
+
+    def __set_observers(self, observers: list[Observer] = None):
+        if observers:
+            for observer in observers:
+                self.observable_add(observer)
 
     def set_groups(self, groups: list[pygame.sprite.Group]):
         new_visible_sprites_group = groups[0]
