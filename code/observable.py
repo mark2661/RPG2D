@@ -1,4 +1,4 @@
-
+from observer import Observer
 
 class Observable:
     def __init__(self):
