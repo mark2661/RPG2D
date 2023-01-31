@@ -68,23 +68,11 @@ class Player(Entity):
 
     # @Override
     def move(self, speed: float):
-        # normalise the direction vector so both diagonal speeds always have a magnitude of 1
-        if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
-
         # check for collision with a TransitionBox object
         self.collision("transition")
 
-        # update horizontal velocity
-        self.rect.x += self.direction.x * speed
-
-        # check for horizontal collision
-        self.collision("horizontal")
-
-        # update vertical velocity
-        self.rect.y += self.direction.y * speed
-
-        # check for vertical collision
-        self.collision("vertical")
+        # call move method from entity class
+        super(Player, self).move(speed)
 
     # @Override
     def collision(self, direction: str):
