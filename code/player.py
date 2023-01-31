@@ -66,7 +66,7 @@ class Player(Entity):
     def get_current_level_code(self) -> int:
         return self.current_level_code
 
-    # @Override
+    # Override
     def move(self, speed: float):
         # check for collision with a TransitionBox object
         self.collision("transition")
@@ -74,7 +74,7 @@ class Player(Entity):
         # call move method from entity class
         super(Player, self).move(speed)
 
-    # @Override
+    # Override
     def collision(self, direction: str):
         def transition_collision():
             for transition_sprite in self.transition_sprites:
@@ -90,7 +90,7 @@ class Player(Entity):
 
         collision_type_map[direction]()
 
-    # @Override
+    # Override
     def update(self):
         self.input()
         self.get_status()
