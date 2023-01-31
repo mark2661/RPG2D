@@ -20,11 +20,10 @@ class Entity(pygame.sprite.Sprite):
         # general setup
         self.animations = defaultdict(lambda: [])
         self.import_assets()
-        # status keeps track of the current action and direction of the player
-        self.status = "down"
+        self.status = "down"  # status keeps track of the current action and direction of the player
         self.display_surface = pygame.display.get_surface()
 
-        # attacking monitors wheather or not the entity is attacking
+        # attacking monitors whether or not the entity is attacking
         # attack mechanics not currently implemented
         self.attacking = False
 

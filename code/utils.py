@@ -25,7 +25,7 @@ def get_spawn_point_object_data(spawn_point_code: int) -> tuple[int, pytmx.pytmx
 
 
 def get_spawn_point_id(spawn_point_code: int) -> int:
-    # spawn point code = -1 indicates spawn not yet implemented
+    # spawn point code == -1 indicates spawn not yet implemented
     if spawn_point_code != -1:
         file_extention = ".ods"
         ods_data = get_data(os.path.join(DATA_FILE_PATH, f"transition_spawn_point_mappings{file_extention}"))
