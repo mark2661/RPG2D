@@ -6,6 +6,7 @@ if TYPE_CHECKING:
 class Observer:
     def __init__(self, observable: "Observable"):
         self.observable = observable
+        # self.observable.observable_add(child_obj)
 
-    def update(self):
+    def observer_update(self):
         pass

@@ -5,9 +5,10 @@ import pygame.display
 from settings import *
 from level import Level
 from player import Player
+from observer import Observer
 
 
-class LevelHandler:
+class LevelHandler(Observer):
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
 
@@ -34,15 +35,23 @@ class LevelHandler:
         # pass the player instance to the current level
         self.current_level.set_player(self.player)
 
+        # call super constructor
+        super().__init__(self.player)
+
     def transition(self):
         # if player has collided with a transition object
-        if self.current_level_code != self.player.get_current_level_code():
+        # if self.current_level_code != self.player.get_current_level_code():
+        def transition_map():
             # update current level code
             self.current_level_code = self.player.get_current_level_code()
 
             # change current level
             self.current_level = self.levels[self.current_level_code]
 
+            # draw new map
+            self.current_level.visible_sprites.regular_draw()
+
+        def update_player_attributes():
             # update group attributes
             self.update_groups()
 
@@ -52,11 +61,11 @@ class LevelHandler:
             # update player object groups
             self.player.set_groups(self.current_level.get_level_groups())
 
-            # draw new map
-            self.current_level.visible_sprites.regular_draw()
-
             # set new player pos
             self.player.rect.center = self.get_spawn_point(self.player.next_level_spawn_id).rect.center
+
+        transition_map()
+        update_player_attributes()
 
     def update_groups(self):
         # get the pygame group member objects of the current level
@@ -70,6 +79,11 @@ class LevelHandler:
 
         return None
 
+    # Override
+    def observer_update(self):
+        if self.current_level_code != self.player.get_current_level_code():
+            self.transition()
+
     def run(self):
         self.current_level.run()
-        self.transition()
+        self.observer_update()

@@ -12,7 +12,8 @@ class Player(Entity, Observable):
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
                  spawn_points: pygame.sprite.Group, initial_level_code: int, **kwargs):
 
-        super().__init__(pos, image_path, groups, obstacle_sprites)
+        Entity.__init__(self, pos, image_path, groups, obstacle_sprites)
+        Observable.__init__(self)
 
         # general setup
         self.current_level_code = initial_level_code
@@ -83,6 +84,8 @@ class Player(Entity, Observable):
 
         # call move method from entity class
         super(Player, self).move(speed)
+
+        self.observable_notify()
 
     # Override
     def collision(self, direction: str):
