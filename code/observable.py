@@ -17,4 +17,4 @@ class Observable:
 
     def observable_notify(self):
         for observer in self.observers:
-            observer.update()
+            observer.observer_update()

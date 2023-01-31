@@ -86,4 +86,3 @@ class LevelHandler(Observer):
 
     def run(self):
         self.current_level.run()
-        self.observer_update()
