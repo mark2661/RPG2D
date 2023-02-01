@@ -51,6 +51,8 @@ class Entity(pygame.sprite.Sprite):
                 all(word not in self.status for word in ["idle", "attack"]):
             self.status += "_idle"
 
+    def input(self):
+        pass
     def move(self, speed: float):
         # normalise the direction vector so both diagonal speeds always have a magnitude of 1
         if self.direction.magnitude() != 0: self.direction = self.direction.normalize()

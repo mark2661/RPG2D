@@ -7,6 +7,8 @@ from hitbox import HitBox
 from transitionBox import TransitionBox
 from spawnPoint import SpawnPoint
 from debug import debug
+from enemy import Enemy
+from entity import Entity
 
 
 class Level:
@@ -60,10 +62,16 @@ class Level:
                 position = (spawn_point.x, spawn_point.y)
                 SpawnPoint(position, [self.spawn_points], spawn_point.id)
 
+        def create_enemies():
+            enemy_spawn_position = ((self.display_surface.get_width() // 2)+500, (self.display_surface.get_height() // 2)+25)
+            Enemy(enemy_spawn_position, ENEMY_IMAGES_FILE_PATH, [self.visible_sprites, self.obstacle_sprites],
+                  self.obstacle_sprites)
+
         create_tile_objects()
         create_collidable_objects()
         create_transition_objects()
         create_spawn_point_objects()
+        create_enemies()
 
     def get_level_groups(self) -> list[pygame.sprite.Group]:
         return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites, self.spawn_points]
@@ -107,10 +115,10 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset.y = player.rect.centery - self.half_height
 
         # separate floor tiles and non-floor tiles
-        floor_tiles = [sprite for sprite in self.sprites() if type(sprite) != Player and
+        floor_tiles = [sprite for sprite in self.sprites() if not isinstance(sprite, Entity) and
                        sprite.tiled_layer in ["Ground", "Carpet", "Shadows"]]
 
-        non_floor_tiles = [sprite for sprite in self.sprites() if type(sprite) == Player or
+        non_floor_tiles = [sprite for sprite in self.sprites() if isinstance(sprite, Entity) or
                            sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"]]
 
         draw_floor_tiles(floor_tiles)
