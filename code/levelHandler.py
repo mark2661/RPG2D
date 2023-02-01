@@ -27,8 +27,7 @@ class LevelHandler(Observer):
 
         # create the player instance that will be passed between levels
         player_spawn_position = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
-        player_spawn_image_file_path = os.path.join(PLAYER_IMAGES_FILE_PATH, "down_idle", "down_idle_1.png")
-        self.player = Player(player_spawn_position, player_spawn_image_file_path, [self.visible_sprites_group],
+        self.player = Player(player_spawn_position, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group],
                              self.obstacle_sprites_group, self.transition_sprites_group, self.spawn_points_group,
                              self.current_level_code)
 

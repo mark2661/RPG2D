@@ -12,7 +12,7 @@ class Entity(pygame.sprite.Sprite):
 
         super().__init__(groups)
         # player sprite
-        default_image_path = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1")
+        default_image_path = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
         self.image = pygame.image.load(default_image_path).convert_alpha()
         # scale image to match screen size
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
