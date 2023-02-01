@@ -36,9 +36,9 @@ class Entity(pygame.sprite.Sprite):
         # collisions
         self.obstacle_sprites = obstacle_sprites
 
-    def import_assets(self):
-        for folder in os.listdir(PLAYER_IMAGES_FILE_PATH):
-            folder_path = os.path.join(PLAYER_IMAGES_FILE_PATH, folder)
+    def import_assets(self, root_dir: str):
+        for folder in os.listdir(root_dir):
+            folder_path = os.path.join(root_dir, folder)
             for image in os.listdir(folder_path):
                 image_path = os.path.join(folder_path, image)
                 surf = pygame.image.load(image_path).convert_alpha()

@@ -12,6 +12,7 @@ class Player(Entity, Observable):
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
                  spawn_points: pygame.sprite.Group, initial_level_code: int, **kwargs):
 
+        # call parent class constructors
         Entity.__init__(self, pos, image_path, groups, obstacle_sprites)
         Observable.__init__(self)
 
@@ -85,6 +86,7 @@ class Player(Entity, Observable):
         # call move method from entity class
         super(Player, self).move(speed)
 
+        # notify observers that the player position has changed
         self.observable_notify()
 
     # Override
