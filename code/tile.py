@@ -10,3 +10,4 @@ class Tile(pygame.sprite.Sprite):
         self.tiled_layer = tiled_layer
         self.image = pygame.transform.scale(surf, (TILE_SIZE, TILE_SIZE))
         self.rect = self.image.get_rect(topleft=pos)
+        self.is_pathable = is_pathable
