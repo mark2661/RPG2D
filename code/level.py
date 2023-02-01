@@ -35,6 +35,8 @@ class Level:
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
             and adds them to a pygame sprite group
         """
+        pathable_tiles = list(self.tmx_data.get_layer_by_name("Pathing").tiles())
+
         def create_tile_objects():
             for layer in self.tmx_data.visible_layers:
                 if hasattr(layer, "data"):
@@ -66,6 +68,15 @@ class Level:
             enemy_spawn_position = ((self.display_surface.get_width() // 2)+500, (self.display_surface.get_height() // 2)+25)
             Enemy(enemy_spawn_position, ENEMY_IMAGES_FILE_PATH, [self.visible_sprites, self.obstacle_sprites],
                   self.obstacle_sprites)
+
+        def is_pathable_tile(tile_top_left_pos: tuple[float, float]) -> bool:
+            for index, pathable_tile in enumerate(pathable_tiles):
+                pathable_tile_x, pathable_tile_y = pathable_tile
+                if pathable_tile_x == tile_top_left_pos[0] and pathable_tile_y == tile_top_left_pos[1]:
+                    pathable_tiles.pop(index)
+                    return True
+
+            return False
 
         create_tile_objects()
         create_collidable_objects()
