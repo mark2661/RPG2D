@@ -42,7 +42,8 @@ class Level:
                 if hasattr(layer, "data"):
                     for x, y, surf in layer.tiles():
                         position = (x * TILE_SIZE, y * TILE_SIZE)
-                        Tile(position, surf, [self.visible_sprites], layer.name, is_pathable_tile(position))
+                        Tile(position, surf, [self.visible_sprites], layer.name, is_pathable_tile(x, y))
+
         def create_collidable_objects():
             collidable_objects = self.tmx_data.get_layer_by_name("Collision_Objects")
             for collidable_object in collidable_objects:
@@ -64,7 +65,8 @@ class Level:
                 SpawnPoint(position, [self.spawn_points], spawn_point.id)
 
         def create_enemies():
-            enemy_spawn_position = ((self.display_surface.get_width() // 2)+500, (self.display_surface.get_height() // 2)+25)
+            enemy_spawn_position = (
+            (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2) + 25)
             Enemy(enemy_spawn_position, ENEMY_IMAGES_FILE_PATH, [self.visible_sprites, self.obstacle_sprites],
                   self.obstacle_sprites)
 
