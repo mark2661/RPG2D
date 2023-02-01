@@ -42,8 +42,7 @@ class Level:
                 if hasattr(layer, "data"):
                     for x, y, surf in layer.tiles():
                         position = (x * TILE_SIZE, y * TILE_SIZE)
-                        Tile(position, surf, [self.visible_sprites], layer.name)
-
+                        Tile(position, surf, [self.visible_sprites], layer.name, is_pathable_tile(position))
         def create_collidable_objects():
             collidable_objects = self.tmx_data.get_layer_by_name("Collision_Objects")
             for collidable_object in collidable_objects:
