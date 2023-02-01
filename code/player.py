@@ -8,12 +8,12 @@ from observer import Observer
 
 
 class Player(Entity, Observable):
-    def __init__(self, pos: tuple[float, float], image_path: str, groups: list[pygame.sprite.Sprite],
+    def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: list[pygame.sprite.Sprite],
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
                  spawn_points: pygame.sprite.Group, initial_level_code: int, **kwargs):
 
         # call parent class constructors
-        Entity.__init__(self, pos, image_path, groups, obstacle_sprites)
+        Entity.__init__(self, pos, asset_images_root_dir_path, groups, obstacle_sprites)
         Observable.__init__(self)
 
         # general setup
