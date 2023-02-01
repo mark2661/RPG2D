@@ -11,14 +11,12 @@ class Entity(pygame.sprite.Sprite):
                  obstacle_sprites: pygame.sprite.Group):
 
         super().__init__(groups)
-        # player sprite
+        # general setup
         default_image_path = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
         self.image = pygame.image.load(default_image_path).convert_alpha()
-        # scale image to match screen size
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
+        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE)) # scale image to match screen size
         self.rect = self.image.get_rect(topleft=pos)
 
-        # general setup
         self.animations = defaultdict(lambda: [])
         self.import_assets(asset_images_root_dir_path)
         self.status = "down"  # status keeps track of the current action and direction of the player
