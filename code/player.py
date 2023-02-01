@@ -49,6 +49,7 @@ class Player(Entity, Observable):
         self.transition_sprites = new_transition_sprites_group
         self.spawn_points = new_spawn_point_group
 
+    # Override
     def input(self):
         keys = pygame.key.get_pressed()
         up, down, left, right = keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]

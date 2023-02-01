@@ -14,7 +14,7 @@ class Entity(pygame.sprite.Sprite):
         # general setup
         default_image_path = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
         self.image = pygame.image.load(default_image_path).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE)) # scale image to match screen size
+        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
         self.rect = self.image.get_rect(topleft=pos)
 
         self.animations = defaultdict(lambda: [])
@@ -53,6 +53,7 @@ class Entity(pygame.sprite.Sprite):
 
     def input(self):
         pass
+
     def move(self, speed: float):
         # normalise the direction vector so both diagonal speeds always have a magnitude of 1
         if self.direction.magnitude() != 0: self.direction = self.direction.normalize()

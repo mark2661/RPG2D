@@ -10,11 +10,11 @@
                 8,
                 7
             ],
-            "scale": 3,
-            "selectedLayer": 4,
+            "scale": 2,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 385.66666666666663,
-                "y": 107.66666666666667
+                "x": 283.5,
+                "y": 72
             }
         },
         "1.tmx": {
@@ -28,8 +28,8 @@
             "scale": 4,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 123.625,
-                "y": 79.625
+                "x": 123.75,
+                "y": 79.75
             }
         },
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx": {
