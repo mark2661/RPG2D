@@ -32,7 +32,7 @@
   </object>
  </objectgroup>
  <objectgroup id="7" name="Transition_Objects">
-  <object id="16" name="player_house_entrance" class="transition" x="434.042" y="54.375" width="12.125" height="24.0417">
+  <object id="16" name="player_house_entrance" class="transition" x="434.042" y="54.375" width="12.125" height="9.37503">
    <properties>
     <property name="transition_code" type="int" value="3"/>
    </properties>
