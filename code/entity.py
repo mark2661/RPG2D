@@ -29,7 +29,7 @@ class Entity(pygame.sprite.Sprite):
 
         # movement
         self.direction = pygame.math.Vector2()
-        self.speed = 6
+        self.speed = ENTITY_SPEED
         self.frame_index = 0
         self.animation_speed = 0.15
 
