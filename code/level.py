@@ -35,6 +35,8 @@ class Level:
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
             and adds them to a pygame sprite group
         """
+        
+        # catch ValueError if Pathing layer doesn't exist
         try:
             pathable_tiles = list(self.tmx_data.get_layer_by_name("Pathing").tiles())
         except ValueError:
