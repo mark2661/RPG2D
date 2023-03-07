@@ -104,6 +104,8 @@ class Level:
         self.player = player
 
     def get_tile(self, pos: Tuple[Union[float, int], Union[float, int]]) -> Optional[Tile]:
+        """ Calculates the row and column number of the position argument and returns the tile at that position
+            if there is no tile at the calculated position returns None """
         row: int = pos[0] // TILE_SIZE
         col: int = pos[1] // TILE_SIZE
 
