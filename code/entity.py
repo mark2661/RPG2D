@@ -8,7 +8,7 @@ from spawnPoint import SpawnPoint
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: list[pygame.sprite.Group],
+    def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group):
 
         super().__init__(groups)

@@ -26,15 +26,15 @@ class Level:
         self.transition_sprites = pygame.sprite.Group()
         self.spawn_points = pygame.sprite.Group()
 
+        # tile map provides a quick way to access tile objects based on their row, col position (not coords) on the grid
+        # e.g the tile in the top left would have row = 0 and col = 0
+        self.tile_map: Dict[Tuple[int, int], Tile] = dict()
+
         # initialise map
         self.create_map()
 
         # set player
         self.player = player
-
-        # tile map provides a quick way to access tile objects based on their row, col position (not coords) on the grid
-        # e.g the tile in the top left would have row = 0 and col = 0
-        self.tile_map: Dict[Tuple[int, int], Tile] = dict()
 
     def create_map(self):
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
@@ -79,8 +79,8 @@ class Level:
         def create_enemies():
             enemy_spawn_position = (
                 (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2) + 25)
-            Enemy(enemy_spawn_position, ENEMY_IMAGES_FILE_PATH, [self.visible_sprites, self.obstacle_sprites],
-                  self.obstacle_sprites)
+            Enemy(pos=enemy_spawn_position, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
+                  groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 
         def is_pathable_tile(tile_top_left_pos: tuple[float, float]) -> bool:
             for index, pathable_tile in enumerate(pathable_tiles):
