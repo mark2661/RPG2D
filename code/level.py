@@ -1,5 +1,5 @@
 import pygame
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Union, Optional
 from pytmx.util_pygame import load_pygame
 from settings import *
 from tile import Tile
@@ -102,6 +102,12 @@ class Level:
 
     def set_player(self, player: Player):
         self.player = player
+
+    def get_tile(self, pos: Tuple[Union[float, int], Union[float, int]]) -> Optional[Tile]:
+        row: int = pos[0] // TILE_SIZE
+        col: int = pos[1] // TILE_SIZE
+
+        return self.tile_map.get((row, col), None)
 
     def run(self):
         try:
