@@ -1,4 +1,5 @@
 import pygame
+from typing import Dict, Tuple
 from pytmx.util_pygame import load_pygame
 from settings import *
 from tile import Tile
@@ -31,6 +32,10 @@ class Level:
         # set player
         self.player = player
 
+        # tile map provides a quick way to access tile objects based on their row, col position (not coords) on the grid
+        # e.g the tile in the top left would have row = 0 and col = 0
+        self.tile_map: Dict[Tuple[int, int], Tile] = dict()
+
     def create_map(self):
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
             and adds them to a pygame sprite group
@@ -47,7 +52,9 @@ class Level:
                 if hasattr(layer, "data"):
                     for x, y, surf in layer.tiles():
                         position = (x * TILE_SIZE, y * TILE_SIZE)
-                        Tile(position, surf, [self.visible_sprites], layer.name, is_pathable_tile((x, y)))
+                        new_tile: Tile = Tile(position, surf, [self.visible_sprites],
+                                              layer.name, is_pathable_tile((x, y)))
+                        self.tile_map[(x, y)] = new_tile
 
         def create_collidable_objects():
             collidable_objects = self.tmx_data.get_layer_by_name("Collision_Objects")
