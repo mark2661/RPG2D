@@ -1,5 +1,6 @@
 from settings import *
 from entity import Entity
+from typing import Optional
 import pygame
 from tile import Tile
 
@@ -15,3 +16,5 @@ class Enemy(Entity):
         # if self.direction.y == 1:
 
         pass
+
+    def get_current_tile(self) -> Optional[Tile]:

@@ -2,12 +2,13 @@ import os
 import pygame
 from settings import *
 from collections import defaultdict
+from typing import List
 from utils import get_spawn_point_object_data, get_spawn_point_id
 from spawnPoint import SpawnPoint
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: list[pygame.sprite.Sprite],
+    def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: list[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group):
 
         super().__init__(groups)
@@ -34,6 +35,9 @@ class Entity(pygame.sprite.Sprite):
 
         # collisions
         self.obstacle_sprites = obstacle_sprites
+
+        # groups
+        self.member_groups: List[pygame.sprite.Group] = groups
 
     def import_assets(self, root_dir: str):
         for folder in os.listdir(root_dir):
