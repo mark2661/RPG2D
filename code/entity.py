@@ -58,21 +58,23 @@ class Entity(pygame.sprite.Sprite):
     def input(self):
         pass
 
-    def move(self, speed: float):
+    def move(self, speed: float) -> None:
         # normalise the direction vector so both diagonal speeds always have a magnitude of 1
         if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
 
         # update horizontal velocity
-        self.rect.x += self.direction.x * speed
-
-        # check for horizontal collision
-        self.collision("horizontal")
+        self.move_x(speed)
 
         # update vertical velocity
-        self.rect.y += self.direction.y * speed
+        self.move_y(speed)
 
-        # check for vertical collision
-        self.collision("vertical")
+    def move_x(self, speed: float) -> None:
+        """ updates x coordinate of the entity """
+        self.rect.x += self.direction.x * speed
+
+    def move_y(self, speed: float) -> None:
+        """ updates y coordinate of the entity """
+        self.rect.y += self.direction.y * speed
 
     def collision(self, direction: str):
         def horizontal_collision():

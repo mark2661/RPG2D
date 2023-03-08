@@ -18,17 +18,15 @@ class Enemy(Entity):
         self.level = level
         # start enemy moving upwards
         self.direction = pygame.math.Vector2(0, -1)
-        print(f"self.direction {self.direction}")
 
     # Overrides parent method
-    # BUG!! enemy entity is moving too fast
     def move(self, speed: Union[float, int]) -> None:
         current_tile: Tile = self.level.get_tile(self.rect.center)
 
         if current_tile:
             # moving upwards
             # BUG? for some reason check for == -1 doesn't work (even though that's the upwards direction)
-            if self.direction.y == 1:
+            if self.direction.y == -1:
                 next_tile_coords = (current_tile.rect.centerx, current_tile.rect.centery - TILE_SIZE)
 
             # moving downwards
@@ -41,6 +39,3 @@ class Enemy(Entity):
 
             # call parent method to handle actual movement logic
             super(Enemy, self).move(speed)
-            # print(f"self.direction {self.direction}")
-            print(f"position {self.rect.center}")
-

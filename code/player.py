@@ -80,12 +80,24 @@ class Player(Entity, Observable):
         return self.current_level_code
 
     # Override
-    def move(self, speed: float):
+    def move(self, speed: float) -> None:
+        """ updates players x and y coordinates. Also checks for collisions with objects
+            and triggers associated events
+        """
+        if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
+
         # check for collision with a TransitionBox object
         self.collision("transition")
 
-        # call move method from entity class
-        super(Player, self).move(speed)
+        # move in x direction
+        self.move_x(speed)
+        # check for horizontal collision
+        self.collision("horizontal")
+
+        # move in y direction
+        self.move_y(speed)
+        # check for vertical collision
+        self.collision("vertical")
 
         # notify observers that the player position has changed
         self.observable_notify()
