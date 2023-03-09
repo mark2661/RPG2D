@@ -39,3 +39,7 @@ class Enemy(Entity):
 
             # call parent method to handle actual movement logic
             super(Enemy, self).move(speed)
+
+    # Overrides parent method
+    def collision(self, direction: str) -> None:
+        pass
