@@ -20,6 +20,7 @@ class Enemy(Entity):
         self.level: Level = level
         # start enemy moving upwards
         self.direction = pygame.math.Vector2(0, -1)
+        self.status = "up"
 
         # change default speed
         self.speed: float = ENEMY_SPEED
@@ -34,6 +35,17 @@ class Enemy(Entity):
     # Overrides parent method
     def move(self, speed: Union[float, int]) -> None:
         current_tile: Tile = self.level.get_tile(self.rect.center)
+
+        def update_status() -> None:
+            if self.direction.y == -1:
+                self.status = "up"
+            elif self.direction.y == 1:
+                self.status = "down"
+
+            if self.direction.x == -1:
+                self.status = "left"
+            elif self.direction.x == 1:
+                self.status = "right"
 
         if current_tile:
             # moving upwards
@@ -50,6 +62,7 @@ class Enemy(Entity):
             # if the next tile isn't pathable reverse the y direction
             if not self.level.get_tile(next_tile_coords).is_pathable():
                 self.direction.y *= -1
+                update_status()
 
             # call parent method to handle actual movement logic
             super(Enemy, self).move(speed)
