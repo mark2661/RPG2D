@@ -1,6 +1,6 @@
 from settings import *
 from entity import Entity
-from typing import Optional, Union, List, TYPE_CHECKING
+from typing import Optional, Union, List, TYPE_CHECKING, Tuple
 import pygame
 
 if TYPE_CHECKING:
@@ -11,24 +11,25 @@ if TYPE_CHECKING:
 
 class Enemy(Entity):
     def __init__(self, pos: tuple[float, float], asset_image_root_dir_path: str, level: "Level",
-                 groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]], obstacle_sprites: pygame.sprite.Group):
+                 groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
+                 obstacle_sprites: pygame.sprite.Group) -> None:
 
         super().__init__(pos, asset_image_root_dir_path, groups, obstacle_sprites)
 
         # store the level object in associated with the instance
-        self.level = level
+        self.level: Level = level
         # start enemy moving upwards
         self.direction = pygame.math.Vector2(0, -1)
 
         # change default speed
-        self.speed = ENEMY_SPEED
+        self.speed: float = ENEMY_SPEED
 
         """
         define enemy aggression circle radius.
         Variable name self.radius is required for pygame.sprite.collide_circle method to work.
         https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.collide_circle
         """
-        self.radius = ENEMY_ATTACK_RADIUS
+        self.radius: int = ENEMY_ATTACK_RADIUS
 
     # Overrides parent method
     def move(self, speed: Union[float, int]) -> None:
@@ -38,11 +39,13 @@ class Enemy(Entity):
             # moving upwards
             # BUG? for some reason check for == -1 doesn't work (even though that's the upwards direction)
             if self.direction.y == -1:
-                next_tile_coords = (current_tile.rect.centerx, current_tile.rect.centery - TILE_SIZE)
+                next_tile_coords: Tuple[float, float] = \
+                    (current_tile.rect.centerx, current_tile.rect.centery - TILE_SIZE)
 
             # moving downwards
             else:
-                next_tile_coords = (current_tile.rect.centerx, current_tile.rect.centery + TILE_SIZE)
+                next_tile_coords: Tuple[float, float] =\
+                    (current_tile.rect.centerx, current_tile.rect.centery + TILE_SIZE)
 
             # if the next tile isn't pathable reverse the y direction
             if not self.level.get_tile(next_tile_coords).is_pathable():
