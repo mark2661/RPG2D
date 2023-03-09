@@ -1,5 +1,7 @@
 import pygame
-from typing import Dict, Tuple, Union, Optional
+from typing import Dict, Tuple, Union, Optional, List
+
+import pytmx.pytmx
 from pytmx.util_pygame import load_pygame
 from settings import *
 from tile import Tile
@@ -15,16 +17,16 @@ from entity import Entity
 class Level:
     def __init__(self, map_path: str, player: Player = None) -> None:
         # load map
-        self.tmx_data = load_pygame(map_path)
+        self.tmx_data: pytmx.pytmx.TiledMap = load_pygame(map_path)
 
         # get display surface
-        self.display_surface = pygame.display.get_surface()
+        self.display_surface: pygame.Surface = pygame.display.get_surface()
 
         # sprite groups
-        self.visible_sprites = YSortCameraGroup()
-        self.obstacle_sprites = pygame.sprite.Group()
-        self.transition_sprites = pygame.sprite.Group()
-        self.spawn_points = pygame.sprite.Group()
+        self.visible_sprites: YSortCameraGroup = YSortCameraGroup()
+        self.obstacle_sprites: pygame.sprite.Group = pygame.sprite.Group()
+        self.transition_sprites: pygame.sprite.Group = pygame.sprite.Group()
+        self.spawn_points: pygame.sprite.Group = pygame.sprite.Group()
 
         # tile map provides a quick way to access tile objects based on their row, col position (not coords) on the grid
         # e.g the tile in the top left would have row = 0 and col = 0
@@ -34,56 +36,59 @@ class Level:
         self.create_map()
 
         # set player
-        self.player = player
+        self.player: Player = player
 
-    def create_map(self):
+    def create_map(self) -> None:
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
             and adds them to a pygame sprite group
         """
-        
+
         # catch ValueError if Pathing layer doesn't exist
         try:
-            pathable_tiles = list(self.tmx_data.get_layer_by_name("Pathing").tiles())
+            pathable_tiles: List[pytmx.pytmx.TiledObject] = list(self.tmx_data.get_layer_by_name("Pathing").tiles())
         except ValueError:
             pathable_tiles = []
 
-        def create_tile_objects():
+        def create_tile_objects() -> None:
             for layer in self.tmx_data.visible_layers:
                 if hasattr(layer, "data"):
                     for x, y, surf in layer.tiles():
-                        position = (x * TILE_SIZE, y * TILE_SIZE)
+                        position: Tuple[float, float] = (x * TILE_SIZE, y * TILE_SIZE)
                         new_tile: Tile = Tile(position, surf, [self.visible_sprites],
                                               layer.name, is_pathable_tile((x, y)))
                         self.tile_map[(x, y)] = new_tile
 
-        def create_collidable_objects():
-            collidable_objects = self.tmx_data.get_layer_by_name("Collision_Objects")
+        def create_collidable_objects() -> None:
+            collidable_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Collision_Objects")
             for collidable_object in collidable_objects:
-                position = (collidable_object.x, collidable_object.y)
-                size = (collidable_object.width, collidable_object.height)
+                position: Tuple[float, float] = (collidable_object.x, collidable_object.y)
+                size: Tuple[float, float] = (collidable_object.width, collidable_object.height)
                 HitBox(position, size, [self.obstacle_sprites])
 
-        def create_transition_objects():
-            transition_objects = self.tmx_data.get_layer_by_name("Transition_Objects")
+        def create_transition_objects() -> None:
+            transition_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Transition_Objects")
             for transition_object in transition_objects:
-                position = (transition_object.x, transition_object.y)
-                size = (transition_object.width, transition_object.height)
+                position: Tuple[float, float] = (transition_object.x, transition_object.y)
+                size: Tuple[float, float] = (transition_object.width, transition_object.height)
                 TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code)
 
-        def create_spawn_point_objects():
-            spawn_point_objects = self.tmx_data.get_layer_by_name("Spawn_Points")
+        def create_spawn_point_objects() -> None:
+            spawn_point_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Spawn_Points")
             for spawn_point in spawn_point_objects:
-                position = (spawn_point.x, spawn_point.y)
+                position: Tuple[float, float] = (spawn_point.x, spawn_point.y)
                 SpawnPoint(position, [self.spawn_points], spawn_point.id)
 
+        # only creates a single enemy per level for testing at the moment
         def create_enemies():
-            enemy_spawn_position = (
+            enemy_spawn_position: Tuple[float, float] = (
                 (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2) + 25)
             Enemy(pos=enemy_spawn_position, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
                   groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 
         def is_pathable_tile(tile_top_left_pos: tuple[float, float]) -> bool:
             for index, pathable_tile in enumerate(pathable_tiles):
+                pathable_tile_x: float
+                pathable_tile_y: float
                 pathable_tile_x, pathable_tile_y, _ = pathable_tile
                 if pathable_tile_x == tile_top_left_pos[0] and pathable_tile_y == tile_top_left_pos[1]:
                     pathable_tiles.pop(index)
@@ -100,7 +105,7 @@ class Level:
     def get_level_groups(self) -> list[pygame.sprite.Group]:
         return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites, self.spawn_points]
 
-    def set_player(self, player: Player):
+    def set_player(self, player: Player) -> None:
         self.player = player
 
     def get_tile(self, pos: Tuple[Union[float, int], Union[float, int]]) -> Optional[Tile]:
@@ -111,7 +116,7 @@ class Level:
 
         return self.tile_map.get((row, col), None)
 
-    def run(self):
+    def run(self) -> None:
         try:
             self.visible_sprites.custom_draw(self.player)
         except Exception as e:
@@ -122,24 +127,26 @@ class Level:
 
 
 class YSortCameraGroup(pygame.sprite.Group):
-    def __init__(self):
+    def __init__(self) -> None:
         # general setup
         super().__init__()
-        self.display_surface = pygame.display.get_surface()
+        self.display_surface: pygame.Surface = pygame.display.get_surface()
+        self.half_width: int
+        self.half_height: int
         self.half_width, self.half_height = self.display_surface.get_width() // 2, self.display_surface.get_height() // 2
-        self.offset = pygame.math.Vector2()
+        self.offset: pygame.math.Vector2 = pygame.math.Vector2()
 
-    def custom_draw(self, player: Player):
-        def draw_floor_tiles(tiles: list[pygame.sprite.Sprite]):
+    def custom_draw(self, player: Player) -> None:
+        def draw_floor_tiles(tiles: list[pygame.sprite.Sprite]) -> None:
             # draw floor tiles before non-floor tiles (painters algorithm)
             for tile in tiles:
-                offset = tile.rect.topleft - self.offset
+                offset: float = tile.rect.topleft - self.offset
                 self.display_surface.blit(tile.image, offset)
 
-        def draw_non_floor_tiles(tiles: list[pygame.sprite.Sprite]):
+        def draw_non_floor_tiles(tiles: list[pygame.sprite.Sprite]) -> None:
             # draw non-floor tiles on top of floor tiles using Y-sort algorithm
             for tile in sorted(tiles, key=lambda tile: tile.rect.centery):
-                offset = tile.rect.topleft - self.offset
+                offset: float = tile.rect.topleft - self.offset
                 self.display_surface.blit(tile.image, offset)
 
         # offset
@@ -147,15 +154,16 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset.y = player.rect.centery - self.half_height
 
         # separate floor tiles and non-floor tiles
-        floor_tiles = [sprite for sprite in self.sprites() if not isinstance(sprite, Entity) and
-                       sprite.tiled_layer in ["Ground", "Carpet", "Shadows"]]
+        floor_tiles: List[Tile] = [sprite for sprite in self.sprites() if not isinstance(sprite, Entity) and
+                                   sprite.tiled_layer in ["Ground", "Carpet", "Shadows"]]
 
-        non_floor_tiles = [sprite for sprite in self.sprites() if isinstance(sprite, Entity) or
-                           sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"]]
+        non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if isinstance(sprite, Entity)
+                                                       or
+                                                       sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"]]
 
         draw_floor_tiles(floor_tiles)
         draw_non_floor_tiles(non_floor_tiles)
 
-    def regular_draw(self):
+    def regular_draw(self) -> None:
         for sprite in self.sprites():
             self.display_surface.blit(sprite.image, sprite.rect.topleft)
