@@ -11,10 +11,10 @@
                 7
             ],
             "scale": 2,
-            "selectedLayer": 0,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 240,
-                "y": 239.75
+                "x": 211.5,
+                "y": 172.5
             }
         },
         "1.tmx": {

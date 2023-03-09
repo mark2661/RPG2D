@@ -81,6 +81,14 @@ class Entity(pygame.sprite.Sprite):
         self.rect.y += self.direction.y * speed
 
     def collision(self, direction: str) -> None:
+        """
+            checks for object collision with other collidable objects in the obstacle sprites group
+            the objects position will be reset upon collision to boundary between the colliding objects in the movement
+            direction, this prevents clipping between the two objects.
+        """
+
+        # fiter out the calling object if it is present in the obstacle_sprites group
+        # prevents an object checking for collisions with itself, which causes a movement bug
         obstacles: List[pygame.sprite.Sprite] = [sprite for sprite in self.obstacle_sprites if sprite != self]
 
         def horizontal_collision():
