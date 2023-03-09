@@ -38,6 +38,8 @@ class Level:
         # set player
         self.player: Player = player
 
+        print(self.create_map.__code__.co_varnames)
+
     def create_map(self) -> None:
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
             and adds them to a pygame sprite group
@@ -50,6 +52,17 @@ class Level:
             pathable_tiles = []
 
         def create_tile_objects() -> None:
+            def is_pathable_tile(tile_top_left_pos: tuple[float, float]) -> bool:
+                for index, pathable_tile in enumerate(pathable_tiles):
+                    pathable_tile_x: float
+                    pathable_tile_y: float
+                    pathable_tile_x, pathable_tile_y, _ = pathable_tile
+                    if pathable_tile_x == tile_top_left_pos[0] and pathable_tile_y == tile_top_left_pos[1]:
+                        pathable_tiles.pop(index)
+                        return True
+
+                return False
+
             for layer in self.tmx_data.visible_layers:
                 if hasattr(layer, "data"):
                     for x, y, surf in layer.tiles():
@@ -84,17 +97,6 @@ class Level:
                 (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2) + 25)
             Enemy(pos=enemy_spawn_position, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
                   groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
-
-        def is_pathable_tile(tile_top_left_pos: tuple[float, float]) -> bool:
-            for index, pathable_tile in enumerate(pathable_tiles):
-                pathable_tile_x: float
-                pathable_tile_y: float
-                pathable_tile_x, pathable_tile_y, _ = pathable_tile
-                if pathable_tile_x == tile_top_left_pos[0] and pathable_tile_y == tile_top_left_pos[1]:
-                    pathable_tiles.pop(index)
-                    return True
-
-            return False
 
         create_tile_objects()
         create_collidable_objects()

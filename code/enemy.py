@@ -49,7 +49,6 @@ class Enemy(Entity):
 
         if current_tile:
             # moving upwards
-            # BUG? for some reason check for == -1 doesn't work (even though that's the upwards direction)
             if self.direction.y == -1:
                 next_tile_coords: Tuple[float, float] = \
                     (current_tile.rect.centerx, current_tile.rect.centery - TILE_SIZE)
