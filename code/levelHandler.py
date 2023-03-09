@@ -1,7 +1,5 @@
-import os
-
 import pygame.display
-
+from typing import Dict, Tuple
 from settings import *
 from level import Level
 from player import Player
@@ -9,25 +7,31 @@ from observer import Observer
 
 
 class LevelHandler(Observer):
-    def __init__(self):
-        self.display_surface = pygame.display.get_surface()
+    def __init__(self) -> None:
+        self.display_surface: pygame.Surface = pygame.display.get_surface()
 
-        self.levels = {
+        self.levels: Dict[int, Level] = {
             0: Level(os.path.join(MAPS_FILE_PATH, "0.tmx")),
             1: Level(os.path.join(MAPS_FILE_PATH, "1.tmx"))
         }  # need to automate
 
         # initialise current level to the starting level
-        self.current_level_code = 0
-        self.current_level = self.levels[self.current_level_code]
+        self.current_level_code: int = 0
+        self.current_level: Level = self.levels[self.current_level_code]
 
         # get the pygame group member objects of the current level
+        # define types
+        self.visible_sprites_group: pygame.sprite.Group
+        self.obstacle_sprites_group: pygame.sprite.Group
+        self.transition_sprites_group: pygame.sprite.Group
+        self.spawn_points_group: pygame.sprite.Group
+
         self.visible_sprites_group, self.obstacle_sprites_group, \
             self.transition_sprites_group, self.spawn_points_group = self.current_level.get_level_groups()
 
         # create the player instance that will be passed between levels
-        player_spawn_position = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
-        self.player = Player(player_spawn_position, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group],
+        player_spawn_position: Tuple[int, int] = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
+        self.player: Player = Player(player_spawn_position, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group],
                              self.obstacle_sprites_group, self.transition_sprites_group, self.spawn_points_group,
                              self.current_level_code)
 
