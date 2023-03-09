@@ -84,21 +84,11 @@ class Player(Entity, Observable):
         """ updates players x and y coordinates. Also checks for collisions with objects
             and triggers associated events
         """
-        if self.direction.magnitude() != 0: self.direction = self.direction.normalize()
-
         # check for collision with a TransitionBox object
         self.collision("transition")
 
-        # move in x direction
-        self.move_x(speed)
-        # check for horizontal collision
-        self.collision("horizontal")
-
-        # move in y direction
-        self.move_y(speed)
-        # check for vertical collision
-        self.collision("vertical")
-
+        # call super method to handle movement logic
+        super().move(speed)
         # notify observers that the player position has changed
         self.observable_notify()
 

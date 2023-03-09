@@ -64,9 +64,13 @@ class Entity(pygame.sprite.Sprite):
 
         # update horizontal velocity
         self.move_x(speed)
+        # check for horizontal collision
+        self.collision("horizontal")
 
         # update vertical velocity
         self.move_y(speed)
+        # check for vertical collision
+        self.collision("vertical")
 
     def move_x(self, speed: float) -> None:
         """ updates x coordinate of the entity """
