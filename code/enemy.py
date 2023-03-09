@@ -6,6 +6,7 @@ import pygame
 if TYPE_CHECKING:
     from tile import Tile
     from level import Level, YSortCameraGroup
+    from player import Player
 
 
 class Enemy(Entity):
@@ -18,6 +19,16 @@ class Enemy(Entity):
         self.level = level
         # start enemy moving upwards
         self.direction = pygame.math.Vector2(0, -1)
+
+        # change default speed
+        self.speed = ENEMY_SPEED
+
+        """
+        define enemy aggression circle radius.
+        Variable name self.radius is required for pygame.sprite.collide_circle method to work.
+        https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.collide_circle
+        """
+        self.radius = ENEMY_ATTACK_RADIUS
 
     # Overrides parent method
     def move(self, speed: Union[float, int]) -> None:
@@ -40,6 +51,15 @@ class Enemy(Entity):
             # call parent method to handle actual movement logic
             super(Enemy, self).move(speed)
 
+    # type hit Player causing an error for the plyer parameter
+    def is_in_circle_of_attack(self, player) -> bool:
+        """
+        checks to see if any point of the player rect lies within a circle of radius self.radius
+        centred at the enemy rect's centre
+        """
+        return pygame.sprite.collide_circle(self, player)
+
     # Overrides parent method
-    # def collision(self, direction: str) -> None:
-    #     pass
+    def update(self) -> None:
+        self.is_in_circle_of_attack(self.level.player)
+        super().update()
