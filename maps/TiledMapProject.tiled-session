@@ -1,5 +1,5 @@
 {
-    "activeFile": "0.tmx",
+    "activeFile": "1.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -13,8 +13,8 @@
             "scale": 2,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 211.5,
-                "y": 172.5
+                "x": 212,
+                "y": 239
             }
         },
         "1.tmx": {
@@ -26,10 +26,10 @@
                 6
             ],
             "scale": 4,
-            "selectedLayer": 6,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 115.125,
-                "y": 79.875
+                "x": 106,
+                "y": 79.75
             }
         },
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx": {
@@ -64,10 +64,10 @@
     ],
     "project": "TiledMapProject.tiled-project",
     "recentFiles": [
+        "0.tmx",
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/yellow_16_X_16_sqaure.tsx",
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx",
         "1.tmx",
-        "0.tmx",
         "C:/Users/Mark Cartwright/Desktop/pygame/test/maps/1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

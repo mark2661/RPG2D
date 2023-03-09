@@ -51,8 +51,8 @@ class Enemy(Entity):
             # call parent method to handle actual movement logic
             super(Enemy, self).move(speed)
 
-    # type hit Player causing an error for the plyer parameter
-    def is_in_circle_of_attack(self, player) -> bool:
+    # type hint Player causing an error for the player parameter using Forward referencing to solve problem
+    def is_in_circle_of_aggression(self, player: "Player") -> bool:
         """
         checks to see if any point of the player rect lies within a circle of radius self.radius
         centred at the enemy rect's centre
@@ -61,5 +61,5 @@ class Enemy(Entity):
 
     # Overrides parent method
     def update(self) -> None:
-        self.is_in_circle_of_attack(self.level.player)
+        self.is_in_circle_of_aggression(self.level.player)
         super().update()
