@@ -9,53 +9,53 @@ from spawnPoint import SpawnPoint
 
 class Entity(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
-                 obstacle_sprites: pygame.sprite.Group):
+                 obstacle_sprites: pygame.sprite.Group) -> None:
 
         super().__init__(groups)
         # general setup
-        default_image_path = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
-        self.image = pygame.image.load(default_image_path).convert_alpha()
+        default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
+        self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
-        self.rect = self.image.get_rect(topleft=pos)
+        self.rect: pygame.Rect = self.image.get_rect(topleft=pos)
 
-        self.animations = defaultdict(lambda: [])
+        self.animations: Dict[str, List[pygame.Surface]] = defaultdict(lambda: [])
         self.import_assets(asset_images_root_dir_path)
-        self.status = "down"  # status keeps track of the current action and direction of the player
-        self.display_surface = pygame.display.get_surface()
+        self.status: str = "down"  # status keeps track of the current action and direction of the player
+        self.display_surface: pygame.Surface = pygame.display.get_surface()
 
         # attacking monitors whether or not the entity is attacking
         # attack mechanics not currently implemented
-        self.attacking = False
+        self.attacking: bool = False
 
         # movement
-        self.direction = pygame.math.Vector2()
-        self.speed = ENTITY_SPEED
-        self.frame_index = 0
-        self.animation_speed = 0.15
+        self.direction: pygame.math.Vector2 = pygame.math.Vector2()
+        self.speed: float = ENTITY_SPEED
+        self.frame_index: int = 0
+        self.animation_speed: float = 0.15
 
         # collisions
-        self.obstacle_sprites = obstacle_sprites
+        self.obstacle_sprites: pygame.sprite.Group = obstacle_sprites
 
         # groups
         self.member_groups: List[pygame.sprite.Group] = groups
 
-    def import_assets(self, root_dir: str):
+    def import_assets(self, root_dir: str) -> None:
         for folder in os.listdir(root_dir):
-            folder_path = os.path.join(root_dir, folder)
+            folder_path: str = os.path.join(root_dir, folder)
             for image in os.listdir(folder_path):
-                image_path = os.path.join(folder_path, image)
-                surf = pygame.image.load(image_path).convert_alpha()
+                image_path: str = os.path.join(folder_path, image)
+                surf: pygame.Surface = pygame.image.load(image_path).convert_alpha()
                 # scale player image up to fit map size
                 surf = pygame.transform.scale(surf, (TILE_SIZE, TILE_SIZE))
                 self.animations[folder].append(surf)
 
-    def get_status(self):
+    def get_status(self) -> None:
         # idle status
         if all(velocity == 0 for velocity in self.direction) and \
                 all(word not in self.status for word in ["idle", "attack"]):
             self.status += "_idle"
 
-    def input(self):
+    def input(self) -> None:
         pass
 
     def move(self, speed: float) -> None:
@@ -115,7 +115,7 @@ class Entity(pygame.sprite.Sprite):
         collision_type_map[direction]()
 
     def animate(self):
-        animation = self.animations[self.status]
+        animation: List[pygame.Surface] = self.animations[self.status]
 
         # loop over frame index
         self.frame_index += self.animation_speed
@@ -125,7 +125,7 @@ class Entity(pygame.sprite.Sprite):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.rect.center)
 
-    def update(self):
+    def update(self) -> None:
         self.input()
         self.get_status()
         self.animate()
