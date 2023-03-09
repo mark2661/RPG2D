@@ -41,5 +41,5 @@ class Enemy(Entity):
             super(Enemy, self).move(speed)
 
     # Overrides parent method
-    def collision(self, direction: str) -> None:
-        pass
+    # def collision(self, direction: str) -> None:
+    #     pass

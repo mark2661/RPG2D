@@ -2,7 +2,7 @@ import os
 import pygame
 from settings import *
 from collections import defaultdict
-from typing import List
+from typing import List, Dict, Callable
 from utils import get_spawn_point_object_data, get_spawn_point_id
 from spawnPoint import SpawnPoint
 
@@ -80,9 +80,12 @@ class Entity(pygame.sprite.Sprite):
         """ updates y coordinate of the entity """
         self.rect.y += self.direction.y * speed
 
-    def collision(self, direction: str):
+    def collision(self, direction: str) -> None:
+        obstacles: List[pygame.sprite.Sprite] = [sprite for sprite in self.obstacle_sprites if sprite != self]
+
         def horizontal_collision():
-            for sprite in self.obstacle_sprites:
+            for sprite in obstacles:
+                # print(f"sprite {sprite}, self {self}")
                 if sprite.rect.colliderect(self.rect):
                     # player moving to the right
                     if self.direction.x > 0: self.rect.right = sprite.rect.left
@@ -91,7 +94,7 @@ class Entity(pygame.sprite.Sprite):
                     if self.direction.x < 0: self.rect.left = sprite.rect.right
 
         def vertical_collision():
-            for sprite in self.obstacle_sprites:
+            for sprite in obstacles:
                 if sprite.rect.colliderect(self.rect):
                     # player moving to the down
                     if self.direction.y > 0: self.rect.bottom = sprite.rect.top
@@ -99,7 +102,7 @@ class Entity(pygame.sprite.Sprite):
                     # player moving to the up
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
-        collision_type_map = {"horizontal": horizontal_collision, "vertical": vertical_collision}
+        collision_type_map: Dict[str, Callable] = {"horizontal": horizontal_collision, "vertical": vertical_collision}
 
         collision_type_map[direction]()
 
