@@ -38,7 +38,6 @@ class Level:
         # set player
         self.player: Player = player
 
-        print(self.create_map.__code__.co_varnames)
 
     def create_map(self) -> None:
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
@@ -121,6 +120,26 @@ class Level:
         col: int = pos[1] // TILE_SIZE
 
         return self.tile_map.get((row, col), None)
+
+    def get_neighbours(self, tile: Tile) -> List[Tile]:
+        # up, up_right, right, down_right, down, down_left, left, up_left
+        directions: List[Tuple[int, int]] = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
+        neighbours: List[Tile] = []
+
+        row: int = tile.rect.centerx // TILE_SIZE
+        col: int = tile.rect.centery // TILE_SIZE
+
+        for direction in directions:
+            neighbour = self.tile_map.get((row + direction[0], col + direction[1]), None)
+            if neighbour:
+                neighbours.append(neighbour)
+
+        return neighbours
+
+
+
+
+
 
     def run(self) -> None:
         try:
