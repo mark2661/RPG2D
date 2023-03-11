@@ -60,7 +60,6 @@ class Level:
                     pathable_tile_y: float
                     pathable_tile_x, pathable_tile_y, _ = pathable_tile
                     if pathable_tile_x == tile_top_left_pos[0] and pathable_tile_y == tile_top_left_pos[1]:
-                        pathable_tiles.pop(index)  # if found remove the tile to speed up subsequent checks
                         return True
 
                 return False
@@ -147,6 +146,19 @@ class Level:
         """
         neighbours: Union[List[Tile], None] = self.get_neighbours(tile)
         return [neighbour for neighbour in neighbours if neighbour is not None and neighbour.is_pathable()]
+
+    def enemy_scan(self):
+        """
+            Checks if the players current position lies within any enemy sprites circle of aggression.
+            If true the enemy's movement_behaviour_mode is set to "seek" meaning the enemy sprite will
+            path towards the player until explicitly told not to.
+        """
+        for sprite in self.obstacle_sprites:
+            if type(sprite) == Enemy:
+                enemy: Enemy = sprite
+                if enemy.is_in_circle_of_aggression(self.player):
+                    # if the player is in the attack radius path towards player
+                    enemy.set_movement_behaviour_mode("seek")
 
     def run(self) -> None:
         try:

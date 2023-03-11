@@ -5,6 +5,7 @@ from utils import get_spawn_point_id
 from entity import Entity
 from observable import Observable
 from observer import Observer
+from typing import Tuple
 
 
 class Player(Entity, Observable):
@@ -84,13 +85,17 @@ class Player(Entity, Observable):
         """ updates players x and y coordinates. Also checks for collisions with objects
             and triggers associated events
         """
+        old_position: Tuple[float, float] = self.rect.center
+
         # check for collision with a TransitionBox object
         self.collision("transition")
 
         # call super method to handle movement logic
         super().move(speed)
-        # notify observers that the player position has changed
-        self.observable_notify()
+
+        # if position has changed notify observers
+        if self.rect.center != old_position:
+            self.observable_notify()
 
     # Override
     def collision(self, direction: str):

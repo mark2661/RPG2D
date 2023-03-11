@@ -88,5 +88,9 @@ class LevelHandler(Observer):
         if self.current_level_code != self.player.get_current_level_code():
             self.transition()
 
+        # enemies check attack radius
+        else:
+            self.current_level.enemy_scan()
+
     def run(self) -> None:
         self.current_level.run()
