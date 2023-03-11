@@ -1,7 +1,8 @@
+import pygame
 from settings import *
 from entity import Entity
 from typing import Optional, Union, List, TYPE_CHECKING, Tuple
-import pygame
+from a_star import a_star
 
 if TYPE_CHECKING:
     from tile import Tile
@@ -33,7 +34,7 @@ class Enemy(Entity):
         self.radius: int = ENEMY_ATTACK_RADIUS
 
     # Overrides parent method
-    def move(self, speed: Union[float, int]) -> None:
+    def patrol(self, speed: Union[float, int]) -> None:
         current_tile: Tile = self.level.get_tile(self.rect.center)
 
         def update_status() -> None:

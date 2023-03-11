@@ -38,7 +38,6 @@ class Level:
         # set player
         self.player: Player = player
 
-
     def create_map(self) -> None:
         """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
             and adds them to a pygame sprite group
@@ -122,7 +121,11 @@ class Level:
         return self.tile_map.get((row, col), None)
 
     def get_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
-        # up, up_right, right, down_right, down, down_left, left, up_left
+        """
+            Returns All immediately neighbouring tiles of the tile parameter object if the neighbour tile exist on the map.
+            (up, up_right, right, down_right, down, down_left, left, up_left) neighbours
+        """
+        # up, up_right, right, down_right, down, down_left, left, up_left (direction order)
         directions: List[Tuple[int, int]] = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
         neighbours: List[Tile] = []
 
@@ -137,11 +140,13 @@ class Level:
         return neighbours
 
     def get_pathable_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
+        """
+            Returns all PATHABLE immediately neighbouring tiles in of the tile parameter object
+            if the neighbour tile exist on the map.
+            (up, up_right, right, down_right, down, down_left, left, up_left) neighbours
+        """
         neighbours: Union[List[Tile], None] = self.get_neighbours(tile)
         return [neighbour for neighbour in neighbours if neighbour is not None and neighbour.is_pathable()]
-
-
-
 
     def run(self) -> None:
         try:
