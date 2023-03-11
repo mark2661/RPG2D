@@ -53,12 +53,16 @@ class Level:
 
         def create_tile_objects() -> None:
             def is_pathable_tile(tile_top_left_pos: tuple[float, float]) -> bool:
+                """
+                    if the tile has the same world coordinates as a tile in pathable tiles then that tile is pathable
+                    since the tiles are the same.
+                """
                 for index, pathable_tile in enumerate(pathable_tiles):
                     pathable_tile_x: float
                     pathable_tile_y: float
                     pathable_tile_x, pathable_tile_y, _ = pathable_tile
                     if pathable_tile_x == tile_top_left_pos[0] and pathable_tile_y == tile_top_left_pos[1]:
-                        pathable_tiles.pop(index)
+                        pathable_tiles.pop(index)  # if found remove the tile to speed up subsequent checks
                         return True
 
                 return False
