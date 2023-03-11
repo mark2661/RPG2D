@@ -121,7 +121,7 @@ class Level:
 
         return self.tile_map.get((row, col), None)
 
-    def get_neighbours(self, tile: Tile) -> List[Tile]:
+    def get_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
         # up, up_right, right, down_right, down, down_left, left, up_left
         directions: List[Tuple[int, int]] = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
         neighbours: List[Tile] = []
@@ -136,7 +136,9 @@ class Level:
 
         return neighbours
 
-
+    def get_pathable_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
+        neighbours: Union[List[Tile], None] = self.get_neighbours(tile)
+        return [neighbour for neighbour in neighbours if neighbour is not None and neighbour.is_pathable()]
 
 
 
