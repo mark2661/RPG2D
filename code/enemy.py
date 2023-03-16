@@ -35,7 +35,7 @@ class Enemy(Entity):
         }
         # Default movement behaviour is patrol mode
         self.movement_behaviour_mode = self.movement_behaviour_modes["patrol"]
-        
+
         """
         define enemy aggression circle radius.
         Variable name self.radius is required for pygame.sprite.collide_circle method to work.
@@ -44,6 +44,11 @@ class Enemy(Entity):
         self.radius: int = ENEMY_ATTACK_RADIUS
 
     def patrol(self, speed: Union[float, int]) -> None:
+        """
+        checks if the next tile in the current direction (either vertical or horizontal) is a pathable tile
+        (a pathable tile is a tile that the entity is allowed to be on).
+        if the next tile is pathable the current direction is left unchanged, else reverse the current direction.
+        """
         current_tile: Tile = self.level.get_tile(self.rect.center)
 
         if current_tile:
@@ -82,6 +87,10 @@ class Enemy(Entity):
             super().move(speed)
 
     def update_status(self) -> None:
+        """
+        updates the entities status variable which is used to select the correct image to be displayed for the
+        current position
+        """
         if self.direction.y == -1:
             self.status = "up"
         elif self.direction.y == 1:
@@ -92,8 +101,12 @@ class Enemy(Entity):
         elif self.direction.x == 1:
             self.status = "right"
 
-    # not fully implemented in testing phase and still buggy
+    # not fully implemented still in testing phase and still buggy
     def seek(self, speed: float) -> None:
+        """
+        calculates a path from the entity to the player and sets the entities direction to a vector pointing
+        to the next tile in the path list.
+        """
         path_to_player: List[Tile] = a_star(grid=[tile for tile in self.level.tile_map.values() if tile.is_pathable()],
                                             start=self.level.get_tile(self.rect.center),
                                             end=self.level.get_tile(self.level.player.rect.center),
