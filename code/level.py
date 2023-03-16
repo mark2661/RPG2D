@@ -95,7 +95,7 @@ class Level:
         # only creates a single enemy per level for testing at the moment
         def create_enemies():
             enemy_spawn_position: Tuple[float, float] = (
-                (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2) + 25)
+                (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2 - 100) + 25)
             Enemy(pos=enemy_spawn_position, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
                   groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 

@@ -17,7 +17,7 @@ ENTITY_SPEED = 6
 
 # Enemy parameters
 # ENEMY_SPEED = 3
-ENEMY_SPEED = 0.5
+ENEMY_SPEED = 1
 ENEMY_ATTACK_RADIUS = 1 * TILE_SIZE  # amount of tiles you want radius to cover
 
 # Image file paths

@@ -22,20 +22,20 @@ class Enemy(Entity):
 
         # MOVEMENT PARAMETERS
         # start enemy moving upwards
-        self.direction = pygame.math.Vector2(0, -1)
-        self.status = "up"
+        self.direction = pygame.math.Vector2(0, 1)
+        self.status = "down"
 
         # change default speed
         self.speed: float = ENEMY_SPEED
 
         # define movement behaviour modes
         self.movement_behaviour_modes: Dict[str: Callable] = {
-                                                        "patrol": self.patrol,
-                                                        "seek": self.seek
-                                                   }
+            "patrol": self.patrol,
+            "seek": self.seek
+        }
         # Default movement behaviour is patrol mode
-        # self.movement_behaviour_mode = self.movement_behaviour_modes["patrol"]
-        self.movement_behaviour_mode = self.movement_behaviour_modes["seek"]
+        self.movement_behaviour_mode = self.movement_behaviour_modes["patrol"]
+        # self.movement_behaviour_mode = self.movement_behaviour_modes["seek"]
         """
         define enemy aggression circle radius.
         Variable name self.radius is required for pygame.sprite.collide_circle method to work.
@@ -54,7 +54,7 @@ class Enemy(Entity):
 
             # moving downwards
             elif self.direction.y == 1 and self.direction.x == 0:
-                next_tile_coords: Tuple[float, float] =\
+                next_tile_coords: Tuple[float, float] = \
                     (current_tile.rect.centerx, current_tile.rect.centery + TILE_SIZE)
 
             # moving left
@@ -79,7 +79,7 @@ class Enemy(Entity):
                 self.update_status()
 
             # call parent method to handle actual movement logic
-            super(Enemy, self).move(speed)
+            super().move(speed)
 
     def update_status(self) -> None:
         if self.direction.y == -1:
@@ -130,5 +130,5 @@ class Enemy(Entity):
 
     # Overrides parent method
     def update(self) -> None:
-        self.is_in_circle_of_aggression(self.level.player)
+        # self.is_in_circle_of_aggression(self.level.player)
         super().update()
