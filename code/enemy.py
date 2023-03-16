@@ -48,18 +48,34 @@ class Enemy(Entity):
 
         if current_tile:
             # moving upwards
-            if self.direction.y == -1:
+            if self.direction.y == -1 and self.direction.x == 0:
                 next_tile_coords: Tuple[float, float] = \
                     (current_tile.rect.centerx, current_tile.rect.centery - TILE_SIZE)
 
             # moving downwards
-            else:
+            elif self.direction.y == 1 and self.direction.x == 0:
                 next_tile_coords: Tuple[float, float] =\
                     (current_tile.rect.centerx, current_tile.rect.centery + TILE_SIZE)
 
-            # if the next tile isn't pathable reverse the y direction
+            # moving left
+            elif self.direction.x == -1 and self.direction.y == 0:
+                next_tile_coords: Tuple[float, float] = \
+                    (current_tile.rect.centerx - TILE_SIZE, current_tile.rect.centery)
+
+            # moving right
+            else:
+                next_tile_coords: Tuple[float, float] = \
+                    (current_tile.rect.centerx + TILE_SIZE, current_tile.rect.centery)
+
+            # if the next tile isn't pathable reverse the direction
             if not self.level.get_tile(next_tile_coords).is_pathable():
-                self.direction.y *= -1
+                # vertical movement
+                if self.direction.y != 0:
+                    self.direction.y *= -1
+                # horizontal movement
+                else:
+                    self.direction.x *= -1
+
                 self.update_status()
 
             # call parent method to handle actual movement logic
@@ -76,6 +92,7 @@ class Enemy(Entity):
         elif self.direction.x == 1:
             self.status = "right"
 
+    # not fully implemented in testing phase and still buggy
     def seek(self, speed: float) -> None:
         path_to_player: List[Tile] = a_star(grid=[tile for tile in self.level.tile_map.values() if tile.is_pathable()],
                                             start=self.level.get_tile(self.rect.center),

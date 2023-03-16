@@ -83,7 +83,7 @@ class LevelHandler(Observer):
 
         return None
 
-    # Override
+    # Overrides parent method
     def observer_update(self) -> None:
         if self.current_level_code != self.player.get_current_level_code():
             self.transition()
