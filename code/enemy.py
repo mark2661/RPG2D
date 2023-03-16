@@ -35,7 +35,7 @@ class Enemy(Entity):
         }
         # Default movement behaviour is patrol mode
         self.movement_behaviour_mode = self.movement_behaviour_modes["patrol"]
-        # self.movement_behaviour_mode = self.movement_behaviour_modes["seek"]
+        
         """
         define enemy aggression circle radius.
         Variable name self.radius is required for pygame.sprite.collide_circle method to work.
