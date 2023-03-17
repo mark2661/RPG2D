@@ -101,6 +101,16 @@ class Enemy(Entity):
         elif self.direction.x == 1 and self.direction.y == 0:
             self.status = "right"
 
+        # diagonal movement
+        # more movement in vertical direction
+        elif abs(self.direction.y) >= abs(self.direction.x):
+            self.status = "down" if self.direction.y > 0 else "up"
+        elif abs(self.direction.x) > abs(self.direction.y):
+            self.status = "right" if self.direction.x > 0 else "left"
+
+        else:
+            print("no direction change")
+
     # not fully implemented still in testing phase and still buggy
     def seek(self, speed: float) -> None:
         """

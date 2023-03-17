@@ -100,8 +100,8 @@ class Level:
                   groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 
         create_tile_objects()
-        create_collidable_objects()
-        create_transition_objects()
+        # create_collidable_objects()
+        # create_transition_objects()
         create_spawn_point_objects()
         create_enemies()
 
@@ -119,14 +119,14 @@ class Level:
 
         return self.tile_map.get((row, col), None)
 
-    def get_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
+    def get_cartesian_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
         """
-            Returns All immediately neighbouring tiles of the tile parameter object if the neighbour tile exist on the map.
-            (up, up_right, right, down_right, down, down_left, left, up_left) neighbours
+            Returns immediately neighbouring tiles in the cartesian directions of the tile parameter object
+            if the neighbour tile exist on the map.
         """
-        # up, up_right, right, down_right, down, down_left, left, up_left (direction order)
-        directions: List[Tuple[int, int]] = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
-        # directions: List[Tuple[int, int]] = [(0, -1), (1, 0), (0, 1), (-1, 0)]
+
+        # cartesian directions only NO DIAGONALS(direction order)
+        directions: List[Tuple[int, int]] = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         neighbours: List[Tile] = []
 
         row: int = tile.rect.centerx // TILE_SIZE
@@ -141,11 +141,11 @@ class Level:
 
     def get_pathable_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
         """
-            Returns all PATHABLE immediately neighbouring tiles in of the tile parameter object
-            if the neighbour tile exist on the map.
-            (up, up_right, right, down_right, down, down_left, left, up_left) neighbours
+            Returns all PATHABLE immediately neighbouring tiles (cartesian neighbours only)
+             if the tile parameter object if the neighbour tile exist on the map.
         """
-        neighbours: Union[List[Tile], None] = self.get_neighbours(tile)
+
+        neighbours: Union[List[Tile], None] = self.get_cartesian_neighbours(tile)
         return [neighbour for neighbour in neighbours if neighbour is not None and neighbour.is_pathable()]
 
     def enemy_scan(self):
