@@ -91,15 +91,23 @@ class Enemy(Entity):
         updates the entities status variable which is used to select the correct image to be displayed for the
         current position
         """
-        if self.direction.y == -1:
+        if self.direction.y == -1 and self.direction.x == 0:
             self.status = "up"
-        elif self.direction.y == 1:
+        elif self.direction.y == 1 and self.direction.x == 0:
             self.status = "down"
 
-        if self.direction.x == -1:
+        elif self.direction.x == -1 and self.direction.y == 0:
             self.status = "left"
-        elif self.direction.x == 1:
+        elif self.direction.x == 1 and self.direction.y == 0:
             self.status = "right"
+
+        # diagonal movement
+        # more movement in vertical direction
+        elif abs(self.direction.y) >= abs(self.direction.x):
+            self.status = "down" if self.direction.y > 0 else "up"
+        # more movement in horizontal direction
+        elif abs(self.direction.x) > abs(self.direction.y):
+            self.status = "right" if self.direction.x > 0 else "left"
 
     # not fully implemented still in testing phase and still buggy
     def seek(self, speed: float) -> None:
@@ -111,13 +119,13 @@ class Enemy(Entity):
                                             start=self.level.get_tile(self.rect.center),
                                             end=self.level.get_tile(self.level.player.rect.center),
                                             level=self.level)
-        print(path_to_player)
+        # print(path_to_player)
         if path_to_player and len(path_to_player) >= 1:
             # vector between two points = vectorB - vectorA
             next_tile: Tile = path_to_player[1]
             x: float = next_tile.rect.centerx - self.rect.centerx
             y: float = next_tile.rect.centery - self.rect.centery
-            vector_to_next_tile: pygame.math.Vector2 = pygame.math.Vector2((x, y))
+            vector_to_next_tile: pygame.math.Vector2 = pygame.math.Vector2((x, y)).normalize()
 
             # change direction
             self.direction = vector_to_next_tile
