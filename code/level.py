@@ -126,6 +126,7 @@ class Level:
         """
         # up, up_right, right, down_right, down, down_left, left, up_left (direction order)
         directions: List[Tuple[int, int]] = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
+        # directions: List[Tuple[int, int]] = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         neighbours: List[Tile] = []
 
         row: int = tile.rect.centerx // TILE_SIZE
@@ -167,7 +168,9 @@ class Level:
             print(e)
 
         self.visible_sprites.update()
-        debug(self.player.rect.center)
+        # debug(self.player.rect.center)
+        enemy = [x for x in self.obstacle_sprites if type(x) == Enemy][0]
+        debug(f"x: {round(enemy.direction.x, 3)}, y: {round(enemy.direction.y, 3)}, status: {enemy.status}")
 
 
 class YSortCameraGroup(pygame.sprite.Group):
