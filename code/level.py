@@ -100,8 +100,8 @@ class Level:
                   groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 
         create_tile_objects()
-        # create_collidable_objects()
-        # create_transition_objects()
+        create_collidable_objects()
+        create_transition_objects()
         create_spawn_point_objects()
         create_enemies()
 

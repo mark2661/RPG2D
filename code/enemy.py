@@ -91,22 +91,37 @@ class Enemy(Entity):
         updates the entities status variable which is used to select the correct image to be displayed for the
         current position
         """
-        if self.direction.y == -1 and self.direction.x == 0:
+        def is_moving_upwards():
+            return self.direction.y == -1 and self.direction.x == 0
+
+        def is_moving_downwards():
+            return self.direction.y == 1 and self.direction.x == 0
+
+        def is_moving_left():
+            return self.direction.x == -1 and self.direction.y == 0
+
+        def is_moving_right():
+            return self.direction.x == 1 and self.direction.y == 0
+
+        def is_moving_diagonally_with_larger_vertical_component():
+            return abs(self.direction.y) >= abs(self.direction.x)
+
+        def is_moving_diagonally_with_larger_horizontal_component():
+            return abs(self.direction.x) > abs(self.direction.y)
+
+        if is_moving_upwards():
             self.status = "up"
-        elif self.direction.y == 1 and self.direction.x == 0:
+        elif is_moving_downwards():
             self.status = "down"
-
-        elif self.direction.x == -1 and self.direction.y == 0:
+        elif is_moving_left():
             self.status = "left"
-        elif self.direction.x == 1 and self.direction.y == 0:
+        elif is_moving_right():
             self.status = "right"
-
+            
         # diagonal movement
-        # more movement in vertical direction
-        elif abs(self.direction.y) >= abs(self.direction.x):
+        elif is_moving_diagonally_with_larger_vertical_component():
             self.status = "down" if self.direction.y > 0 else "up"
-        # more movement in horizontal direction
-        elif abs(self.direction.x) > abs(self.direction.y):
+        elif is_moving_diagonally_with_larger_horizontal_component():
             self.status = "right" if self.direction.x > 0 else "left"
 
     # not fully implemented still in testing phase and still buggy
