@@ -2,22 +2,24 @@ import os
 import pygame
 from settings import *
 from collections import defaultdict
-from typing import List, Dict, Callable, Tuple
+from typing import List, Dict, Callable, Tuple, TYPE_CHECKING
 from utils import get_spawn_point_object_data, get_spawn_point_id
-from spawnPoint import SpawnPoint
+
+if TYPE_CHECKING:
+    from spawnPoint import SpawnPoint
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
+    def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group) -> None:
 
         super().__init__(groups)
         # general setup
         default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
-        self.spawn_point: Tuple[float, float] = pos
+        self.spawn_point: "SpawnPoint" = spawn_point
         self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
-        self.rect: pygame.Rect = self.image.get_rect(topleft=pos)
+        self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_position())
 
         self.animations: Dict[str, List[pygame.Surface]] = defaultdict(lambda: [])
         self.import_assets(asset_images_root_dir_path)
