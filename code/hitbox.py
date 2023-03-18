@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from typing import Tuple
 
 
 class HitBox(pygame.sprite.Sprite):
@@ -8,3 +9,6 @@ class HitBox(pygame.sprite.Sprite):
         self.pos = tuple(map(lambda coord: coord * SCALE, pos))
         self.size = tuple(map(lambda dimension: dimension * SCALE, size))
         self.rect = pygame.Rect(self.pos, self.size)
+
+    def get_position(self) -> Tuple[float, float]:
+        return self.pos

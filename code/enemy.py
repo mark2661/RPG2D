@@ -106,7 +106,7 @@ class Enemy(Entity):
     def seek(self, speed: float) -> None:
         """
         Sets the entities direction to a vector pointing
-        to the next tile in the path list.
+        to the next tile in the path list of pathable Tile objects leading to the players current position.
         """
         path_to_player: Optional[List["Tile"]] = self.get_path_to_player()
         # print(path_to_player)
@@ -124,10 +124,18 @@ class Enemy(Entity):
             # call parent move method to handle movement logic
             super().move(speed)
 
-    def return_to_spawn_point(self):
+    def return_to_spawn_point(self) -> None:
+        """
+        Sets the entities direction to a vector pointing
+        to the next tile in the path list of pathable Tile objects leading to the entities spawn point.
+        """
         pass
 
-    def get_path_to_spawn_point(self):
+    def get_path_to_spawn_point(self) -> Optional[List["Tile"]]:
+        """
+        Calculates a path from the entity to it's spawn point (using A*). Returns a list of adjacent pathable tiles,
+        if a path exist else None.
+        """
         pass
 
     def get_path_to_player(self) -> Optional[List["Tile"]]:

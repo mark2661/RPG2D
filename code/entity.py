@@ -2,7 +2,7 @@ import os
 import pygame
 from settings import *
 from collections import defaultdict
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Tuple
 from utils import get_spawn_point_object_data, get_spawn_point_id
 from spawnPoint import SpawnPoint
 
@@ -14,6 +14,7 @@ class Entity(pygame.sprite.Sprite):
         super().__init__(groups)
         # general setup
         default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
+        self.spawn_point: Tuple[float, float] = pos
         self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
         self.rect: pygame.Rect = self.image.get_rect(topleft=pos)
