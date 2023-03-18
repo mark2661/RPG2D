@@ -105,13 +105,10 @@ class Enemy(Entity):
     # not fully implemented still in testing phase and still buggy
     def seek(self, speed: float) -> None:
         """
-        calculates a path from the entity to the player and sets the entities direction to a vector pointing
+        Sets the entities direction to a vector pointing
         to the next tile in the path list.
         """
-        path_to_player: List[Tile] = a_star(grid=[tile for tile in self.level.tile_map.values() if tile.is_pathable()],
-                                            start=self.level.get_tile(self.rect.center),
-                                            end=self.level.get_tile(self.level.player.rect.center),
-                                            level=self.level)
+        path_to_player: Optional[List["Tile"]] = self.get_path_to_player()
         # print(path_to_player)
         if path_to_player and len(path_to_player) >= 1:
             # vector between two points = vectorB - vectorA
@@ -126,6 +123,14 @@ class Enemy(Entity):
 
             # call parent move method to handle movement logic
             super().move(speed)
+
+    def get_path_to_player(self) -> Optional[List["Tile"]]:
+        """
+        Calculates a path from the entity to the player (using A*). Returns a list of adjacent pathable tiles,
+        if a path exist else None.
+        """
+        return a_star(start=self.level.get_tile(self.rect.center), end=self.level.get_tile(self.level.player.rect.center),
+                      level=self.level)
 
     # Overrides parent method
     def move(self, speed: float) -> None:

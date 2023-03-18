@@ -63,7 +63,7 @@ def heuristic(a: "Tile", b: "Tile") -> float:
 #
 #     return None
 
-def a_star(grid: List["Tile"], start: "Tile", end: "Tile", level: "Level") -> Optional[List["Tile"]]:
+def a_star(start: "Tile", end: "Tile", level: "Level") -> Optional[List["Tile"]]:
     """
     Implementation of A* pathfinding algorithm (https://www.redblobgames.com/pathfinding/a-star/implementation.html).
     Returns a list of pathable connected tiles between the start and end tile arguments (from start -> end).
