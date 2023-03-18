@@ -7,14 +7,14 @@
     "fileStates": {
         "0.tmx": {
             "expandedObjectLayers": [
-                8,
-                7
+                7,
+                8
             ],
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 211.5,
-                "y": 172.5
+                "x": 240,
+                "y": 239.75
             }
         },
         "1.tmx": {
@@ -22,8 +22,8 @@
                 9
             ],
             "expandedObjectLayers": [
-                8,
-                6
+                6,
+                8
             ],
             "scale": 4,
             "selectedLayer": 7,

@@ -124,6 +124,12 @@ class Enemy(Entity):
             # call parent move method to handle movement logic
             super().move(speed)
 
+    def return_to_spawn_point(self):
+        pass
+
+    def get_path_to_spawn_point(self):
+        pass
+
     def get_path_to_player(self) -> Optional[List["Tile"]]:
         """
         Calculates a path from the entity to the player (using A*). Returns a list of adjacent pathable tiles,
