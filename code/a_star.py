@@ -64,6 +64,11 @@ def heuristic(a: "Tile", b: "Tile") -> float:
 #     return None
 
 def a_star(grid: List["Tile"], start: "Tile", end: "Tile", level: "Level") -> Optional[List["Tile"]]:
+    """
+    Implementation of A* pathfinding algorithm (https://www.redblobgames.com/pathfinding/a-star/implementation.html).
+    Returns a list of pathable connected tiles between the start and end tile arguments (from start -> end).
+    Returns None if no path is found
+    """
     heap_entry_count: int = 0  # variable to keep track of the order of objects entered into the heap
     open_list: heapq = [(0, heap_entry_count, start)]
     g_scores: Dict[Tile, float] = dict()
@@ -78,7 +83,7 @@ def a_star(grid: List["Tile"], start: "Tile", end: "Tile", level: "Level") -> Op
         current: Tile
         _, __, current = heapq.heappop(open_list)
 
-        # if the end tile is being process stop the algorithm and return the best path
+        # if the end tile is being processed stop the algorithm and return the best path
         if current == end:
             path: List[Tile] = []
             while current:

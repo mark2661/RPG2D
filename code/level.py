@@ -125,7 +125,7 @@ class Level:
             if the neighbour tile exist on the map.
         """
 
-        # cartesian directions only NO DIAGONALS(direction order)
+        # Cartesian directions only NO DIAGONALS
         directions: List[Tuple[int, int]] = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         neighbours: List[Tile] = []
 

@@ -81,24 +81,6 @@ class Enemy(Entity):
             # call parent method to handle actual movement logic
             super().move(speed)
 
-    def is_moving_upwards(self) -> bool:
-        return self.direction.y == -1 and self.direction.x == 0
-
-    def is_moving_downwards(self) -> bool:
-        return self.direction.y == 1 and self.direction.x == 0
-
-    def is_moving_left(self) -> bool:
-        return self.direction.x == -1 and self.direction.y == 0
-
-    def is_moving_right(self) -> bool:
-        return self.direction.x == 1 and self.direction.y == 0
-
-    def is_moving_diagonally_with_larger_vertical_component(self) -> bool:
-        return abs(self.direction.y) >= abs(self.direction.x)
-
-    def is_moving_diagonally_with_larger_horizontal_component(self) -> bool:
-        return abs(self.direction.x) > abs(self.direction.y)
-
     def update_status(self) -> None:
         """
         updates the entities status variable which is used to select the correct image to be displayed for the
@@ -159,6 +141,24 @@ class Enemy(Entity):
         centred at the enemy rect's centre
         """
         return pygame.sprite.collide_circle(self, player)
+
+    def is_moving_upwards(self) -> bool:
+        return self.direction.y == -1 and self.direction.x == 0
+
+    def is_moving_downwards(self) -> bool:
+        return self.direction.y == 1 and self.direction.x == 0
+
+    def is_moving_left(self) -> bool:
+        return self.direction.x == -1 and self.direction.y == 0
+
+    def is_moving_right(self) -> bool:
+        return self.direction.x == 1 and self.direction.y == 0
+
+    def is_moving_diagonally_with_larger_vertical_component(self) -> bool:
+        return abs(self.direction.y) >= abs(self.direction.x)
+
+    def is_moving_diagonally_with_larger_horizontal_component(self) -> bool:
+        return abs(self.direction.x) > abs(self.direction.y)
 
     # Overrides parent method
     def update(self) -> None:
