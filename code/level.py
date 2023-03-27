@@ -23,7 +23,7 @@ class Level:
         self.display_surface: pygame.Surface = pygame.display.get_surface()
 
         # sprite groups
-        self.visible_sprites: YSortCameraGroup = YSortCameraGroup()
+        self.visible_sprites: YSortCameraGroup = YSortCameraGroup(self)
         self.obstacle_sprites: pygame.sprite.Group = pygame.sprite.Group()
         self.transition_sprites: pygame.sprite.Group = pygame.sprite.Group()
         self.spawn_points: pygame.sprite.Group = pygame.sprite.Group()
@@ -181,10 +181,11 @@ class Level:
 
 
 class YSortCameraGroup(pygame.sprite.Group):
-    def __init__(self) -> None:
+    def __init__(self, level: "Level") -> None:
         # general setup
         super().__init__()
         self.display_surface: pygame.Surface = pygame.display.get_surface()
+        self.level: "Level" = level
         self.half_width: int
         self.half_height: int
         self.half_width, self.half_height = self.display_surface.get_width() // 2, self.display_surface.get_height() // 2
@@ -202,6 +203,8 @@ class YSortCameraGroup(pygame.sprite.Group):
             for tile in sorted(tiles, key=lambda tile: tile.rect.centery):
                 offset: float = tile.rect.topleft - self.offset
                 self.display_surface.blit(tile.image, offset)
+
+        # def move_spawn_points():
 
         # offset
         self.offset.x = player.rect.centerx - self.half_width
