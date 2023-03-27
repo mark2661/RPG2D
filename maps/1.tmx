@@ -51,9 +51,15 @@
  </objectgroup>
  <objectgroup id="8" name="Spawn_Points">
   <object id="13" name="player_house_entrance_spawn_point" class="spawn_point" x="224" y="126.25">
+   <properties>
+    <property name="spawn_point_type" value="player"/>
+   </properties>
    <point/>
   </object>
   <object id="14" name="player_house_upstairs_spawn_point" class="spawn_point" x="224.25" y="63.5">
+   <properties>
+    <property name="spawn_point_type" value="player"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

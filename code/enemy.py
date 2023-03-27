@@ -8,14 +8,15 @@ if TYPE_CHECKING:
     from tile import Tile
     from level import Level, YSortCameraGroup
     from player import Player
+    from spawnPoint import SpawnPoint
 
 
 class Enemy(Entity):
-    def __init__(self, pos: tuple[float, float], asset_image_root_dir_path: str, level: "Level",
+    def __init__(self, spawn_point: "SpawnPoint", asset_image_root_dir_path: str, level: "Level",
                  groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
                  obstacle_sprites: pygame.sprite.Group) -> None:
 
-        super().__init__(pos, asset_image_root_dir_path, groups, obstacle_sprites)
+        super().__init__(spawn_point, asset_image_root_dir_path, groups, obstacle_sprites)
 
         # store the level object in associated with the instance
         self.level: Level = level

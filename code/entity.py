@@ -19,7 +19,7 @@ class Entity(pygame.sprite.Sprite):
         self.spawn_point: "SpawnPoint" = spawn_point
         self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
-        self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_position())
+        self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_associated_tile().rect.topleft)
 
         self.animations: Dict[str, List[pygame.Surface]] = defaultdict(lambda: [])
         self.import_assets(asset_images_root_dir_path)

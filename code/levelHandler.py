@@ -1,9 +1,12 @@
 import pygame.display
-from typing import Dict, Tuple, Optional
+from typing import Dict, Tuple, Optional, TYPE_CHECKING
 from settings import *
 from level import Level
 from player import Player
 from observer import Observer
+
+if TYPE_CHECKING:
+    from spawnPoint import SpawnPoint
 
 
 class LevelHandler(Observer):
@@ -30,8 +33,10 @@ class LevelHandler(Observer):
             self.transition_sprites_group, self.spawn_points_group = self.current_level.get_level_groups()
 
         # create the player instance that will be passed between levels
-        player_spawn_position: Tuple[int, int] = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
-        self.player: Player = Player(player_spawn_position, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group],
+        # player_spawn_position: Tuple[int, int] = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
+        print([point for point in self.spawn_points_group if point.spawn_point_type == "player_init"])
+        player_spawn_point: "SpawnPoint" = [point for point in self.spawn_points_group if point.spawn_point_type == "player_init"][0]
+        self.player: Player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group],
                                      self.obstacle_sprites_group, self.transition_sprites_group,
                                      self.spawn_points_group,
                                      self.current_level_code)

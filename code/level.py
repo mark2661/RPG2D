@@ -90,14 +90,18 @@ class Level:
             spawn_point_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Spawn_Points")
             for spawn_point in spawn_point_objects:
                 position: Tuple[float, float] = (spawn_point.x, spawn_point.y)
-                SpawnPoint(position, [self.spawn_points], spawn_point.id)
+                SpawnPoint(pos=position, level=self, groups=[self.spawn_points], spawn_point_id=spawn_point.id,
+                           spawn_point_type=spawn_point.spawn_point_type)
 
         # only creates a single enemy per level for testing at the moment
         def create_enemies() -> None:
-            enemy_spawn_position: Tuple[float, float] = (
-                (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2 - 100) + 25)
-            Enemy(pos=enemy_spawn_position, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
-                  groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
+            # enemy_spawn_position: Tuple[float, float] = (
+            #     (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2 - 100) + 25)
+            for spawn_point in self.spawn_points:
+                if spawn_point.get_spawn_point_type() == "enemy":
+                    enemy_spawn_point: SpawnPoint = spawn_point
+                    Enemy(spawn_point=enemy_spawn_point, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
+                          groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 
         create_tile_objects()
         create_collidable_objects()
@@ -169,8 +173,8 @@ class Level:
 
         self.visible_sprites.update()
         # debug(self.player.rect.center)
-        enemy = [x for x in self.obstacle_sprites if type(x) == Enemy][0]
-        debug(f"x: {round(enemy.direction.x, 3)}, y: {round(enemy.direction.y, 3)}, status: {enemy.status}")
+        # enemy = [x for x in self.obstacle_sprites if type(x) == Enemy][0]
+        # debug(f"x: {round(enemy.direction.x, 3)}, y: {round(enemy.direction.y, 3)}, status: {enemy.status}")
 
 
 class YSortCameraGroup(pygame.sprite.Group):

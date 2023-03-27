@@ -10,11 +10,12 @@ if TYPE_CHECKING:
 
 class SpawnPoint(HitBox):
     def __init__(self, pos: Tuple[float, float], level: "Level", groups: list[pygame.sprite.Group],
-                 spawn_point_id: int) -> None:
+                 spawn_point_id: int, spawn_point_type: str) -> None:
 
         super().__init__(pos, (1, 1), groups)
         self.pos: Tuple[float, float] = pos
         self.spawn_point_id: int = spawn_point_id
+        self.spawn_point_type: str = spawn_point_type
         self.level: "Level" = level
         self.tile: "Tile" = self.level.get_tile(self.pos)
 
@@ -23,5 +24,8 @@ class SpawnPoint(HitBox):
 
     def get_associated_tile(self) -> "Tile":
         return self.tile
+
+    def get_spawn_point_type(self) -> str:
+        return self.spawn_point_type
 
 
