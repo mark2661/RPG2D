@@ -28,7 +28,7 @@ class Level:
         self.transition_sprites: pygame.sprite.Group = pygame.sprite.Group()
         self.spawn_points: pygame.sprite.Group = pygame.sprite.Group()
 
-        self.groups: List[pygame.sprite.Group] = [self.visible_sprites, self.obstacle_sprites, self.transition_sprites,
+        self.level_groups: List[pygame.sprite.Group] = [self.visible_sprites, self.obstacle_sprites, self.transition_sprites,
                                                   self.spawn_points]
 
         # tile map provides a quick way to access tile objects based on their row, col position (not coords) on the grid
@@ -113,7 +113,7 @@ class Level:
         create_enemies()
 
     def get_level_groups(self) -> list[pygame.sprite.Group]:
-        return [self.visible_sprites, self.obstacle_sprites, self.transition_sprites, self.spawn_points]
+        return self.level_groups
 
     def set_player(self, player: Player) -> None:
         self.player = player
