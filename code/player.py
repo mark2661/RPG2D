@@ -5,16 +5,19 @@ from utils import get_spawn_point_id
 from entity import Entity
 from observable import Observable
 from observer import Observer
-from typing import Tuple
+from typing import Tuple, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spawnPoint import SpawnPoint
 
 
 class Player(Entity, Observable):
-    def __init__(self, pos: tuple[float, float], asset_images_root_dir_path: str, groups: list[pygame.sprite.Sprite],
+    def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: list[pygame.sprite.Sprite],
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
                  spawn_points: pygame.sprite.Group, initial_level_code: int, **kwargs):
 
         # call parent class constructors
-        Entity.__init__(self, pos, asset_images_root_dir_path, groups, obstacle_sprites)
+        Entity.__init__(self, spawn_point, asset_images_root_dir_path, groups, obstacle_sprites)
         Observable.__init__(self)
 
         # general setup

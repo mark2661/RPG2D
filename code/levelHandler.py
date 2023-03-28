@@ -33,8 +33,6 @@ class LevelHandler(Observer):
             self.transition_sprites_group, self.spawn_points_group = self.current_level.get_level_groups()
 
         # create the player instance that will be passed between levels
-        # player_spawn_position: Tuple[int, int] = tuple(map(lambda x: x // 2, self.display_surface.get_size()))
-        print([point for point in self.spawn_points_group if point.spawn_point_type == "player_init"])
         player_spawn_point: "SpawnPoint" = [point for point in self.spawn_points_group if point.spawn_point_type == "player_init"][0]
         self.player: Player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group],
                                      self.obstacle_sprites_group, self.transition_sprites_group,
@@ -56,9 +54,6 @@ class LevelHandler(Observer):
 
             # change current level
             self.current_level = self.levels[self.current_level_code]
-
-            # draw new map
-            self.current_level.visible_sprites.regular_draw()
 
         def update_player_attributes() -> None:
             # update group attributes

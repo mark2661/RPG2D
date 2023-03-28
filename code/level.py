@@ -96,10 +96,7 @@ class Level:
                 SpawnPoint(pos=position, level=self, groups=[self.spawn_points], spawn_point_id=spawn_point.id,
                            spawn_point_type=spawn_point.spawn_point_type)
 
-        # only creates a single enemy per level for testing at the moment
         def create_enemies() -> None:
-            # enemy_spawn_position: Tuple[float, float] = (
-            #     (self.display_surface.get_width() // 2) + 500, (self.display_surface.get_height() // 2 - 100) + 25)
             for spawn_point in self.spawn_points:
                 if spawn_point.get_spawn_point_type() == "enemy":
                     enemy_spawn_point: SpawnPoint = spawn_point
@@ -175,9 +172,8 @@ class Level:
             print(e)
 
         self.visible_sprites.update()
+
         # debug(self.player.rect.center)
-        # enemy = [x for x in self.obstacle_sprites if type(x) == Enemy][0]
-        # debug(f"x: {round(enemy.direction.x, 3)}, y: {round(enemy.direction.y, 3)}, status: {enemy.status}")
 
 
 class YSortCameraGroup(pygame.sprite.Group):

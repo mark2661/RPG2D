@@ -13,7 +13,6 @@ class SpawnPoint(HitBox):
                  spawn_point_id: int, spawn_point_type: str) -> None:
 
         super().__init__(pos, (1, 1), groups)
-        self.pos: Tuple[float, float] = pos
         self.spawn_point_id: int = spawn_point_id
         self.spawn_point_type: str = spawn_point_type
         self.level: "Level" = level
