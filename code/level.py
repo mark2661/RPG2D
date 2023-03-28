@@ -70,6 +70,7 @@ class Level:
             for layer in self.tmx_data.visible_layers:
                 if hasattr(layer, "data"):
                     for x, y, surf in layer.tiles():
+                        # print(f"tile x: {x}, tile y: {y}")
                         position: Tuple[float, float] = (x * TILE_SIZE, y * TILE_SIZE)
                         new_tile: Tile = Tile(position, surf, [self.visible_sprites],
                                               layer.name, is_pathable_tile((x, y)))
@@ -92,7 +93,9 @@ class Level:
         def create_spawn_point_objects() -> None:
             spawn_point_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Spawn_Points")
             for spawn_point in spawn_point_objects:
+                print(f"x: {spawn_point.x}, y: {spawn_point.y}")
                 position: Tuple[float, float] = (spawn_point.x, spawn_point.y)
+                # if spawn_point.spawn_point_type == "player_init": print(f"x: {spawn_point.x}, y: {spawn_point.y}")
                 SpawnPoint(pos=position, level=self, groups=[self.spawn_points], spawn_point_id=spawn_point.id,
                            spawn_point_type=spawn_point.spawn_point_type)
 
@@ -121,9 +124,12 @@ class Level:
     def get_tile(self, pos: Tuple[Union[float, int], Union[float, int]]) -> Optional[Tile]:
         """ Calculates the row and column number of the position argument and returns the tile at that position
             if there is no tile at the calculated position returns None """
-        row: int = pos[0] // TILE_SIZE
-        col: int = pos[1] // TILE_SIZE
+        # row: int = pos[0] // TILE_SIZE
+        # col: int = pos[1] // TILE_SIZE
 
+        row: int = pos[0] // ORIGINAL_TILE_SIZE
+        col: int = pos[1] // ORIGINAL_TILE_SIZE
+        print(f"pos: {pos}, row: {row}, col: {col}")
         return self.tile_map.get((row, col), None)
 
     def get_cartesian_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
@@ -175,9 +181,16 @@ class Level:
             print(e)
 
         self.visible_sprites.update()
+        try:
+            player_spawn_point = [x for x in self.spawn_points if x.spawn_point_type == "player_init"][0]
+            # debug(f" spawn_point: {player_spawn_point.rect.center}, player: {self.player.rect.center}")
+        except:
+            pass
+
         # debug(self.player.rect.center)
         # enemy = [x for x in self.obstacle_sprites if type(x) == Enemy][0]
         # debug(f"x: {round(enemy.direction.x, 3)}, y: {round(enemy.direction.y, 3)}, status: {enemy.status}")
+        debug(pygame.mouse.get_pos())
 
 
 class YSortCameraGroup(pygame.sprite.Group):
@@ -203,8 +216,6 @@ class YSortCameraGroup(pygame.sprite.Group):
             for tile in sorted(tiles, key=lambda tile: tile.rect.centery):
                 offset: float = tile.rect.topleft - self.offset
                 self.display_surface.blit(tile.image, offset)
-
-        # def move_spawn_points():
 
         # offset
         self.offset.x = player.rect.centerx - self.half_width
