@@ -23,7 +23,7 @@ class Level:
         self.display_surface: pygame.Surface = pygame.display.get_surface()
 
         # sprite groups
-        self.visible_sprites: YSortCameraGroup = YSortCameraGroup(self)
+        self.visible_sprites: YSortCameraGroup = YSortCameraGroup()
         self.obstacle_sprites: pygame.sprite.Group = pygame.sprite.Group()
         self.transition_sprites: pygame.sprite.Group = pygame.sprite.Group()
         self.spawn_points: pygame.sprite.Group = pygame.sprite.Group()
@@ -177,11 +177,10 @@ class Level:
 
 
 class YSortCameraGroup(pygame.sprite.Group):
-    def __init__(self, level: "Level") -> None:
+    def __init__(self) -> None:
         # general setup
         super().__init__()
         self.display_surface: pygame.Surface = pygame.display.get_surface()
-        self.level: "Level" = level
         self.half_width: int
         self.half_height: int
         self.half_width, self.half_height = self.display_surface.get_width() // 2, self.display_surface.get_height() // 2
