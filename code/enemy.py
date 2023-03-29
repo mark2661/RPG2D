@@ -151,6 +151,13 @@ class Enemy(Entity):
             self.status = "down"
             self.set_movement_behaviour_mode("patrol")
 
+    def attack_mode(self) -> None:
+        """
+        In attack mode the entities direction will be updated to face towards the Player object.
+        But the move method in the parent class is not called (i.e. the entity will not move).
+        """
+        self.set_direction_towards_player()
+        
     def path_exist(self, path: Optional[List["Tile"]]) -> bool:
         """
          Checks if the path argument is not None and checks if the path has more than one tile.
