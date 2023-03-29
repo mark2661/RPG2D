@@ -36,7 +36,7 @@ class Enemy(Entity):
             "return_to_spawn": self.return_to_spawn_point
         }
         # Default movement behaviour is patrol mode
-        self.movement_behaviour_mode = self.movement_behaviour_modes["patrol"]
+        self.movement_behaviour_mode: Callable = self.movement_behaviour_modes["patrol"]
 
         """
         define enemy aggression circle radius.
@@ -126,12 +126,28 @@ class Enemy(Entity):
             # call parent move method to handle movement logic
             super().move(speed)
 
-    def return_to_spawn_point(self) -> None:
+    def return_to_spawn_point(self, speed: float) -> None:
         """
         Sets the entities direction to a vector pointing
         to the next tile in the path list of pathable Tile objects leading to the entities spawn point.
         """
-        pass
+        path_to_spawn_point: Optional[List["Tile"]] = self.get_path_to_spawn_point()
+
+        if path_to_spawn_point and len(path_to_spawn_point) >=1:
+            next_tile: "Tile" = path_to_spawn_point[1]
+            x: float = next_tile.rect.centerx - self.rect.centerx
+            y: float = next_tile.rect.centery - self.rect.centery
+            vector_to_next_tile: pygame.math.Vector2 = pygame.math.Vector2((x, y)).normalize()
+
+            # change direction
+            self.direction = vector_to_next_tile
+            self.update_status()
+
+            # call parent move method to handle movement logic
+            super().move(speed)
+
+        else:
+            self.set_movement_behaviour_mode("patrol")
 
     def get_path_to_spawn_point(self) -> Optional[List["Tile"]]:
         """
