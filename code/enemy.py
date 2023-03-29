@@ -113,15 +113,8 @@ class Enemy(Entity):
         path_to_player: Optional[List["Tile"]] = self.get_path_to_player()
 
         if path_to_player and len(path_to_player) > 1:
-            # vector between two points = vectorB - vectorA
             next_tile: Tile = path_to_player[1]
-            x: float = next_tile.rect.centerx - self.rect.centerx
-            y: float = next_tile.rect.centery - self.rect.centery
-            vector_to_next_tile: pygame.math.Vector2 = pygame.math.Vector2((x, y)).normalize()
-
-            # change direction
-            self.direction = vector_to_next_tile
-            self.update_status()
+            self.set_direction_to_next_pathable_tile(next_tile)
 
             # call parent move method to handle movement logic
             super().move(speed)
@@ -138,13 +131,7 @@ class Enemy(Entity):
 
         if path_to_spawn_point and len(path_to_spawn_point) > 1:
             next_tile: "Tile" = path_to_spawn_point[1]
-            x: float = next_tile.rect.centerx - self.rect.centerx
-            y: float = next_tile.rect.centery - self.rect.centery
-            vector_to_next_tile: pygame.math.Vector2 = pygame.math.Vector2((x, y)).normalize()
-
-            # change direction
-            self.direction = vector_to_next_tile
-            self.update_status()
+            self.set_direction_to_next_pathable_tile(next_tile)
 
             # call parent move method to handle movement logic
             super().move(speed)
@@ -152,15 +139,9 @@ class Enemy(Entity):
         else:
             # entity is either on the destination tile or adjacent to it
             next_tile: "Tile" = path_to_spawn_point[0]
-            x: float = next_tile.rect.centerx - self.rect.centerx
-            y: float = next_tile.rect.centery - self.rect.centery
-            vector_to_next_tile: pygame.math.Vector2 = pygame.math.Vector2((x, y)).normalize()
+            self.set_direction_to_next_pathable_tile(next_tile)
 
-            # change direction
-            self.direction = vector_to_next_tile
-            self.update_status()
-
-            # get pathing in the same direction until the destination tile is reached
+            # keep pathing in the same direction until the destination tile is reached
             while self.level.get_tile(self.rect.midleft) != self.spawn_point.get_associated_tile():
                 # call parent move method to handle movement logic
                 super().move(speed)
@@ -169,6 +150,16 @@ class Enemy(Entity):
             self.direction = pygame.math.Vector2(0, 1)
             self.status = "down"
             self.set_movement_behaviour_mode("patrol")
+
+    def set_direction_to_next_pathable_tile(self, next_tile: "Tile") -> None:
+        # vector between two points = vectorB - vectorA
+        x: float = next_tile.rect.centerx - self.rect.centerx
+        y: float = next_tile.rect.centery - self.rect.centery
+        vector_to_next_tile: pygame.math.Vector2 = pygame.math.Vector2((x, y)).normalize()
+
+        # change direction
+        self.direction = vector_to_next_tile
+        self.update_status()
 
     def get_path_to_spawn_point(self) -> Optional[List["Tile"]]:
         """
