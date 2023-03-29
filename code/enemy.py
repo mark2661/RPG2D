@@ -43,7 +43,7 @@ class Enemy(Entity):
         Variable name self.radius is required for pygame.sprite.collide_circle method to work.
         https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.collide_circle
         """
-        self.radius: int = ENEMY_ATTACK_RADIUS
+        self.radius: int = ENEMY_AGGRESSION_RADIUS
 
     def patrol(self, speed: Union[float, int]) -> None:
         """
@@ -151,7 +151,7 @@ class Enemy(Entity):
             self.status = "down"
             self.set_movement_behaviour_mode("patrol")
 
-    def path_exist(self, path: Optional[List["Tile"]]):
+    def path_exist(self, path: Optional[List["Tile"]]) -> bool:
         return path and len(path) > 1
 
     def set_direction_to_next_pathable_tile(self, next_tile: "Tile") -> None:
