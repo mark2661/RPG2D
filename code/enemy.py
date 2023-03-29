@@ -226,6 +226,13 @@ class Enemy(Entity):
         """
         return pygame.sprite.collide_circle(self, player)
 
+    def is_in_circle_of_attack(self, player: "Player") -> bool:
+        """
+        checks to see if any point of the player rect lies within a circle of radius
+        (self.radius * ENEMY_ATTACK_RADIUS_SCALING_FACTOR) centred at the enemy rect's centre.
+        """
+        return pygame.sprite.collide_circle_ratio(ENEMY_ATTACK_RADIUS_SCALE_FACTOR)(self, player)
+
     def is_moving_upwards(self) -> bool:
         return self.direction.y == -1 and self.direction.x == 0
 
