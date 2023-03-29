@@ -119,7 +119,7 @@ class Enemy(Entity):
 
             # call parent move method to handle movement logic
             super().move(speed)
-        else:
+        elif not self.is_in_circle_of_attack(self.level.player):
             # no path to player exist, return to spawn point
             self.set_movement_behaviour_mode("return_to_spawn")
 
@@ -152,7 +152,7 @@ class Enemy(Entity):
             self.status = "down"
             self.set_movement_behaviour_mode("patrol")
 
-    def attack_mode(self) -> None:
+    def attack_mode(self, speed: float) -> None:
         """
         In attack mode the entities direction will be updated to face towards the Player object.
         But the move method in the parent class is not called (i.e. the entity will not move).

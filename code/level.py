@@ -154,15 +154,22 @@ class Level:
 
     def enemy_scan(self):
         """
-            Checks if the players current position lies within any enemy sprites circle of aggression.
-            If true the enemy's movement_behaviour_mode is set to "seek" meaning the enemy sprite will
-            path towards the player until explicitly told not to.
+            Checks if the players current position lies within any enemy sprites circle of attack.
+            If true the enemy's movement_behaviour_mode is set to "attack" meaning the enemy sprite will not
+            move, but it will face towards the player.
+            Else if the players current position lies within any enemy sprites circle of aggression but not within
+            the circle of attack, the enemy's movement_behaviour_mode is set to "seek" meaning the enemy sprite will
+            path towards the player until the player lies within the circle of attack.
         """
         for sprite in self.obstacle_sprites:
             if type(sprite) == Enemy:
                 enemy: Enemy = sprite
-                if enemy.is_in_circle_of_aggression(self.player):
-                    # if the player is in the attack radius path towards player
+                if enemy.is_in_circle_of_attack(self.player):
+                    # if the player is in the attack radius DO NOT move and face towards the player
+                    enemy.set_movement_behaviour_mode("attack")
+
+                elif enemy.is_in_circle_of_aggression(self.player):
+                    # if the player is in the aggression radius but not in the attack radius, path towards player
                     enemy.set_movement_behaviour_mode("seek")
 
     def run(self) -> None:
@@ -173,7 +180,11 @@ class Level:
 
         self.visible_sprites.update()
 
-        # debug(self.player.rect.center)
+        try:
+            enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
+            debug(enemy_sprite.movement_behaviour_mode)
+        except:
+            pass
 
 
 class YSortCameraGroup(pygame.sprite.Group):
