@@ -18,6 +18,7 @@ ENTITY_SPEED = 6
 # Enemy parameters
 ENEMY_SPEED = 3  # Enemy speed must be > 1 to avoid NPC movement bug
 ENEMY_AGGRESSION_RADIUS = 1 * TILE_SIZE  # amount of tiles you want radius to cover
+ENEMY_ATTACK_RADIUS_SCALE_FACTOR = 0.25  # Scaling factor to shrink the attack radius to compared to the aggression circle
 
 # Image file paths
 MAPS_FILE_PATH = os.path.join(ROOT_DIR, "maps")

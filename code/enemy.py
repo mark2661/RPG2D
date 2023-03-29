@@ -152,9 +152,18 @@ class Enemy(Entity):
             self.set_movement_behaviour_mode("patrol")
 
     def path_exist(self, path: Optional[List["Tile"]]) -> bool:
+        """
+         Checks if the path argument is not None and checks if the path has more than one tile.
+         If the path only has one tile it means the entity is already on the destination tile, therefore treat this
+         as if the path does not exist (i.e. return False).
+        """
         return path and len(path) > 1
 
     def set_direction_to_next_pathable_tile(self, next_tile: "Tile") -> None:
+        """
+        Calculates and sets the direction vector of the entity from the entity's current tile to the next_tile argument.
+        Also updates the entities status to ensure the correct animation image is displayed, for the given direction.
+        """
         # vector between two points = vectorB - vectorA
         x: float = next_tile.rect.centerx - self.rect.centerx
         y: float = next_tile.rect.centery - self.rect.centery
@@ -162,6 +171,20 @@ class Enemy(Entity):
 
         # change direction
         self.direction = vector_to_next_tile
+        self.update_status()
+
+    def set_direction_towards_player(self) -> None:
+        """
+        Sets the direction of the entity to a vector which points towards the Player object.
+        Also updates the entities status to ensure the correct animation image is displayed, for the given direction.
+        """
+
+        x: float = self.level.player.rect.centerx - self.rect.centerx
+        y: float = self.level.player.rect.centery - self.rect.centery
+        vector_to_player: pygame.math.Vector2 = pygame.math.Vector2((x, y)).normalize()
+
+        # change direction
+        self.direction = vector_to_player
         self.update_status()
 
     def get_path_to_spawn_point(self) -> Optional[List["Tile"]]:
