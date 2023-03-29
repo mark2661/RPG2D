@@ -134,10 +134,11 @@ class Enemy(Entity):
 
     def get_path_to_spawn_point(self) -> Optional[List["Tile"]]:
         """
-        Calculates a path from the entity to it's spawn point (using A*). Returns a list of adjacent pathable tiles,
+        Calculates a path from the entity to its spawn point (using A*). Returns a list of adjacent pathable tiles,
         if a path exist else None.
         """
-        pass
+        return a_star(start=self.level.get_tile(self.rect.center), end=self.spawn_point.get_associated_tile(),
+                      level=self.level)
 
     def get_path_to_player(self) -> Optional[List["Tile"]]:
         """
