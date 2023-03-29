@@ -112,7 +112,7 @@ class Enemy(Entity):
         """
         path_to_player: Optional[List["Tile"]] = self.get_path_to_player()
 
-        if path_to_player and len(path_to_player) > 1:
+        if self.path_exist(path_to_player):
             next_tile: Tile = path_to_player[1]
             self.set_direction_to_next_pathable_tile(next_tile)
 
@@ -129,7 +129,7 @@ class Enemy(Entity):
         """
         path_to_spawn_point: Optional[List["Tile"]] = self.get_path_to_spawn_point()
 
-        if path_to_spawn_point and len(path_to_spawn_point) > 1:
+        if self.path_exist(path_to_spawn_point):
             next_tile: "Tile" = path_to_spawn_point[1]
             self.set_direction_to_next_pathable_tile(next_tile)
 
@@ -150,6 +150,9 @@ class Enemy(Entity):
             self.direction = pygame.math.Vector2(0, 1)
             self.status = "down"
             self.set_movement_behaviour_mode("patrol")
+
+    def path_exist(self, path: Optional[List["Tile"]]):
+        return path and len(path) > 1
 
     def set_direction_to_next_pathable_tile(self, next_tile: "Tile") -> None:
         # vector between two points = vectorB - vectorA
