@@ -32,7 +32,8 @@ class Enemy(Entity):
         # define movement behaviour modes
         self.movement_behaviour_modes: Dict[str: Callable] = {
             "patrol": self.patrol,
-            "seek": self.seek
+            "seek": self.seek,
+            "return_to_spawn": self.return_to_spawn_point
         }
         # Default movement behaviour is patrol mode
         self.movement_behaviour_mode = self.movement_behaviour_modes["patrol"]
