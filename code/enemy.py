@@ -33,7 +33,8 @@ class Enemy(Entity):
         self.movement_behaviour_modes: Dict[str: Callable] = {
             "patrol": self.patrol,
             "seek": self.seek,
-            "return_to_spawn": self.return_to_spawn_point
+            "return_to_spawn": self.return_to_spawn_point,
+            "attack": self.attack_mode
         }
         # Default movement behaviour is patrol mode
         self.movement_behaviour_mode: Callable = self.movement_behaviour_modes["patrol"]
@@ -157,7 +158,7 @@ class Enemy(Entity):
         But the move method in the parent class is not called (i.e. the entity will not move).
         """
         self.set_direction_towards_player()
-        
+
     def path_exist(self, path: Optional[List["Tile"]]) -> bool:
         """
          Checks if the path argument is not None and checks if the path has more than one tile.
