@@ -31,9 +31,9 @@ class Enemy(Entity):
 
         # define movement behaviour modes
         self.movement_behaviour_modes: Dict[str: Callable] = {
-            "patrol": self.patrol,
-            "seek": self.seek,
-            "return_to_spawn": self.return_to_spawn_point,
+            "patrol": self.patrol_mode,
+            "seek": self.seek_mode,
+            "return_to_spawn": self.return_to_spawn_point_mode,
             "attack": self.attack_mode
         }
         # Default movement behaviour is patrol mode
@@ -46,7 +46,7 @@ class Enemy(Entity):
         """
         self.radius: int = ENEMY_AGGRESSION_RADIUS
 
-    def patrol(self, speed: Union[float, int]) -> None:
+    def patrol_mode(self, speed: Union[float, int]) -> None:
         """
         checks if the next tile in the current direction (either vertical or horizontal) is a pathable tile
         (a pathable tile is a tile that the entity is allowed to be on).
@@ -114,7 +114,7 @@ class Enemy(Entity):
             self.status = "right" if self.direction.x > 0 else "left"
 
     # not fully implemented still in testing phase and still buggy
-    def seek(self, speed: float) -> None:
+    def seek_mode(self, speed: float) -> None:
         """
         Sets the entities direction to a vector pointing
         to the next tile in the path list of pathable Tile objects leading to the players current position.
@@ -131,7 +131,7 @@ class Enemy(Entity):
             # no path to player exist, return to spawn point
             self.set_movement_behaviour_mode("return_to_spawn")
 
-    def return_to_spawn_point(self, speed: float) -> None:
+    def return_to_spawn_point_mode(self, speed: float) -> None:
         """
         Sets the entities direction to a vector pointing
         to the next tile in the path list of pathable Tile objects leading to the entities spawn point.
