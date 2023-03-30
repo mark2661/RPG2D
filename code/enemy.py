@@ -84,12 +84,8 @@ class Enemy(Entity):
             # call parent method to handle actual movement logic
             super().move(speed)
 
-            # check if the player is in circle of attack
-            if self.is_in_circle_of_attack(self.level.player):
-                self.set_movement_behaviour_mode("attack")
-
             # check if the player is in circle of aggression
-            elif self.is_in_circle_of_aggression(self.level.player):
+            if self.is_in_circle_of_aggression(self.level.player):
                 self.set_movement_behaviour_mode("seek")
 
     def update_status(self) -> None:
