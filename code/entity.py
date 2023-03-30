@@ -60,6 +60,20 @@ class Entity(pygame.sprite.Sprite):
                 all(word not in self.status for word in ["idle", "attack"]):
             self.status += "_idle"
 
+        if self.attacking:
+            # self.direction.x = 0
+            # self.direction.y = 0
+            if "attack" not in self.status:
+                if "idle" in self.status:
+                    self.status = self.status.replace("_idle", "_attack")
+                else:
+                    self.status += "_attack"
+
+        # if not attacking remove attack from status (if attack is in status).
+        else:
+            if "attack" in self.status:
+                self.status = self.status.replace("_attack", "")
+
     def input(self) -> None:
         pass
 
