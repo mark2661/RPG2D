@@ -80,6 +80,13 @@ class Player(Entity, Observable):
         else:
             self.direction.x = 0
 
+        # attack inputs
+        # melee
+        if keys[pygame.K_l] and not self.attacking:
+            self.attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            print("attack")
+
     def get_current_level_code(self) -> int:
         return self.current_level_code
 
@@ -118,7 +125,4 @@ class Player(Entity, Observable):
 
     # Override
     def update(self):
-        self.input()
-        self.get_status()
-        self.animate()
-        self.move(self.speed)
+        super().update()

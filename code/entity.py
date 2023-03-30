@@ -2,7 +2,7 @@ import os
 import pygame
 from settings import *
 from collections import defaultdict
-from typing import List, Dict, Callable, Tuple, TYPE_CHECKING
+from typing import List, Dict, Callable, Tuple, TYPE_CHECKING, Optional
 from utils import get_spawn_point_object_data, get_spawn_point_id
 from observable import Observable
 
@@ -27,9 +27,10 @@ class Entity(pygame.sprite.Sprite):
         self.status: str = "down"  # status keeps track of the current action and direction of the player
         self.display_surface: pygame.Surface = pygame.display.get_surface()
 
-        # attacking monitors whether or not the entity is attacking
-        # attack mechanics not currently implemented
+        # attack
         self.attacking: bool = False
+        self.attack_cooldown_time: int = 400
+        self.attack_time: Optional[int] = None
 
         # movement
         self.direction: pygame.math.Vector2 = pygame.math.Vector2()
@@ -137,8 +138,18 @@ class Entity(pygame.sprite.Sprite):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.rect.center)
 
+    def attack_cooldown(self) -> None:
+        current_time: int = pygame.time.get_ticks()
+
+        def cooldown_elapsed() -> bool:
+            return current_time - self.attack_time >= self.attack_cooldown_time
+
+        if self.attacking and cooldown_elapsed():
+            self.attacking = False
+
     def update(self) -> None:
         self.input()
         self.get_status()
         self.animate()
+        self.attack_cooldown()
         self.move(self.speed)
