@@ -4,6 +4,7 @@ from settings import *
 from collections import defaultdict
 from typing import List, Dict, Callable, Tuple, TYPE_CHECKING
 from utils import get_spawn_point_object_data, get_spawn_point_id
+from observable import Observable
 
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
@@ -104,6 +105,10 @@ class Entity(pygame.sprite.Sprite):
                     # player moving to the left
                     if self.direction.x < 0: self.rect.left = sprite.rect.right
 
+                    # if the sprite object is of type Observable notify its Observers of the collision
+                    if isinstance(sprite, Observable):
+                        sprite.observable_notify()
+
         def vertical_collision():
             for sprite in obstacles:
                 if sprite.rect.colliderect(self.rect):
@@ -112,6 +117,10 @@ class Entity(pygame.sprite.Sprite):
 
                     # player moving to the up
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
+
+                    # if the sprite object is of type Observable notify its Observers of the collision
+                    if isinstance(sprite, Observable):
+                        sprite.observable_notify()
 
         collision_type_map: Dict[str, Callable] = {"horizontal": horizontal_collision, "vertical": vertical_collision}
 

@@ -166,6 +166,7 @@ class Level:
                 enemy: Enemy = sprite
                 if enemy.is_in_circle_of_attack(self.player):
                     # if the player is in the attack radius DO NOT move and face towards the player
+                    print("is in circle of attack")
                     enemy.set_movement_behaviour_mode("attack")
 
                 elif enemy.is_in_circle_of_aggression(self.player):

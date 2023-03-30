@@ -34,7 +34,7 @@ class LevelHandler(Observer):
 
         # create the player instance that will be passed between levels
         player_spawn_point: "SpawnPoint" = [point for point in self.spawn_points_group if point.spawn_point_type == "player_init"][0]
-        self.player: Player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group],
+        self.player: Player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group, self.obstacle_sprites_group],
                                      self.obstacle_sprites_group, self.transition_sprites_group,
                                      self.spawn_points_group,
                                      self.current_level_code)
