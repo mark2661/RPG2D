@@ -48,7 +48,7 @@ class Player(Entity, Observable):
         self.kill()
 
         # update groups
-        self.add(new_visible_sprites_group)
+        self.add(new_visible_sprites_group, new_obstacle_sprites_group)
         self.obstacle_sprites = new_obstacle_sprites_group
         self.transition_sprites = new_transition_sprites_group
         self.spawn_points = new_spawn_point_group
