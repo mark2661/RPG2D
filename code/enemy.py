@@ -84,6 +84,12 @@ class Enemy(Entity):
             # call parent method to handle actual movement logic
             super().move(speed)
 
+            """
+            If ranged attacks are added in the future will need to check if the player is in the circle of attack,
+            before checking the circle of aggression, and change the movement behaviour to attack_mode. For now this 
+            is not required since the collision in the parent class (Entity) will change to attack mode when a collision
+            with the player is detected, since only melee combat is in the game currently.
+            """
             # check if the player is in circle of aggression
             if self.is_in_circle_of_aggression(self.level.player):
                 self.set_movement_behaviour_mode("seek")
