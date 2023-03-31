@@ -85,7 +85,6 @@ class Player(Entity, Observable):
         if keys[pygame.K_l] and not self.attacking:
             self.attacking = True
             self.attack_time = pygame.time.get_ticks()
-            print("attack")
 
     def get_current_level_code(self) -> int:
         return self.current_level_code

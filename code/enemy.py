@@ -273,6 +273,5 @@ class Enemy(Entity):
 
     # Overrides parent method
     def update(self) -> None:
-        # self.is_in_circle_of_aggression(self.level.player)
         self.attack()
         super().update()

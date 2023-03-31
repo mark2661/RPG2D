@@ -167,6 +167,8 @@ class Level:
                 if enemy.is_in_circle_of_attack(self.player):
                     # if the player is in the attack radius DO NOT move and face towards the player
                     enemy.set_movement_behaviour_mode("attack")
+                    # set the current time for the attack cooldown function
+                    enemy.attack_time = pygame.time.get_ticks()
 
                 elif enemy.is_in_circle_of_aggression(self.player):
                     # if the player is in the aggression radius but not in the attack radius, path towards player
