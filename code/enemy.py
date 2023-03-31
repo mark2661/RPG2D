@@ -225,6 +225,16 @@ class Enemy(Entity):
     def move(self, speed: float) -> None:
         self.movement_behaviour_mode(speed)
 
+    def attack(self) -> None:
+        """
+        Sets the attacking instance variable to True, if the movement_behaviour_mode is "attack_mode", else sets
+        attacking to False
+        """
+        if self.movement_behaviour_mode == self.attack_mode:
+            self.attacking = True
+        else:
+            self.attacking = False
+
     def set_movement_behaviour_mode(self, mode_code: str) -> None:
         self.movement_behaviour_mode = self.movement_behaviour_modes[mode_code]
 
@@ -264,4 +274,5 @@ class Enemy(Entity):
     # Overrides parent method
     def update(self) -> None:
         # self.is_in_circle_of_aggression(self.level.player)
+        self.attack()
         super().update()
