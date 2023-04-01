@@ -5,10 +5,12 @@ from utils import get_spawn_point_id
 from entity import Entity
 from observable import Observable
 from observer import Observer
-from typing import Tuple, TYPE_CHECKING
+from typing import Tuple, TYPE_CHECKING, List, Dict
+from enemy import Enemy
 
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
+    from tile import Tile
 
 
 class Player(Entity, Observable):
@@ -91,6 +93,7 @@ class Player(Entity, Observable):
         if keys[pygame.K_l] and not self.attacking:
             self.attacking = True
             self.attack_time = pygame.time.get_ticks()
+            self.attack()
 
     def get_current_level_code(self) -> int:
         return self.current_level_code
@@ -121,16 +124,29 @@ class Player(Entity, Observable):
                     self.next_level_spawn_id = get_spawn_point_id(transition_sprite.get_transition_code())
 
         collision_type_map = {
-                         "transition": transition_collision,
-                         "horizontal": lambda: super(Player, self).collision("horizontal"),
-                         "vertical": lambda: super(Player, self).collision("vertical")
-                         }
+            "transition": transition_collision,
+            "horizontal": lambda: super(Player, self).collision("horizontal"),
+            "vertical": lambda: super(Player, self).collision("vertical")
+        }
 
         collision_type_map[direction]()
 
     # Override parent method
     def attack(self) -> None:
-        pass
+        valid_direction_combinations: Dict[str, str] = {"up": "down",
+                                                        "right": "left",
+                                                        "down": "up",
+                                                        "left": "right"
+                                                        }
+
+        for sprite in self.obstacle_sprites:
+            if type(sprite) == Enemy:
+                enemy: Enemy = sprite
+                if enemy.is_in_circle_of_attack(self):
+                    for direction in valid_direction_combinations:
+                        if enemy.status.startswith(direction) and self.status.startswith(
+                                valid_direction_combinations[direction]):
+                            enemy.health_points -= PLAYER_ATTACK_DAMAGE
 
     # Override parent method
     def update(self):

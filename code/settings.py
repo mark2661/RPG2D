@@ -20,6 +20,7 @@ DEFAULT_HEALTH_POINTS = 100
 # Player parameters
 PLAYER_ATTACK_COOLDOWN_TIME = 400  # milliseconds
 PLAYER_HEALTH_POINTS = 100
+PLAYER_ATTACK_DAMAGE = 20
 
 # Enemy parameters
 ENEMY_SPEED = 3  # Enemy speed must be > 1 to avoid NPC movement bug
