@@ -123,14 +123,12 @@ class Level:
 
         return self.tile_map.get((row, col), None)
 
-    def get_cartesian_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
+    def get_neighbours(self, tile: Tile, directions: List[Tuple[int, int]]):
         """
-            Returns immediately neighbouring tiles in the cartesian directions of the tile parameter object
-            if the neighbour tile exist on the map.
-        """
+              Returns immediately neighbouring tiles of the tile parameter object, in the directions
+              provided as argument if the neighbour tile exist on the map.
+          """
 
-        # Cartesian directions only NO DIAGONALS
-        directions: List[Tuple[int, int]] = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         neighbours: List[Tile] = []
 
         row: int = tile.rect.centerx // TILE_SIZE
@@ -142,6 +140,26 @@ class Level:
                 neighbours.append(neighbour)
 
         return neighbours
+
+    def get_cartesian_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
+        """
+            Returns immediately neighbouring tiles in the cartesian directions of the tile parameter object
+            if the neighbour tile exist on the map.
+        """
+
+        # Cartesian directions only NO DIAGONALS
+        directions: List[Tuple[int, int]] = [(0, -1), (1, 0), (0, 1), (-1, 0)]
+        return self.get_neighbours(tile, directions)
+
+    def get_all_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
+        """
+            Returns all immediately neighbouring tiles of the tile parameter object (four cardinal directions
+            plus diagonals) if the neighbour tile exist on the map.
+        """
+
+        # up, up-right, right, down-right, down, down-left, left, up-left
+        directions: List[Tuple[int, int]] = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
+        return self.get_neighbours(tile, directions)
 
     def get_pathable_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
         """
