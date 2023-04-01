@@ -23,6 +23,9 @@ class Player(Entity, Observable):
         # general setup
         self.current_level_code = initial_level_code
 
+        # stats
+        self.health_points = PLAYER_HEALTH_POINTS  # overrides parent variable
+
         # collisions
         self.transition_sprites = transition_sprites
         self.spawn_points = spawn_points
@@ -109,7 +112,7 @@ class Player(Entity, Observable):
         if self.rect.center != old_position:
             self.observable_notify()
 
-    # Override
+    # Override parent method
     def collision(self, direction: str):
         def transition_collision():
             for transition_sprite in self.transition_sprites:
@@ -125,6 +128,10 @@ class Player(Entity, Observable):
 
         collision_type_map[direction]()
 
-    # Override
+    # Override parent method
+    def attack(self) -> None:
+        pass
+
+    # Override parent method
     def update(self):
         super().update()

@@ -20,9 +20,12 @@ class Enemy(NPC):
         super().__init__(spawn_point, asset_image_root_dir_path, level, groups, obstacle_sprites)
 
         # MOVEMENT PARAMETERS
-        # start enemy moving upwards
+        # start enemy moving downwards
         self.direction = pygame.math.Vector2(0, 1)
         self.status = "down"
+
+        # stats
+        self.health_points = ENEMY_HEALTH_POINTS  # override parent variable
 
         # attack
         self.attack_cooldown_time = ENEMY_ATTACK_COOLDOWN_TIME

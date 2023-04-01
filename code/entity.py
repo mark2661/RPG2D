@@ -27,6 +27,9 @@ class Entity(pygame.sprite.Sprite):
         self.status: str = "down"  # status keeps track of the current action and direction of the player
         self.display_surface: pygame.Surface = pygame.display.get_surface()
 
+        # stats
+        self.health_points: int = DEFAULT_HEALTH_POINTS
+
         # attack
         self.attacking: bool = False
         self.attack_cooldown_time: int = DEFAULT_ATTACK_COOLDOWN_TIME
@@ -151,6 +154,9 @@ class Entity(pygame.sprite.Sprite):
         # change the current player image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.rect.center)
+
+    def attack(self) -> None:
+        pass
 
     def attack_cooldown(self) -> None:
         current_time: int = pygame.time.get_ticks()

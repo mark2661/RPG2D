@@ -15,15 +15,18 @@ FPS = 60
 # Entity parameters
 ENTITY_SPEED = 6
 DEFAULT_ATTACK_COOLDOWN_TIME = 400  # milliseconds
+DEFAULT_HEALTH_POINTS = 100
 
 # Player parameters
 PLAYER_ATTACK_COOLDOWN_TIME = 400  # milliseconds
+PLAYER_HEALTH_POINTS = 100
 
 # Enemy parameters
 ENEMY_SPEED = 3  # Enemy speed must be > 1 to avoid NPC movement bug
 ENEMY_AGGRESSION_RADIUS = 2 * TILE_SIZE  # amount of tiles you want radius to cover
 ENEMY_ATTACK_RADIUS_SCALE_FACTOR = 0.75  # Scaling factor to shrink the attack radius to compared to the aggression circle
 ENEMY_ATTACK_COOLDOWN_TIME = 1000  # milliseconds
+ENEMY_HEALTH_POINTS = 100
 
 # Image file paths
 MAPS_FILE_PATH = os.path.join(ROOT_DIR, "maps")
