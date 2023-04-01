@@ -1,0 +1,29 @@
+import pygame
+from settings import *
+from entity import Entity
+from typing import Optional, Union, List, TYPE_CHECKING, Tuple, Dict, Callable
+from a_star import a_star
+
+if TYPE_CHECKING:
+    from tile import Tile
+    from level import Level, YSortCameraGroup
+    from player import Player
+    from spawnPoint import SpawnPoint
+
+
+class NPC(Entity):
+    def __init__(self, spawn_point: "SpawnPoint", asset_image_root_dir_path: str, level: "Level",
+                 groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
+                 obstacle_sprites: pygame.sprite.Group) -> None:
+
+        super().__init__(spawn_point, asset_image_root_dir_path, groups, obstacle_sprites)
+
+        # store the level object in associated with the instance
+        self.level: Level = level
+
+    def update_status(self) -> None:
+        """
+        updates the entities status variable which is used to select the correct image to be displayed for the
+        current position
+        """
+        pass
