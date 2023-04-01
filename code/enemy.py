@@ -278,5 +278,6 @@ class Enemy(NPC):
 
     # Overrides parent method
     def update(self) -> None:
-        self.attack()
-        super().update()
+        if not self.is_dead():
+            self.attack()
+            super().update()

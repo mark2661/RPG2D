@@ -58,24 +58,28 @@ class Entity(pygame.sprite.Sprite):
                 self.animations[folder].append(surf)
 
     def get_status(self) -> None:
-        # idle status
-        if all(velocity == 0 for velocity in self.direction) and \
-                all(word not in self.status for word in ["idle", "attack"]):
-            self.status += "_idle"
+        if not self.is_dead():
+            # idle status
+            if all(velocity == 0 for velocity in self.direction) and \
+                    all(word not in self.status for word in ["idle", "attack"]):
+                self.status += "_idle"
 
-        if self.attacking:
-            # self.direction.x = 0
-            # self.direction.y = 0
-            if "attack" not in self.status:
-                if "idle" in self.status:
-                    self.status = self.status.replace("_idle", "_attack")
-                else:
-                    self.status += "_attack"
+            if self.attacking:
+                # self.direction.x = 0
+                # self.direction.y = 0
+                if "attack" not in self.status:
+                    if "idle" in self.status:
+                        self.status = self.status.replace("_idle", "_attack")
+                    else:
+                        self.status += "_attack"
 
-        # if not attacking remove attack from status (if attack is in status).
-        else:
-            if "attack" in self.status:
-                self.status = self.status.replace("_attack", "")
+            # if not attacking remove attack from status (if attack is in status).
+            else:
+                if "attack" in self.status:
+                    self.status = self.status.replace("_attack", "")
+
+    def is_dead(self) -> bool:
+        return self.status == "dead"
 
     def input(self) -> None:
         pass

@@ -27,3 +27,17 @@ class NPC(Entity):
         current position
         """
         pass
+
+    def kill_npc(self) -> None:
+        if "dead" not in self.status and self.health_points <= 0:
+            self.status = "dead"
+            # remove from obstacle groups. DON'T remove from visible_sprite group so it is still drawn on screen
+            self.level.obstacle_sprites.remove(self)
+    
+    # Override parent method
+    def update(self) -> None:
+        if not self.is_dead():
+            self.kill_npc()
+            # print(f"in NPC: {self.is_dead()}")
+            super().update()
+

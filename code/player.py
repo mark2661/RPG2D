@@ -133,6 +133,10 @@ class Player(Entity, Observable):
 
     # Override parent method
     def attack(self) -> None:
+        """
+        Removes health points from any attackable objects where the Player is within their circle of attack, if
+        the Player and the attackable object are facing one another
+        """
         valid_direction_combinations: Dict[str, str] = {"up": "down",
                                                         "right": "left",
                                                         "down": "up",
