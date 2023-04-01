@@ -3,6 +3,7 @@ from settings import *
 from entity import Entity
 from typing import Optional, Union, List, TYPE_CHECKING, Tuple, Dict, Callable
 from a_star import a_star
+from npc import NPC
 
 if TYPE_CHECKING:
     from tile import Tile
@@ -11,15 +12,12 @@ if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
 
 
-class Enemy(Entity):
+class Enemy(NPC):
     def __init__(self, spawn_point: "SpawnPoint", asset_image_root_dir_path: str, level: "Level",
                  groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
                  obstacle_sprites: pygame.sprite.Group) -> None:
 
-        super().__init__(spawn_point, asset_image_root_dir_path, groups, obstacle_sprites)
-
-        # store the level object in associated with the instance
-        self.level: Level = level
+        super().__init__(spawn_point, asset_image_root_dir_path, level, groups, obstacle_sprites)
 
         # MOVEMENT PARAMETERS
         # start enemy moving upwards
@@ -97,6 +95,7 @@ class Enemy(Entity):
             if self.is_in_circle_of_aggression(self.level.player):
                 self.set_movement_behaviour_mode("seek")
 
+    # Overrides parent method
     def update_status(self) -> None:
         """
         updates the entities status variable which is used to select the correct image to be displayed for the
