@@ -26,6 +26,9 @@ class Enemy(Entity):
         self.direction = pygame.math.Vector2(0, 1)
         self.status = "down"
 
+        # attack
+        self.attack_cooldown_time = ENEMY_ATTACK_COOLDOWN_TIME
+
         # change default speed
         self.speed: float = ENEMY_SPEED
 

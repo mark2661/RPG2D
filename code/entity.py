@@ -29,7 +29,7 @@ class Entity(pygame.sprite.Sprite):
 
         # attack
         self.attacking: bool = False
-        self.attack_cooldown_time: int = 400
+        self.attack_cooldown_time: int = DEFAULT_ATTACK_COOLDOWN_TIME
         self.attack_time: Optional[int] = None
 
         # movement

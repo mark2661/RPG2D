@@ -27,6 +27,9 @@ class Player(Entity, Observable):
         self.transition_sprites = transition_sprites
         self.spawn_points = spawn_points
 
+        # attack
+        self.attack_cooldown_time = PLAYER_ATTACK_COOLDOWN_TIME
+
         # temp
         self.next_level_spawn_id = None
 
