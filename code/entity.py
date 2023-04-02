@@ -16,16 +16,23 @@ class Entity(pygame.sprite.Sprite):
 
         super().__init__(groups)
         # general setup
+        self.display_surface: pygame.Surface = pygame.display.get_surface()
         default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
         self.spawn_point: "SpawnPoint" = spawn_point
         self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
         self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_associated_tile().rect.topleft)
 
+        # animations
         self.animations: Dict[str, List[pygame.Surface]] = defaultdict(lambda: [])
         self.import_assets(asset_images_root_dir_path)
         self.status: str = "down"  # status keeps track of the current action and direction of the player
-        self.display_surface: pygame.Surface = pygame.display.get_surface()
+        self.animation_modes: Dict[str, Callable] = {
+                                                    "alive": self.alive_animation,
+                                                    "dead": self.dead_animation
+                                                   }
+
+        self.animation_mode: Callable = self.alive_animation
 
         # stats
         self.health_points: int = DEFAULT_HEALTH_POINTS
@@ -148,7 +155,10 @@ class Entity(pygame.sprite.Sprite):
 
         collision_type_map[direction]()
 
-    def animate(self):
+    def animate(self) -> None:
+        self.animation_mode()
+
+    def alive_animation(self) -> None:
         animation: List[pygame.Surface] = self.animations[self.status]
 
         # loop over frame index
@@ -158,6 +168,9 @@ class Entity(pygame.sprite.Sprite):
         # change the current player image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.rect.center)
+
+    def dead_animation(self) -> None:
+        pass
 
     def attack(self) -> None:
         pass

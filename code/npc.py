@@ -29,6 +29,11 @@ class NPC(Entity):
         pass
 
     def kill_npc(self) -> None:
+        """
+        Sets the Entities status to dead, if the health has dropped to zero or below if the Entity
+        is not marked as dead, also removes Entity from its levels obstacle groups. This prevents the player from
+        interacting with it any longer, e.g. collisions, attacks, e.t.c.
+        """
         if "dead" not in self.status and self.health_points <= 0:
             self.status = "dead"
             # remove from obstacle groups. DON'T remove from visible_sprite group so it is still drawn on screen
