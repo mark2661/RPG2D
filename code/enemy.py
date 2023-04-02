@@ -240,6 +240,9 @@ class Enemy(NPC):
         else:
             self.attacking = False
 
+        if self.attacking and self.is_in_circle_of_attack(self.level.player):
+            self.level.player.reduce_health(damage=ENEMY_ATTACK_DAMAGE)
+
     def set_movement_behaviour_mode(self, mode_code: str) -> None:
         self.movement_behaviour_mode = self.movement_behaviour_modes[mode_code]
 

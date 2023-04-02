@@ -28,6 +28,7 @@ ENEMY_AGGRESSION_RADIUS = 2 * TILE_SIZE  # amount of tiles you want radius to co
 ENEMY_ATTACK_RADIUS_SCALE_FACTOR = 0.75  # Scaling factor to shrink the attack radius to compared to the aggression circle
 ENEMY_ATTACK_COOLDOWN_TIME = 1000  # milliseconds
 ENEMY_HEALTH_POINTS = 100
+ENEMY_ATTACK_DAMAGE = 10
 
 # Image file paths
 MAPS_FILE_PATH = os.path.join(ROOT_DIR, "maps")

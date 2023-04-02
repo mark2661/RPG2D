@@ -88,6 +88,9 @@ class Entity(pygame.sprite.Sprite):
     def is_dead(self) -> bool:
         return self.status == "dead"
 
+    def reduce_health(self, damage: float) -> None:
+        self.health_points -= damage
+
     def input(self) -> None:
         pass
 

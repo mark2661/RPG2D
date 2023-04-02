@@ -150,7 +150,7 @@ class Player(Entity, Observable):
                     for direction in valid_direction_combinations:
                         if enemy.status.startswith(direction) and self.status.startswith(
                                 valid_direction_combinations[direction]):
-                            enemy.health_points -= PLAYER_ATTACK_DAMAGE
+                            enemy.reduce_health(damage=PLAYER_ATTACK_DAMAGE)
 
     # Override parent method
     def update(self):

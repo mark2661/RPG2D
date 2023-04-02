@@ -202,8 +202,8 @@ class Level:
 
         try:
             enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
-            debug(enemy_sprite.status)
-            # debug(self.player.status)
+            # debug(enemy_sprite.status)
+            debug(self.player.health_points)
         except:
             pass
 
