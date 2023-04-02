@@ -33,16 +33,19 @@ class NPC(Entity):
         Sets the Entities status to dead, if the health has dropped to zero or below if the Entity
         is not marked as dead, also removes Entity from its levels obstacle groups. This prevents the player from
         interacting with it any longer, e.g. collisions, attacks, e.t.c.
+        Also changes the animation_mode to "dead" which plays the dying animations for the Entity
         """
         if "dead" not in self.status and self.health_points <= 0:
             self.status = "dead"
             # remove from obstacle groups. DON'T remove from visible_sprite group so it is still drawn on screen
             self.level.obstacle_sprites.remove(self)
+            # set animation mode (in parent class) to "dead"
+            self.frame_index = 0  # reset the frame index so the death animation starts from the first frame.
+            self.animation_mode = self.animation_modes["dead"]
     
     # Override parent method
     def update(self) -> None:
-        if not self.is_dead():
-            self.kill_npc()
-            # print(f"in NPC: {self.is_dead()}")
-            super().update()
+        self.kill_npc()
+        # print(f"in NPC: {self.is_dead()}")
+        super().update()
 

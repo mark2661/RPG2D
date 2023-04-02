@@ -170,7 +170,18 @@ class Entity(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.rect.center)
 
     def dead_animation(self) -> None:
-        pass
+        animation: List[pygame.Surface] = self.animations[self.status]
+        final_frame_index: int = len(animation) - 1
+
+        # loop over frame index
+        if self.frame_index < len(animation):
+            self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = final_frame_index
+
+        # change the current player image
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center=self.rect.center)
 
     def attack(self) -> None:
         pass
@@ -185,8 +196,10 @@ class Entity(pygame.sprite.Sprite):
             self.attacking = False
 
     def update(self) -> None:
-        self.input()
-        self.get_status()
+        if not self.is_dead():
+            self.input()
+            self.get_status()
         self.animate()
-        self.attack_cooldown()
-        self.move(self.speed)
+        if not self.is_dead():
+            self.attack_cooldown()
+            self.move(self.speed)
