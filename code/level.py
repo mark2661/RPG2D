@@ -171,6 +171,11 @@ class Level:
         return [neighbour for neighbour in neighbours if neighbour is not None and neighbour.is_pathable()]
 
     def get_alive_enemies(self) -> Optional[List[Enemy]]:
+        """
+        Returns a list of alive Enemy objects present on the Level.
+        An Enemy object is alive if it is a member of the obstacle_sprites group
+        """
+
         enemies: List[Enemy] = []
         for sprite in self.obstacle_sprites:
             if type(sprite) == Enemy:
@@ -187,18 +192,17 @@ class Level:
             the circle of attack, the enemy's movement_behaviour_mode is set to "seek" meaning the enemy sprite will
             path towards the player until the player lies within the circle of attack.
         """
-        for sprite in self.obstacle_sprites:
-            if type(sprite) == Enemy:
-                enemy: Enemy = sprite
-                if enemy.is_in_circle_of_attack(self.player):
-                    # if the player is in the attack radius DO NOT move and face towards the player
-                    enemy.set_movement_behaviour_mode("attack")
-                    # set the current time for the attack cooldown function
-                    enemy.attack_time = pygame.time.get_ticks()
 
-                elif enemy.is_in_circle_of_aggression(self.player):
-                    # if the player is in the aggression radius but not in the attack radius, path towards player
-                    enemy.set_movement_behaviour_mode("seek")
+        for enemy in self.get_alive_enemies():
+            if enemy.is_in_circle_of_attack(self.player):
+                # if the player is in the attack radius DO NOT move and face towards the player
+                enemy.set_movement_behaviour_mode("attack")
+                # set the current time for the attack cooldown function
+                enemy.attack_time = pygame.time.get_ticks()
+
+            elif enemy.is_in_circle_of_aggression(self.player):
+                # if the player is in the aggression radius but not in the attack radius, path towards player
+                enemy.set_movement_behaviour_mode("seek")
 
     def run(self) -> None:
         try:
