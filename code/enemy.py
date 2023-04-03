@@ -232,19 +232,20 @@ class Enemy(NPC):
 
     def attack(self) -> None:
         """
-        Sets the attacking instance variable to True, if the movement_behaviour_mode is "attack_mode", else sets
+        Sets the attacking instance variable to True, if the Player is in the circle of attack, else sets
         attacking to False
         """
-        # if self.movement_behaviour_mode == self.attack_mode:
         if self.is_in_circle_of_attack(self.level.player):
             self.attacking = True
         else:
             self.attacking = False
 
     def attack_player(self) -> None:
-        print(self.attacking)
+        """
+        Reduces the Player objects health if the Player is within the enemies attack radius and the player is
+        attacking.
+        """
         if self.attacking and self.is_in_circle_of_attack(self.level.player):
-            print("attack")
             self.level.player.reduce_health(damage=ENEMY_ATTACK_DAMAGE)
 
     def set_movement_behaviour_mode(self, mode_code: str) -> None:

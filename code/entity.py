@@ -189,15 +189,6 @@ class Entity(pygame.sprite.Sprite):
     def attack(self) -> None:
         pass
 
-    def attack_cooldown(self) -> None:
-        current_time: int = pygame.time.get_ticks()
-
-        def cooldown_elapsed() -> bool:
-            return current_time - self.attack_time >= self.attack_cooldown_time
-
-        if self.attacking and cooldown_elapsed():
-            self.attacking = False
-
     def update(self) -> None:
         if not self.is_dead():
             self.input()

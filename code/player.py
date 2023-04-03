@@ -152,6 +152,15 @@ class Player(Entity, Observable):
                                 valid_direction_combinations[direction]):
                             enemy.reduce_health(damage=PLAYER_ATTACK_DAMAGE)
 
+    def attack_cooldown(self) -> None:
+        current_time: int = pygame.time.get_ticks()
+
+        def cooldown_elapsed() -> bool:
+            return current_time - self.attack_time >= self.attack_cooldown_time
+
+        if self.attacking and cooldown_elapsed():
+            self.attacking = False
+
     # Override parent method
     def update(self):
         self.attack_cooldown()
