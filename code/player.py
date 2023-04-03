@@ -154,4 +154,5 @@ class Player(Entity, Observable):
 
     # Override parent method
     def update(self):
+        self.attack_cooldown()
         super().update()

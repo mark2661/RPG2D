@@ -92,5 +92,8 @@ class LevelHandler(Observer):
         else:
             self.current_level.enemy_scan()
 
+    def enemy_attack_event(self) -> None:
+        self.current_level.make_eligible_enemies_attack_player()
+
     def run(self) -> None:
         self.current_level.run()

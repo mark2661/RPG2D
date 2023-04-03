@@ -183,6 +183,10 @@ class Level:
 
         return enemies
 
+    def make_eligible_enemies_attack_player(self):
+        for enemy in self.get_alive_enemies():
+            enemy.attack_player()
+
     def enemy_scan(self):
         """
             Checks if the players current position lies within any enemy sprites circle of attack.
@@ -215,7 +219,7 @@ class Level:
         try:
             enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
             # debug(enemy_sprite.status)
-            debug(self.player.health_points)
+            debug(f"player health {self.player.health_points}, enemy_status {enemy_sprite.status}")
         except:
             pass
 

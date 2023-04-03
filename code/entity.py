@@ -204,5 +204,4 @@ class Entity(pygame.sprite.Sprite):
             self.get_status()
         self.animate()
         if not self.is_dead():
-            self.attack_cooldown()
             self.move(self.speed)
