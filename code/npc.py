@@ -40,9 +40,9 @@ class NPC(Entity):
             # remove from obstacle groups. DON'T remove from visible_sprite group so it is still drawn on screen
             self.level.obstacle_sprites.remove(self)
             # set animation mode (in parent class) to "dead"
-            self.frame_index = 0  # reset the frame index so the death animation starts from the first frame.
             self.animation_mode = self.animation_modes["dead"]
-    
+            self.frame_index = 0  # reset the frame index so the death animation starts from the first frame.
+
     # Override parent method
     def update(self) -> None:
         self.kill_npc()

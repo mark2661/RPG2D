@@ -170,6 +170,14 @@ class Level:
         neighbours: Union[List[Tile], None] = self.get_cartesian_neighbours(tile)
         return [neighbour for neighbour in neighbours if neighbour is not None and neighbour.is_pathable()]
 
+    def get_alive_enemies(self) -> Optional[List[Enemy]]:
+        enemies: List[Enemy] = []
+        for sprite in self.obstacle_sprites:
+            if type(sprite) == Enemy:
+                enemies.append(sprite)
+
+        return enemies
+
     def enemy_scan(self):
         """
             Checks if the players current position lies within any enemy sprites circle of attack.
