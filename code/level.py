@@ -208,6 +208,19 @@ class Level:
                 # if the player is in the aggression radius but not in the attack radius, path towards player
                 enemy.set_movement_behaviour_mode("seek")
 
+    def de_spawn_dead_entities(self) -> None:
+        def garbage_collection_countdown_time_elapsed(entity: Entity) -> bool:
+            current_time: int = pygame.time.get_ticks()
+            if entity.time_of_death:
+                return current_time - entity.time_of_death >= DEAD_OBJECT_CLEARANCE_COUNTDOWN_TIME
+            return False
+
+        for sprite in self.obstacle_sprites:
+            if isinstance(sprite, Entity) and garbage_collection_countdown_time_elapsed(sprite):
+                entity: Entity = sprite
+                entity.kill()
+                del entity
+
     def run(self) -> None:
         try:
             self.visible_sprites.custom_draw(self.player)

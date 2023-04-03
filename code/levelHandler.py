@@ -95,5 +95,8 @@ class LevelHandler(Observer):
     def enemy_attack_event(self) -> None:
         self.current_level.make_eligible_enemies_attack_player()
 
+    def dead_object_garbage_collection(self) -> None:
+        self.current_level.de_spawn_dead_entities()
+
     def run(self) -> None:
         self.current_level.run()

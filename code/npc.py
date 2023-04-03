@@ -28,24 +28,28 @@ class NPC(Entity):
         """
         pass
 
-    def kill_npc(self) -> None:
+    def should_npc_be_dead(self):
         """
-        Sets the Entities status to dead, if the health has dropped to zero or below if the Entity
-        is not marked as dead, also removes Entity from its levels obstacle groups. This prevents the player from
-        interacting with it any longer, e.g. collisions, attacks, e.t.c.
-        Also changes the animation_mode to "dead" which plays the dying animations for the Entity
+        If the health has dropped to or below zero and the Entity
+        is not marked as dead. then kill the Entity
         """
-        if "dead" not in self.status and self.health_points <= 0:
+        def kill_npc()-> None:
+            """
+            Sets the Entities status to dead,  Also changes the animation_mode to "dead" which plays the dying animations for the Entity
+            """
             self.status = "dead"
-            # remove from obstacle groups. DON'T remove from visible_sprite group so it is still drawn on screen
-            self.level.obstacle_sprites.remove(self)
+            # recorded time of death for de-spawn algorithm
+            self.time_of_death = pygame.time.get_ticks()
             # set animation mode (in parent class) to "dead"
             self.animation_mode = self.animation_modes["dead"]
             self.frame_index = 0  # reset the frame index so the death animation starts from the first frame.
 
+        if "dead" not in self.status and self.health_points <= 0:
+            kill_npc()
+
     # Override parent method
     def update(self) -> None:
-        self.kill_npc()
+        self.should_npc_be_dead()
         # print(f"in NPC: {self.is_dead()}")
         super().update()
 

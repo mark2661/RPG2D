@@ -36,6 +36,7 @@ class Entity(pygame.sprite.Sprite):
 
         # stats
         self.health_points: int = DEFAULT_HEALTH_POINTS
+        self.time_of_death: Optional[int] = None
 
         # attack
         self.attacking: bool = False
@@ -53,6 +54,8 @@ class Entity(pygame.sprite.Sprite):
 
         # groups
         self.member_groups: List[pygame.sprite.Group] = groups
+
+
 
     def import_assets(self, root_dir: str) -> None:
         for folder in os.listdir(root_dir):
