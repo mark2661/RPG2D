@@ -12,6 +12,8 @@ from spawnPoint import SpawnPoint
 from debug import debug
 from enemy import Enemy
 from entity import Entity
+from enemyFactory import EnemyFactory
+from enemyObjectPool import EnemyObjectPool
 
 
 class Level:
@@ -34,6 +36,7 @@ class Level:
         # tile map provides a quick way to access tile objects based on their row, col position (not coords) on the grid
         # e.g the tile in the top left would have row = 0 and col = 0
         self.tile_map: Dict[Tuple[int, int], Tile] = dict()
+        self.enemy_object_pool: EnemyObjectPool = EnemyObjectPool()
 
         # initialise map
         self.create_map()
@@ -100,8 +103,9 @@ class Level:
             for spawn_point in self.spawn_points:
                 if spawn_point.get_spawn_point_type() == "enemy":
                     enemy_spawn_point: SpawnPoint = spawn_point
-                    Enemy(spawn_point=enemy_spawn_point, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
-                          groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
+                    self.enemy_object_pool.acquire(spawnPoint=enemy_spawn_point, level=self)
+                    # Enemy(spawn_point=enemy_spawn_point, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
+                    #       groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 
         create_tile_objects()
         create_collidable_objects()
@@ -219,7 +223,8 @@ class Level:
             if isinstance(sprite, Entity) and garbage_collection_countdown_time_elapsed(sprite):
                 entity: Entity = sprite
                 entity.kill()
-                del entity  # eventually add object to object pool instead.
+                # del entity  # eventually add object to object pool instead.
+                self.enemy_object_pool.release(entity)
 
     def run(self) -> None:
         try:
@@ -231,7 +236,7 @@ class Level:
 
         try:
             enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
-            # debug(enemy_sprite.status)
+            # debug(f"enemy pool {self.enemy_object_pool.free}")
             debug(f"player health {self.player.health_points}, enemy_status {enemy_sprite.status}")
         except:
             pass

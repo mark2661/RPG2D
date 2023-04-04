@@ -5,6 +5,7 @@ from collections import defaultdict
 from typing import List, Dict, Callable, Tuple, TYPE_CHECKING, Optional
 from utils import get_spawn_point_object_data, get_spawn_point_id
 from observable import Observable
+import pathlib
 
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
