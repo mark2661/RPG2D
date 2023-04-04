@@ -28,12 +28,12 @@ class NPC(Entity):
         """
         pass
 
-    def should_npc_be_dead(self):
+    def check_if_npc_should_be_dead(self) -> None:
         """
         If the health has dropped to or below zero and the Entity
         is not marked as dead. then kill the Entity
         """
-        def kill_npc()-> None:
+        def kill_npc() -> None:
             """
             Sets the Entities status to dead,  Also changes the animation_mode to "dead" which plays the dying animations for the Entity
             """
@@ -49,7 +49,7 @@ class NPC(Entity):
 
     # Override parent method
     def update(self) -> None:
-        self.should_npc_be_dead()
+        self.check_if_npc_should_be_dead()
         # print(f"in NPC: {self.is_dead()}")
         super().update()
 

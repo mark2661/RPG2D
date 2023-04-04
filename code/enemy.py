@@ -242,7 +242,7 @@ class Enemy(NPC):
 
     def attack_player(self) -> None:
         """
-        Reduces the Player objects health if the Player is within the enemies attack radius and the player is
+        Reduces the Player objects health if the Player is within the enemies attack radius and the enemy is
         attacking.
         """
         if self.attacking and self.is_in_circle_of_attack(self.level.player):

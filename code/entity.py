@@ -28,9 +28,9 @@ class Entity(pygame.sprite.Sprite):
         self.import_assets(asset_images_root_dir_path)
         self.status: str = "down"  # status keeps track of the current action and direction of the player
         self.animation_modes: Dict[str, Callable] = {
-                                                    "alive": self.alive_animation,
-                                                    "dead": self.dead_animation
-                                                   }
+            "alive": self.alive_animation,
+            "dead": self.dead_animation
+        }
 
         self.animation_mode: Callable = self.alive_animation
 
@@ -54,8 +54,6 @@ class Entity(pygame.sprite.Sprite):
 
         # groups
         self.member_groups: List[pygame.sprite.Group] = groups
-
-
 
     def import_assets(self, root_dir: str) -> None:
         for folder in os.listdir(root_dir):

@@ -219,7 +219,7 @@ class Level:
             if isinstance(sprite, Entity) and garbage_collection_countdown_time_elapsed(sprite):
                 entity: Entity = sprite
                 entity.kill()
-                del entity
+                del entity  # eventually add object to object pool instead.
 
     def run(self) -> None:
         try:

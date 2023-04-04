@@ -47,7 +47,6 @@ class LevelHandler(Observer):
 
     def transition(self) -> None:
         # if player has collided with a transition object
-        # if self.current_level_code != self.player.get_current_level_code():
         def transition_map() -> None:
             # update current level code
             self.current_level_code = self.player.get_current_level_code()
