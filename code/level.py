@@ -183,7 +183,9 @@ class Level:
         enemies: List[Enemy] = []
         for sprite in self.obstacle_sprites:
             if type(sprite) == Enemy:
-                enemies.append(sprite)
+                enemy: Enemy = sprite
+                if enemy.is_alive():
+                    enemies.append(enemy)
 
         return enemies
 

@@ -28,5 +28,5 @@ class EnemyObjectPool(metaclass=Singleton):
 
     def release(self, enemy: Enemy) -> None:
         self.in_use.remove(enemy)
-        # need to reset enemies stats
+        enemy.reset()
         self.free.append(enemy)

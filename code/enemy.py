@@ -58,7 +58,6 @@ class Enemy(NPC):
         # stats
         self.health_points = ENEMY_HEALTH_POINTS  # override parent variable
 
-
     def patrol_mode(self, speed: Union[float, int]) -> None:
         """
         checks if the next tile in the current direction (either vertical or horizontal) is a pathable tile
@@ -244,7 +243,7 @@ class Enemy(NPC):
         Sets the attacking instance variable to True, if the Player is in the circle of attack, else sets
         attacking to False
         """
-        if self.is_in_circle_of_attack(self.level.player):
+        if self.is_alive() and self.is_in_circle_of_attack(self.level.player):
             self.attacking = True
         else:
             self.attacking = False
