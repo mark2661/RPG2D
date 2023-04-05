@@ -19,13 +19,8 @@ class Enemy(NPC):
 
         super().__init__(spawn_point, asset_image_root_dir_path, level, groups, obstacle_sprites)
 
-        # MOVEMENT PARAMETERS
-        # start enemy moving downwards
-        self.direction = pygame.math.Vector2(0, 1)
-        self.status = "down"
-
-        # stats
-        self.health_points = ENEMY_HEALTH_POINTS  # override parent variable
+        # set initial health, direction, and status
+        self.reset()
 
         # attack
         self.attack_cooldown_time = ENEMY_ATTACK_COOLDOWN_TIME
@@ -49,6 +44,20 @@ class Enemy(NPC):
         https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.collide_circle
         """
         self.radius: int = ENEMY_AGGRESSION_RADIUS
+
+    def reset(self) -> None:
+        """
+        re-initialises health, direction, and status back to their original values
+        """
+
+        # MOVEMENT PARAMETERS
+        # start enemy moving downwards
+        self.direction = pygame.math.Vector2(0, 1)
+        self.status = "down"
+
+        # stats
+        self.health_points = ENEMY_HEALTH_POINTS  # override parent variable
+
 
     def patrol_mode(self, speed: Union[float, int]) -> None:
         """

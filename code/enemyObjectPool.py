@@ -18,7 +18,7 @@ class EnemyObjectPool(metaclass=Singleton):
         self.enemy_factory: EnemyFactory = EnemyFactory()
 
     def acquire(self, spawnPoint: "SpawnPoint", level: "Level") -> Enemy:
-        if len(self.free) >= 0:
+        if not self.free:
             new_enemy: Enemy = self.enemy_factory.create_enemy(enemy_spawn_point=spawnPoint, enemy_level=level)
             self.free.append(new_enemy)
 
