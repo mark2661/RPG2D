@@ -12,7 +12,6 @@ from spawnPoint import SpawnPoint
 from debug import debug
 from enemy import Enemy
 from entity import Entity
-from enemyFactory import EnemyFactory
 from enemyObjectPool import EnemyObjectPool
 
 

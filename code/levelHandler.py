@@ -1,9 +1,10 @@
 import pygame.display
-from typing import Dict, Tuple, Optional, TYPE_CHECKING
+from typing import Dict, Tuple, Optional, TYPE_CHECKING, Union
 from settings import *
 from level import Level
 from player import Player
 from observer import Observer
+from menu import Menu
 
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
@@ -23,27 +24,41 @@ class LevelHandler(Observer):
         self.current_level: Level = self.levels[self.current_level_code]
 
         # get the pygame group member objects of the current level
-        # define types
-        self.visible_sprites_group: pygame.sprite.Group
-        self.obstacle_sprites_group: pygame.sprite.Group
-        self.transition_sprites_group: pygame.sprite.Group
-        self.spawn_points_group: pygame.sprite.Group
+        self.visible_sprites_group: pygame.sprite.Group = None
+        self.obstacle_sprites_group: pygame.sprite.Group = None
+        self.transition_sprites_group: pygame.sprite.Group = None
+        self.spawn_points_group: pygame.sprite.Group = None
 
-        self.visible_sprites_group, self.obstacle_sprites_group, \
-            self.transition_sprites_group, self.spawn_points_group = self.current_level.get_level_groups()
-
-        # create the player instance that will be passed between levels
-        player_spawn_point: "SpawnPoint" = [point for point in self.spawn_points_group if point.spawn_point_type == "player_init"][0]
-        self.player: Player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH, [self.visible_sprites_group, self.obstacle_sprites_group],
-                                     self.obstacle_sprites_group, self.transition_sprites_group,
-                                     self.spawn_points_group,
-                                     self.current_level_code)
-
-        # pass the player instance to the current level
-        self.current_level.set_player(self.player)
+        self.player: Player = self.init_player()
 
         # call super constructor
         super().__init__(self.player)
+
+        self.start_game()
+
+    def init_player(self) -> Player:
+
+        self.visible_sprites_group, self.obstacle_sprites_group, \
+            self.transition_sprites_group, self.spawn_points_group = self.levels[0].get_level_groups()
+
+        # create the player instance that will be passed between levels
+        player_spawn_point: "SpawnPoint" = \
+            [point for point in self.spawn_points_group if point.spawn_point_type == "player_init"][0]
+        player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH,
+                        [self.visible_sprites_group, self.obstacle_sprites_group],
+                        self.obstacle_sprites_group, self.transition_sprites_group,
+                        self.spawn_points_group,
+                        self.current_level_code)
+
+        return player
+
+    def start_game(self) -> None:
+        # initialise current level to the starting level
+        self.current_level_code = 0
+        self.current_level = self.levels[self.current_level_code]
+
+        # pass the player instance to the current level
+        self.current_level.set_player(self.player)
 
     def transition(self) -> None:
         # if player has collided with a transition object

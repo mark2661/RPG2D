@@ -1,5 +1,12 @@
 import os
+import pygame
 from definitions import ROOT_DIR
+
+# Constants
+BLACK: pygame.color = pygame.Color(0, 0, 0)
+FONT_TYPE: str = "8-BIT WONDER.TTF"
+
+
 
 # Screen/Tile dimensions
 ORIGINAL_TILE_SIZE = 16
