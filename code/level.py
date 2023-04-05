@@ -177,7 +177,8 @@ class Level:
     def get_alive_enemies(self) -> Optional[List[Enemy]]:
         """
         Returns a list of alive Enemy objects present on the Level.
-        An Enemy object is alive if it is a member of the obstacle_sprites group
+        An Enemy object is alive if it is a member of the obstacle_sprites group and it's status instance variable is
+        not set to "dead".
         """
 
         enemies: List[Enemy] = []
