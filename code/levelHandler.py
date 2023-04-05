@@ -8,10 +8,12 @@ from menu import Menu
 
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
+    from eventHandler import EventHandler
 
 
 class LevelHandler(Observer):
-    def __init__(self) -> None:
+    def __init__(self, event_handler: "EventHandler") -> None:
+        self.event_handler: "EventHandler" = event_handler
         self.display_surface: pygame.Surface = pygame.display.get_surface()
 
         self.levels: Dict[int, Level] = {

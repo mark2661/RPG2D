@@ -1,5 +1,5 @@
 import pygame
-from typing import Dict, Tuple, Union, Optional, List
+from typing import Dict, Tuple, Union, Optional, List, TYPE_CHECKING
 
 import pytmx.pytmx
 from pytmx.util_pygame import load_pygame
@@ -14,9 +14,13 @@ from enemy import Enemy
 from entity import Entity
 from enemyObjectPool import EnemyObjectPool
 
+if TYPE_CHECKING:
+    from levelHandler import LevelHandler
+
 
 class Level:
-    def __init__(self, map_path: str, player: Player = None) -> None:
+    def __init__(self, map_path: str, level_handler: "LevelHandler" , player: Player = None) -> None:
+        self.level_handler: "LevelHandler" = level_handler
         # load map
         self.tmx_data: pytmx.pytmx.TiledMap = load_pygame(map_path)
 
