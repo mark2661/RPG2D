@@ -38,6 +38,7 @@ class EventHandler:
                                                      }
 
         event_function_map.get(self.current_handler, lambda *args: None)()
+        self.display.fill("black")
 
     def process_level_events(self) -> None:
         for event in pygame.event.get():
@@ -48,10 +49,9 @@ class EventHandler:
             elif event.type == self.dead_object_garbage_collection_event and self.level_handler_active():
                 self.level_handler.dead_object_garbage_collection()
 
-        self.display.fill("black")
-
     def process_menu_events(self) -> None:
         left, center, right = pygame.mouse.get_pressed()
+        keys = pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -59,8 +59,9 @@ class EventHandler:
                 button = self.menu_handler.current_menu.get_clicked_button()
                 if button:
                     button.on_click()
-
-        self.display.fill("black")
+            elif keys[pygame.K_SPACE] and self.menu_handler.current_menu == self.menu_handler.menus["game_over_menu"]:
+                self.level_handler = LevelHandler(event_handler=self)
+                self.menu_handler.switch_menu("start_menu")
 
     def run(self) -> None:
         self.current_handler.run()
