@@ -161,7 +161,26 @@ class Player(Entity, Observable):
         if self.attacking and cooldown_elapsed():
             self.attacking = False
 
+    def check_if_player_should_be_dead(self) -> None:
+        """
+             If the health has dropped to or below zero and the Entity
+             is not marked as dead. then kill the Entity
+             """
+
+        def kill_player() -> None:
+            """
+            Sets the Entities status to dead,  Also changes the animation_mode to "dead" which plays the dying animations for the Entity
+            """
+            self.status = "dead"
+            # set animation mode (in parent class) to "dead"
+            self.animation_mode = self.animation_modes["dead"]
+            self.frame_index = 0  # reset the frame index so the death animation starts from the first frame.
+
+        if "dead" not in self.status and self.health_points <= 0:
+            kill_player()
+
     # Override parent method
     def update(self):
         self.attack_cooldown()
+        self.check_if_player_should_be_dead()
         super().update()

@@ -235,6 +235,8 @@ class Level:
     def run(self) -> None:
         try:
             self.visible_sprites.custom_draw(self.player)
+            if self.player.is_dead():
+                self.level_handler.event_handler.set_game_over_screen()
         except Exception as e:
             print(e)
 

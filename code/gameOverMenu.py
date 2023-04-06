@@ -12,7 +12,7 @@ class GameOverMenu(Menu):
         super().__init__(menu_handler)
         center_x, center_y = self.display_surface.get_width() // 2, self.display_surface.get_height() // 2
         self.buttons = [TitleButton("Game Over", (center_x, center_y - 200)),
-                        Button("Press Enter to Continue", (center_x, center_y))]
+                        Button("Press Space to Continue", (center_x, center_y))]
         self.cursor_rect.center = (
             self.buttons[1].text_rect.midleft[0] + self.cursor_offset, self.buttons[1].text_rect.centery)
 
