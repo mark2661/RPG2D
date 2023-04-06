@@ -32,6 +32,14 @@ class EventHandler:
         self.current_handler = self.menu_handler
 
     def process_events(self) -> None:
+        event_function_map: Dict[object, Callable] = {
+                                                      self.level_handler: self.process_level_events,
+                                                      self.menu_handler: self.process_menu_events
+                                                     }
+
+        event_function_map.get(self.current_handler, lambda *args: None)()
+
+    def process_level_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -39,6 +47,18 @@ class EventHandler:
                 self.level_handler.enemy_attack_event()
             elif event.type == self.dead_object_garbage_collection_event and self.level_handler_active():
                 self.level_handler.dead_object_garbage_collection()
+
+        self.display.fill("black")
+
+    def process_menu_events(self) -> None:
+        left, center, right = pygame.mouse.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONUP and left: # left click
+                button = self.menu_handler.current_menu.get_clicked_button()
+                if button:
+                    button.on_click()
 
         self.display.fill("black")
 

@@ -8,11 +8,6 @@ class Button:
         self.display_surface: pygame.Surface = pygame.display.get_surface()
         self.click_function: Callable = click_function
 
-        # # top rect
-        # self.top_rect: pygame.Rect = pygame.Rect(pos, (width, height))
-        # self.top_rect.center = pos
-        # self.top_colour: str = "#475F77"
-
         # text
         self.font: pygame.font.Font = pygame.font.Font(MENU_FONT_TYPE, 50)
         self.text_surf: pygame.Surface = self.font.render(text, True, "#FFFFFF")
@@ -25,7 +20,7 @@ class Button:
         # pygame.draw.rect(self.display_surface, self.top_colour, self.text_rect)
         self.display_surface.blit(self.text_surf, self.text_rect)
 
-    def is_clicked(self) -> bool:
+    def is_cursor_on_button(self) -> bool:
         mouse_pos: tuple[float, float] = pygame.mouse.get_pos()
         return self.text_rect.collidepoint(mouse_pos)
 

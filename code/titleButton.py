@@ -12,3 +12,7 @@ class TitleButton(Button):
         self.font: pygame.font.Font = pygame.font.Font(MENU_FONT_TYPE, 80)
         self.text_surf: pygame.Surface = self.font.render(text, True, "#FFFFFF")
         self.text_rect: pygame.Rect = self.text_surf.get_rect(center=pos)
+
+    # Override parent method
+    def is_cursor_on_button(self) -> bool:
+        return False

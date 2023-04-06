@@ -1,9 +1,15 @@
+import sys
+
 import pygame
 from menu import Menu
 from button import Button
 from titleButton import TitleButton
 from settings import *
 from debug import debug
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from menuHandler import MenuHandler
 
 
 class StartMenu(Menu):
@@ -14,7 +20,11 @@ class StartMenu(Menu):
                         Button("New Game", (center_x, center_y), click_function=self.start_game),
                         Button("Load Game", (center_x, center_y + 100)),
                         Button("Options", (center_x, center_y + 200)),
-                        Button("Quit", (center_x, center_y + 300))]
+                        Button("Quit", (center_x, center_y + 300), click_function=self.quit)]
+        self.cursor_rect.center = (self.buttons[1].text_rect.midleft[0] + self.cursor_offset, self.buttons[1].text_rect.centery)
 
     def start_game(self) -> None:
         self.menu_handler.switch_to_level_handler()
+
+    def quit(self) -> None:
+        sys.exit()
