@@ -17,8 +17,8 @@ class LevelHandler(Observer):
         self.display_surface: pygame.Surface = pygame.display.get_surface()
 
         self.levels: Dict[int, Level] = {
-            0: Level(os.path.join(MAPS_FILE_PATH, "0.tmx")),
-            1: Level(os.path.join(MAPS_FILE_PATH, "1.tmx"))
+            0: Level(map_path=os.path.join(MAPS_FILE_PATH, "0.tmx"), level_handler=self),
+            1: Level(map_path=os.path.join(MAPS_FILE_PATH, "1.tmx"), level_handler=self)
         }  # need to automate
 
         # initialise current level to the starting level

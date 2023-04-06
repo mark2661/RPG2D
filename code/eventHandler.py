@@ -8,7 +8,7 @@ from typing import Union, Dict, Tuple, Callable
 
 class EventHandler:
     def __init__(self):
-        self.level_handler: LevelHandler = LevelHandler()
+        self.level_handler: LevelHandler = LevelHandler(event_handler=self)
         self.menu_handler: MenuHandler = MenuHandler(event_handler=self)
         self.display = pygame.display.get_surface()
         self.current_handler: Union[LevelHandler, MenuHandler] = self.menu_handler
