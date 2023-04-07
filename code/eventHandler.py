@@ -35,6 +35,13 @@ class EventHandler:
         self.set_current_handler_to_menu_handler()
         self.current_handler.switch_menu("game_over_menu")
 
+    def set_pause_menu(self) -> None:
+        self.set_current_handler_to_menu_handler()
+        self.current_handler.switch_menu("pause_menu")
+
+    def resume_game(self) -> None:
+        self.set_current_handler_to_level_handler()
+
     def process_events(self) -> None:
         event_function_map: Dict[object, Callable] = {
             self.level_handler: self.process_level_events,
@@ -45,6 +52,8 @@ class EventHandler:
         self.display.fill("black")
 
     def process_level_events(self) -> None:
+        keys = pygame.key.get_pressed()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -52,6 +61,8 @@ class EventHandler:
                 self.level_handler.enemy_attack_event()
             elif event.type == self.dead_object_garbage_collection_event:
                 self.level_handler.dead_object_garbage_collection()
+            elif event.type == pygame.KEYUP and keys[pygame.K_ESCAPE]:
+                self.set_pause_menu()
 
     def process_menu_events(self) -> None:
         left_mouse_button_clicked, center_mouse_button_clicked, right_mouse_button_clicked = pygame.mouse.get_pressed()

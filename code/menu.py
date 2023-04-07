@@ -20,7 +20,7 @@ class Menu(ABC):
 
     def draw(self) -> None:
         self.display_surface.fill(BLACK)
-        debug(self.buttons[0].clicked)
+        # debug(self.buttons[0].clicked)
         if self.buttons:
             for button in self.buttons:
                 button.draw()

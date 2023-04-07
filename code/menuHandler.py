@@ -1,5 +1,6 @@
 from startMenu import StartMenu
 from gameOverMenu import GameOverMenu
+from pauseMenu import PauseMenu
 from typing import Dict, List, TYPE_CHECKING, Tuple, Callable
 
 if TYPE_CHECKING:
@@ -10,10 +11,12 @@ class MenuHandler:
     def __init__(self, event_handler: "EventHandler") -> None:
         self.menus: Dict[str, StartMenu] = {
                                             "start_menu": StartMenu(menu_handler=self),
-                                            "game_over_menu": GameOverMenu(menu_handler=self)
+                                            "game_over_menu": GameOverMenu(menu_handler=self),
+                                            "pause_menu": PauseMenu(menu_handler=self)
                                            }
         self.event_handler = event_handler
         self.current_menu = self.menus["start_menu"]
+        # self.current_menu = self.menus["pause_menu"]
 
     def switch_menu(self, menu_code: str) -> None:
         if menu_code in self.menus:
