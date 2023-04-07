@@ -42,6 +42,10 @@ class EventHandler:
     def resume_game(self) -> None:
         self.set_current_handler_to_level_handler()
 
+    def leave_game_and_return_to_main_menu(self) -> None:
+        self.level_handler = LevelHandler(event_handler=self)
+        self.menu_handler.switch_menu("start_menu")
+
     def process_events(self) -> None:
         event_function_map: Dict[object, Callable] = {
             self.level_handler: self.process_level_events,
@@ -76,10 +80,6 @@ class EventHandler:
             if button:
                 button.on_click()
 
-        def leave_game_over_screen() -> None:
-            self.level_handler = LevelHandler(event_handler=self)
-            self.menu_handler.switch_menu("start_menu")
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -87,7 +87,7 @@ class EventHandler:
                 menu_button_clicked()
 
             elif keys[pygame.K_SPACE] and game_over_screen_active():
-                leave_game_over_screen()
+                self.leave_game_and_return_to_main_menu()
 
     def run(self) -> None:
         self.current_handler.run()

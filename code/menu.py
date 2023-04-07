@@ -15,6 +15,7 @@ class Menu(ABC):
         self.display_surface: pygame.Surface = pygame.display.get_surface()
         self.menu_handler: "MenuHandler" = menu_handler
         self.buttons: Union[Button, TitleButton] = []
+        self.vertical_button_offset: int = 0
         self.cursor_offset: int = -100
         self.cursor_rect = pygame.Rect(0, 0, 20, 20)
 
@@ -41,6 +42,11 @@ class Menu(ABC):
                     return button
 
         return None
+
+    def get_next_vertical_button_offset(self) -> int:
+        button_offset: int = self.vertical_button_offset
+        self.vertical_button_offset += VERTICAL_BUTTON_OFFSET_INCREMENT_VALUE
+        return button_offset
 
     def run(self) -> None:
         self.draw()

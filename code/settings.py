@@ -10,6 +10,7 @@ BLACK: pygame.color = pygame.Color(0, 0, 0)
 MENU_FONT_TYPE: str = os.path.join(ROOT_DIR, "data", "8_bit_wonder.TTF")
 MENU_BUTTON_WIDTH = 600
 MENU_BUTTON_HEIGHT = 120
+VERTICAL_BUTTON_OFFSET_INCREMENT_VALUE = 100
 
 # Screen/Tile dimensions
 ORIGINAL_TILE_SIZE = 16
