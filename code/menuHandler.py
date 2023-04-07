@@ -13,8 +13,7 @@ class MenuHandler:
                                             "game_over_menu": GameOverMenu(menu_handler=self)
                                            }
         self.event_handler = event_handler
-        # self.current_menu = self.menus["start_menu"]
-        self.current_menu = self.menus["game_over_menu"]
+        self.current_menu = self.menus["start_menu"]
 
     def switch_menu(self, menu_code: str) -> None:
         if menu_code in self.menus:
