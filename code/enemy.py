@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from entity import Entity
+from livingentity import LivingEntity
 from typing import Optional, Union, List, TYPE_CHECKING, Tuple, Dict, Callable
 from a_star import a_star
 from npc import NPC

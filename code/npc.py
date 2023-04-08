@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from entity import Entity
+from livingentity import LivingEntity
 from typing import Optional, Union, List, TYPE_CHECKING, Tuple, Dict, Callable
 from a_star import a_star
 
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
 
 
-class NPC(Entity):
+class NPC(LivingEntity):
     def __init__(self, spawn_point: "SpawnPoint", asset_image_root_dir_path: str, level: "Level",
                  groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
                  obstacle_sprites: pygame.sprite.Group) -> None:

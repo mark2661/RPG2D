@@ -2,7 +2,7 @@ import os
 import pygame
 from settings import *
 from utils import get_spawn_point_id
-from entity import Entity
+from livingentity import LivingEntity
 from observable import Observable
 from observer import Observer
 from typing import Tuple, TYPE_CHECKING, List, Dict
@@ -13,13 +13,13 @@ if TYPE_CHECKING:
     from tile import Tile
 
 
-class Player(Entity, Observable):
+class Player(LivingEntity, Observable):
     def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: list[pygame.sprite.Sprite],
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
                  spawn_points: pygame.sprite.Group, initial_level_code: int, **kwargs):
 
         # call parent class constructors
-        Entity.__init__(self, spawn_point, asset_images_root_dir_path, groups, obstacle_sprites)
+        LivingEntity.__init__(self, spawn_point, asset_images_root_dir_path, groups, obstacle_sprites)
         Observable.__init__(self)
 
         # general setup

@@ -11,7 +11,7 @@ from transitionBox import TransitionBox
 from spawnPoint import SpawnPoint
 from debug import debug
 from enemy import Enemy
-from entity import Entity
+from livingentity import LivingEntity
 from enemyObjectPool import EnemyObjectPool
 
 if TYPE_CHECKING:
@@ -217,15 +217,15 @@ class Level:
                 enemy.set_movement_behaviour_mode("seek")
 
     def de_spawn_dead_entities(self) -> None:
-        def garbage_collection_countdown_time_elapsed(entity: Entity) -> bool:
+        def garbage_collection_countdown_time_elapsed(entity: LivingEntity) -> bool:
             current_time: int = pygame.time.get_ticks()
             if entity.time_of_death:
                 return current_time - entity.time_of_death >= DEAD_OBJECT_CLEARANCE_COUNTDOWN_TIME
             return False
 
         for sprite in self.obstacle_sprites:
-            if isinstance(sprite, Entity) and garbage_collection_countdown_time_elapsed(sprite):
-                entity: Entity = sprite
+            if isinstance(sprite, LivingEntity) and garbage_collection_countdown_time_elapsed(sprite):
+                entity: LivingEntity = sprite
                 entity.kill()
                 # del entity  # eventually add object to object pool instead.
                 self.enemy_object_pool.release(entity)
@@ -277,10 +277,10 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset.y = player.rect.centery - self.half_height
 
         # separate floor tiles and non-floor tiles
-        floor_tiles: List[Tile] = [sprite for sprite in self.sprites() if not isinstance(sprite, Entity) and
+        floor_tiles: List[Tile] = [sprite for sprite in self.sprites() if not isinstance(sprite, LivingEntity) and
                                    sprite.tiled_layer in ["Ground", "Carpet", "Shadows"]]
 
-        non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if isinstance(sprite, Entity)
+        non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if isinstance(sprite, LivingEntity)
                                                        or
                                                        sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"]]
 

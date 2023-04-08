@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
 
 
-class Entity(AbstractEntity):
+class LivingEntity(AbstractEntity):
     def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group) -> None:
 
