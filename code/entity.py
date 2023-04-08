@@ -6,27 +6,19 @@ from typing import List, Dict, Callable, Tuple, TYPE_CHECKING, Optional
 from utils import get_spawn_point_object_data, get_spawn_point_id
 from observable import Observable
 import pathlib
+from abstractEntity import AbstractEntity
 
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
 
 
-class Entity(pygame.sprite.Sprite):
+class Entity(AbstractEntity):
     def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group) -> None:
 
-        super().__init__(groups)
-        # general setup
-        self.display_surface: pygame.Surface = pygame.display.get_surface()
-        default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
-        self.spawn_point: "SpawnPoint" = spawn_point
-        self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
-        self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_associated_tile().rect.topleft)
+        super().__init__(spawn_point, asset_images_root_dir_path, groups, obstacle_sprites)
 
         # animations
-        self.animations: Dict[str, List[pygame.Surface]] = defaultdict(lambda: [])
-        self.import_assets(asset_images_root_dir_path)
         self.status: str = "down"  # status keeps track of the current action and direction of the player
         self.animation_modes: Dict[str, Callable] = {
             "alive": self.alive_animation,
@@ -49,22 +41,6 @@ class Entity(pygame.sprite.Sprite):
         self.speed: float = ENTITY_SPEED
         self.frame_index: int = 0
         self.animation_speed: float = 0.15
-
-        # collisions
-        self.obstacle_sprites: pygame.sprite.Group = obstacle_sprites
-
-        # groups
-        self.member_groups: List[pygame.sprite.Group] = groups
-
-    def import_assets(self, root_dir: str) -> None:
-        for folder in os.listdir(root_dir):
-            folder_path: str = os.path.join(root_dir, folder)
-            for image in os.listdir(folder_path):
-                image_path: str = os.path.join(folder_path, image)
-                surf: pygame.Surface = pygame.image.load(image_path).convert_alpha()
-                # scale player image up to fit map size
-                surf = pygame.transform.scale(surf, (TILE_SIZE, TILE_SIZE))
-                self.animations[folder].append(surf)
 
     def get_status(self) -> None:
         if not self.is_dead():
@@ -121,6 +97,7 @@ class Entity(pygame.sprite.Sprite):
         """ updates y coordinate of the entity """
         self.rect.y += self.direction.y * speed
 
+    # implements abstract parent method
     def collision(self, direction: str) -> None:
         """
             checks for object collision with other collidable objects in the obstacle sprites group
@@ -163,6 +140,7 @@ class Entity(pygame.sprite.Sprite):
 
         collision_type_map[direction]()
 
+    # implements abstract parent method
     def animate(self) -> None:
         self.animation_mode()
 
