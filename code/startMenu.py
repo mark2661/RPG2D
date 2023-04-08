@@ -21,7 +21,6 @@ class StartMenu(Menu):
                         Button("New Game", (center_x, center_y + self.get_next_vertical_button_offset()),
                                click_function=self.start_game),
                         Button("Continue", (center_x, center_y + self.get_next_vertical_button_offset())),
-                        Button("Load Game", (center_x, center_y + self.get_next_vertical_button_offset())),
                         Button("Options", (center_x, center_y + self.get_next_vertical_button_offset())),
                         Button("Quit", (center_x, center_y + self.get_next_vertical_button_offset()),
                                click_function=self.quit)]
@@ -31,5 +30,6 @@ class StartMenu(Menu):
     def start_game(self) -> None:
         self.menu_handler.switch_to_level_handler()
 
-    def quit(self) -> None:
+    @staticmethod
+    def quit() -> None:
         sys.exit()

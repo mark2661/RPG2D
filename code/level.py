@@ -107,8 +107,6 @@ class Level:
                 if spawn_point.get_spawn_point_type() == "enemy":
                     enemy_spawn_point: SpawnPoint = spawn_point
                     self.enemy_object_pool.acquire(spawnPoint=enemy_spawn_point, level=self)
-                    # Enemy(spawn_point=enemy_spawn_point, asset_image_root_dir_path=ENEMY_IMAGES_FILE_PATH, level=self,
-                    #       groups=[self.visible_sprites, self.obstacle_sprites], obstacle_sprites=self.obstacle_sprites)
 
         create_tile_objects()
         create_collidable_objects()
@@ -242,6 +240,7 @@ class Level:
 
         self.visible_sprites.update()
 
+        # Debugging
         try:
             enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
             # debug(f"enemy pool {self.enemy_object_pool.free}")
