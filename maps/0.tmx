@@ -64,7 +64,7 @@
    </properties>
    <point/>
   </object>
-  <object id="23" name="player_init_spawn_point" class="player_spawn_point" x="327.5" y="93">
+  <object id="23" name="player_init_spawn_point" class="player_spawn_point" x="118" y="98.5">
    <properties>
     <property name="spawn_point_type" value="player_init"/>
    </properties>
@@ -72,7 +72,7 @@
   </object>
  </objectgroup>
  <objectgroup id="11" name="Health_Objects">
-  <object id="26" x="236.5" y="242">
+  <object id="26" x="160" y="98">
    <point/>
   </object>
  </objectgroup>

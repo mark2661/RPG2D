@@ -21,6 +21,7 @@ class HealthObject(ObjectEntity):
         # self.spawn_point = None
         self.hit_box = HitBox(position, (TILE_SIZE, TILE_SIZE), self.groups)
         super().__init__(self.hit_box, asset_images_root_dir_path, self.groups, self.obstacle_sprites)
+        self.animation_speed = 0.075
 
     def collision(self) -> None:
         player: "Player" = self.level.player
@@ -41,3 +42,4 @@ class HealthObject(ObjectEntity):
     # Overrides parent method
     def update(self) -> None:
         self.collision()
+        self.animate()

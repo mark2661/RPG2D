@@ -12,12 +12,20 @@ class EventHandler:
         self.menu_handler: MenuHandler = MenuHandler(event_handler=self)
         self.display = pygame.display.get_surface()
         self.current_handler: Union[LevelHandler, MenuHandler] = self.menu_handler
+        self.user_event_id_offset = 0
 
         # events and timers
-        self.enemy_attack_event = pygame.USEREVENT + 0  # Event id 24
-        self.dead_object_garbage_collection_event = pygame.USEREVENT + 1  # id 25
+        self.enemy_attack_event = pygame.USEREVENT + self.get_user_event_id_offset()
+        self.dead_object_garbage_collection_event = pygame.USEREVENT + self.get_user_event_id_offset()
+        self.consumed_object_entity_garbage_collection_event = pygame.USEREVENT + self.get_user_event_id_offset()
         pygame.time.set_timer(self.enemy_attack_event, ENEMY_ATTACK_COOLDOWN_TIME)
         pygame.time.set_timer(self.dead_object_garbage_collection_event, DEAD_OBJECT_GARBAGE_COLLECTION_COOLDOWN_TIME)
+        pygame.time.set_timer(self.consumed_object_entity_garbage_collection_event, OBJECT_ENTITY_FADE_COOLDOWN_TIME)
+
+    def get_user_event_id_offset(self) -> int:
+        offset: int = self.user_event_id_offset
+        self.user_event_id_offset += 1
+        return offset
 
     def level_handler_active(self) -> bool:
         return self.current_handler == self.level_handler
@@ -65,6 +73,8 @@ class EventHandler:
                 self.level_handler.enemy_attack_event()
             elif event.type == self.dead_object_garbage_collection_event:
                 self.level_handler.dead_object_garbage_collection()
+            elif event.type == self.consumed_object_entity_garbage_collection_event:
+                self.level_handler.fade_object_entities()
             elif event.type == pygame.KEYUP and keys[pygame.K_ESCAPE]:
                 self.set_pause_menu()
 

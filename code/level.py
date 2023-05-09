@@ -15,6 +15,7 @@ from livingentity import LivingEntity
 from abstractEntity import AbstractEntity
 from enemyObjectPool import EnemyObjectPool
 from healthObject import HealthObject
+from objectEntity import ObjectEntity
 
 if TYPE_CHECKING:
     from levelHandler import LevelHandler
@@ -241,6 +242,18 @@ class Level:
                 entity.kill()
                 # del entity  # eventually add object to object pool instead.
                 self.enemy_object_pool.release(entity)
+
+    def fade_and_destroy_consumed_object_entities(self) -> None:
+        for obj in self.visible_sprites:
+            if isinstance(obj, ObjectEntity):
+                if obj.has_object_been_used:
+                    if obj.image.get_alpha() > 0:
+                        reduced_alpha_value: float = obj.image.get_alpha() - OBJECT_ENTITY_ALPHA_VALUE_FADE_RATE if \
+                            obj.image.get_alpha() - OBJECT_ENTITY_ALPHA_VALUE_FADE_RATE > 0 else 0
+
+                        obj.image.set_alpha(reduced_alpha_value)
+                    else:
+                        pass
 
     def run(self) -> None:
         try:

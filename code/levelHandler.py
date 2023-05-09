@@ -114,5 +114,8 @@ class LevelHandler(Observer):
     def dead_object_garbage_collection(self) -> None:
         self.current_level.de_spawn_dead_entities()
 
+    def fade_object_entities(self) -> None:
+        self.current_level.fade_and_destroy_consumed_object_entities()
+
     def run(self) -> None:
         self.current_level.run()
