@@ -4,7 +4,7 @@ from settings import *
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], surf: pygame.Surface, groups: pygame.sprite.Group,
-                 tiled_layer: str, pathable: bool = False) -> None:
+                 tiled_layer: str = "", pathable: bool = False) -> None:
 
         super().__init__(groups)
         self.tiled_layer: str = tiled_layer

@@ -46,7 +46,9 @@ MAPS_FILE_PATH = os.path.join(ROOT_DIR, "maps")
 PLAYER_IMAGES_FILE_PATH = os.path.join(ROOT_DIR, "graphics", "player")
 ENEMY_IMAGES_FILE_PATH = os.path.join(ROOT_DIR, "graphics", "enemy")
 DATA_FILE_PATH = os.path.join(ROOT_DIR, 'data')
-TEST_PLAYER_IMAGE_FILE_PATH = os.path.join(ROOT_DIR, "rawAssets", "man.png")
+# TEST_PLAYER_IMAGE_FILE_PATH = os.path.join(ROOT_DIR, "rawAssets", "man.png")
+HEALTH_POTION_IMAGES_FILE_PATH = os.path.join(ROOT_DIR, "graphics", "objects", "health")
 
+# Timer settings
 DEAD_OBJECT_GARBAGE_COLLECTION_COOLDOWN_TIME = 1000
 DEAD_OBJECT_CLEARANCE_COUNTDOWN_TIME = 5000

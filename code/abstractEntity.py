@@ -10,21 +10,15 @@ if TYPE_CHECKING:
 
 class AbstractEntity(pygame.sprite.Sprite, ABC):
 
-    def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
+    def __init__(self, asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group) -> None:
         super().__init__(groups)
-
-        # general setup
-        self.display_surface: pygame.Surface = pygame.display.get_surface()
-        default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
-        self.spawn_point: "SpawnPoint" = spawn_point
-        self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
-        self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_associated_tile().rect.topleft)
 
         # animations
         self.animations: Dict[str, List[pygame.Surface]] = defaultdict(lambda: [])
         self.import_assets(asset_images_root_dir_path)
+        self.frame_index: int = 0
+        self.animation_speed: float = 0.15
 
         # collisions
         self.obstacle_sprites: pygame.sprite.Group = obstacle_sprites

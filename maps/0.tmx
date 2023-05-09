@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="26">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="27">
  <tileset firstgid="1" source="../../pygame/test/Overworld.tsx"/>
  <tileset firstgid="1441" source="../tilesets/yellow_16_X_16_sqaure.tsx"/>
  <tileset firstgid="1442" source="green_16_x_16_square.tsx"/>
@@ -68,6 +68,11 @@
    <properties>
     <property name="spawn_point_type" value="player_init"/>
    </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="11" name="Health_Objects">
+  <object id="26" x="232.5" y="199">
    <point/>
   </object>
  </objectgroup>

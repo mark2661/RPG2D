@@ -1,19 +1,20 @@
 {
-    "activeFile": "1.tmx",
+    "activeFile": "0.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
         "0.tmx": {
             "expandedObjectLayers": [
+                8,
                 7,
-                8
+                11
             ],
             "scale": 2,
-            "selectedLayer": 5,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 177.25,
-                "y": 239
+                "x": 239.75,
+                "y": 239.75
             }
         },
         "1.tmx": {
@@ -21,15 +22,20 @@
                 9
             ],
             "expandedObjectLayers": [
-                6,
-                8
+                8,
+                6
             ],
             "scale": 4,
-            "selectedLayer": 7,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 175.125,
-                "y": 90.75
+                "x": 112.5,
+                "y": 79.875
             }
+        },
+        "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/health_heart.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx": {
             "scaleInDock": 1,
@@ -54,6 +60,7 @@
             }
         },
         "green_16_x_16_square.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         }
@@ -67,11 +74,14 @@
     ],
     "project": "TiledMapProject.tiled-project",
     "recentFiles": [
-        "0.tmx",
         "green_16_x_16_square.tsx",
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/yellow_16_X_16_sqaure.tsx",
         "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/red_16_x_16_square.tsx",
         "1.tmx",
+        "0.tmx",
+        "C:/Users/Mark Cartwright/Desktop/RPG2D/tilesets/health_heart.tsx",
         "C:/Users/Mark Cartwright/Desktop/pygame/test/maps/1.tmx"
-    ]
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
 }

@@ -16,7 +16,16 @@ class LivingEntity(AbstractEntity):
     def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group) -> None:
 
-        super().__init__(spawn_point, asset_images_root_dir_path, groups, obstacle_sprites)
+        super().__init__(asset_images_root_dir_path, groups, obstacle_sprites)
+
+        # general setup
+        self.display_surface: pygame.Surface = pygame.display.get_surface()
+        default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
+        # default_image_path: str = os.path.join(asset_images_root_dir_path, "default_image", "red_square.png")
+        self.spawn_point: "SpawnPoint" = spawn_point
+        self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
+        self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_associated_tile().rect.topleft)
 
         # animations
         self.status: str = "down"  # status keeps track of the current action and direction of the player
@@ -39,8 +48,6 @@ class LivingEntity(AbstractEntity):
         # movement
         self.direction: pygame.math.Vector2 = pygame.math.Vector2()
         self.speed: float = ENTITY_SPEED
-        self.frame_index: int = 0
-        self.animation_speed: float = 0.15
 
     def get_status(self) -> None:
         if not self.is_dead():

@@ -13,6 +13,7 @@ from debug import debug
 from enemy import Enemy
 from livingentity import LivingEntity
 from enemyObjectPool import EnemyObjectPool
+from healthObject import HealthObject
 
 if TYPE_CHECKING:
     from levelHandler import LevelHandler
@@ -88,6 +89,15 @@ class Level:
                 size: Tuple[float, float] = (collidable_object.width, collidable_object.height)
                 HitBox(position, size, [self.obstacle_sprites])
 
+        def create_non_collidable_objects() -> None:
+            def create_health_objects() -> None:
+                health_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Health_Objects")
+                for health_object in health_objects:
+                    object_coordinates: Tuple[float, float] = (health_object.x, health_object.y)
+                    HealthObject(position=object_coordinates, level=self)
+
+            create_health_objects()
+
         def create_transition_objects() -> None:
             transition_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Transition_Objects")
             for transition_object in transition_objects:
@@ -110,6 +120,7 @@ class Level:
 
         create_tile_objects()
         create_collidable_objects()
+        create_non_collidable_objects()
         create_transition_objects()
         create_spawn_point_objects()
         create_enemies()
@@ -278,11 +289,11 @@ class YSortCameraGroup(pygame.sprite.Group):
 
         # separate floor tiles and non-floor tiles
         floor_tiles: List[Tile] = [sprite for sprite in self.sprites() if not isinstance(sprite, LivingEntity) and
-                                   sprite.tiled_layer in ["Ground", "Carpet", "Shadows"]]
+                                   (hasattr(sprite, "tiled_layer") and sprite.tiled_layer in ["Ground", "Carpet", "Shadows"])]
 
         non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if isinstance(sprite, LivingEntity)
                                                        or
-                                                       sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"]]
+                                                       (hasattr(sprite, "tiled_layer") and sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"])]
 
         draw_floor_tiles(floor_tiles)
         draw_non_floor_tiles(non_floor_tiles)
