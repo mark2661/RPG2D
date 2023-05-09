@@ -19,7 +19,7 @@ class ObjectEntity(AbstractEntity):
         default_image_path: str = os.path.join(asset_images_root_dir_path, "down_idle", "down_idle_1.png")
         # default_image_path: str = os.path.join(asset_images_root_dir_path, "default_image", "red_square.png")
         self.image: pygame.Surface = pygame.image.load(default_image_path).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))  # scale image to match screen size
+        self.image = pygame.transform.scale(self.image, (OBJECT_ENTITY_SCALE_SIZE, OBJECT_ENTITY_SCALE_SIZE))  # scale image to match screen size
         self.rect: pygame.Rect = self.image.get_rect(center=hit_box.get_position())
 
         self.has_object_been_used: bool = False
@@ -30,4 +30,8 @@ class ObjectEntity(AbstractEntity):
 
     @abstractmethod
     def animate(self) -> None:
+        pass
+
+    @abstractmethod
+    def update(self) -> None:
         pass

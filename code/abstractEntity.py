@@ -43,3 +43,7 @@ class AbstractEntity(pygame.sprite.Sprite, ABC):
     @abstractmethod
     def collision(self) -> None:
         pass
+
+    @abstractmethod
+    def update(self) -> None:
+        pass

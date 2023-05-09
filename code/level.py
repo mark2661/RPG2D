@@ -12,6 +12,7 @@ from spawnPoint import SpawnPoint
 from debug import debug
 from enemy import Enemy
 from livingentity import LivingEntity
+from abstractEntity import AbstractEntity
 from enemyObjectPool import EnemyObjectPool
 from healthObject import HealthObject
 
@@ -291,7 +292,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         floor_tiles: List[Tile] = [sprite for sprite in self.sprites() if not isinstance(sprite, LivingEntity) and
                                    (hasattr(sprite, "tiled_layer") and sprite.tiled_layer in ["Ground", "Carpet", "Shadows"])]
 
-        non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if isinstance(sprite, LivingEntity)
+        non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if isinstance(sprite, AbstractEntity)
                                                        or
                                                        (hasattr(sprite, "tiled_layer") and sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"])]
 

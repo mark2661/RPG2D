@@ -37,3 +37,7 @@ class HealthObject(ObjectEntity):
         # change the current player image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.rect.center)
+
+    # Overrides parent method
+    def update(self) -> None:
+        self.collision()

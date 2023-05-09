@@ -72,7 +72,7 @@
   </object>
  </objectgroup>
  <objectgroup id="11" name="Health_Objects">
-  <object id="26" x="232.5" y="199">
+  <object id="26" x="236.5" y="242">
    <point/>
   </object>
  </objectgroup>
