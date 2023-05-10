@@ -244,14 +244,27 @@ class Level:
                 self.enemy_object_pool.release(entity)
 
     def fade_and_destroy_consumed_object_entities(self) -> None:
+        """
+        Checks to see if consumable objects of type ObjectEntity have been consumed. i.e. their "has_object_been_used"
+        instance attribute is set to True. If True the alpha value (transparency) is reduced by a rate defined
+        in settings.py until the object is transparent (alpha value = 0). Once the object is transparent it is sent to
+        the object pool (garbage collected)
+        """
+
+        def reduce_object_transparency(object_entity: ObjectEntity) -> None:
+            reduced_alpha_value: float = object_entity.image.get_alpha() - OBJECT_ENTITY_ALPHA_VALUE_FADE_RATE if \
+                object_entity.image.get_alpha() - OBJECT_ENTITY_ALPHA_VALUE_FADE_RATE > 0 else 0
+
+            object_entity.image.set_alpha(reduced_alpha_value)
+
+        def is_visible(object_entity: ObjectEntity) -> bool:
+            return object_entity.image.get_alpha() > 0
+
         for obj in self.visible_sprites:
             if isinstance(obj, ObjectEntity):
                 if obj.has_object_been_used:
-                    if obj.image.get_alpha() > 0:
-                        reduced_alpha_value: float = obj.image.get_alpha() - OBJECT_ENTITY_ALPHA_VALUE_FADE_RATE if \
-                            obj.image.get_alpha() - OBJECT_ENTITY_ALPHA_VALUE_FADE_RATE > 0 else 0
-
-                        obj.image.set_alpha(reduced_alpha_value)
+                    if is_visible(obj):
+                        reduce_object_transparency(obj)
                     else:
                         pass
 
