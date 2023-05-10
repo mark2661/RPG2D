@@ -243,7 +243,7 @@ class Level:
                 # del entity  # eventually add object to object pool instead.
                 self.enemy_object_pool.release(entity)
 
-    def fade_and_destroy_consumed_object_entities(self) -> None:
+    def fade_consumed_object_entities(self) -> None:
         """
         Checks to see if consumable objects of type ObjectEntity have been consumed. i.e. their "has_object_been_used"
         instance attribute is set to True. If True the alpha value (transparency) is reduced by a rate defined
