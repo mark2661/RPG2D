@@ -3,6 +3,7 @@ from typing import List, TYPE_CHECKING
 from enemy import Enemy
 from settings import *
 from enemyFactory import EnemyFactory
+from abstractObjectPool import AbstractObjectPool
 
 if TYPE_CHECKING:
     from level import Level

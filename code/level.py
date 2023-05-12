@@ -260,9 +260,12 @@ class Level:
         def is_visible(object_entity: ObjectEntity) -> bool:
             return object_entity.image.get_alpha() > 0
 
+        def has_been_consumed(object_entity: ObjectEntity) -> bool:
+            return object_entity.has_object_been_used
+
         for obj in self.visible_sprites:
             if isinstance(obj, ObjectEntity):
-                if obj.has_object_been_used:
+                if has_been_consumed(obj):
                     if is_visible(obj):
                         reduce_object_transparency(obj)
                     else:
