@@ -3,14 +3,14 @@ from typing import List, TYPE_CHECKING
 from enemy import Enemy
 from settings import *
 from enemyFactory import EnemyFactory
-from abstractObjectPool import AbstractObjectPool
+from objectPool import ObjectPool
 
 if TYPE_CHECKING:
     from level import Level
     from spawnPoint import SpawnPoint
 
 
-class EnemyObjectPool(metaclass=Singleton):
+class EnemyObjectPool(ObjectPool):
 
     def __init__(self) -> None:
         super().__init__()
@@ -18,10 +18,17 @@ class EnemyObjectPool(metaclass=Singleton):
         self.in_use: List[Enemy] = []
         self.enemy_factory: EnemyFactory = EnemyFactory()
 
-    def acquire(self, spawnPoint: "SpawnPoint", level: "Level") -> Enemy:
+    def acquire(self, **kwargs) -> Enemy:
         if not self.free:
-            new_enemy: Enemy = self.enemy_factory.create_enemy(enemy_spawn_point=spawnPoint, enemy_level=level)
-            self.free.append(new_enemy)
+            try:
+                spawnPoint: "SpawnPoint" = kwargs["spawnPoint"]
+                level: "Level" = kwargs["level"]
+                new_enemy: Enemy = self.enemy_factory.create_enemy(enemy_spawn_point=spawnPoint, enemy_level=level)
+                self.free.append(new_enemy)
+            except KeyError:
+                required_parameters: List[str] = ["spawnPoint: SpawnPoint", "level: Level"]
+                missing_keys = [param for param in required_parameters if param not in kwargs]
+                print(f"Error in {__name__} the following parameters are missing: {missing_keys}")
 
         enemy: Enemy = self.free.pop(0)
         self.in_use.append(enemy)
@@ -31,3 +38,7 @@ class EnemyObjectPool(metaclass=Singleton):
         self.in_use.remove(enemy)
         enemy.reset()
         self.free.append(enemy)
+
+    def clear(self) -> None:
+        self.free.clear()
+        self.in_use.clear()

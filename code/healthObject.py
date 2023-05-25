@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class HealthObject(ObjectEntity):
 
-    def __init__(self, position: Tuple[float, float], level: "Level") -> None:
+    def __init__(self, position: Tuple[float, float], level: "Level", health: int = 0) -> None:
         self.level: "Level" = level
         self.groups: List[pygame.sprite.Group] = [level.visible_sprites]
         self.obstacle_sprites: pygame.sprite.Group = level.obstacle_sprites
@@ -22,6 +22,11 @@ class HealthObject(ObjectEntity):
         self.hit_box = HitBox(position, (TILE_SIZE, TILE_SIZE), self.groups)
         super().__init__(self.hit_box, asset_images_root_dir_path, self.groups, self.obstacle_sprites)
         self.animation_speed = 0.075
+
+    def reset(self) -> None:
+        def reset_transparency(obj: "HealthObject") -> None:
+            # self.image.set_alpha()
+            pass
 
     def collision(self) -> None:
         player: "Player" = self.level.player

@@ -16,13 +16,14 @@ from abstractEntity import AbstractEntity
 from enemyObjectPool import EnemyObjectPool
 from healthObject import HealthObject
 from objectEntity import ObjectEntity
+from objectPoolHandler import ObjectPoolHandler
 
 if TYPE_CHECKING:
     from levelHandler import LevelHandler
 
 
 class Level:
-    def __init__(self, map_path: str, level_handler: "LevelHandler" , player: Player = None) -> None:
+    def __init__(self, map_path: str, level_handler: "LevelHandler", player: Player = None) -> None:
         self.level_handler: "LevelHandler" = level_handler
         # load map
         self.tmx_data: pytmx.pytmx.TiledMap = load_pygame(map_path)
@@ -36,13 +37,14 @@ class Level:
         self.transition_sprites: pygame.sprite.Group = pygame.sprite.Group()
         self.spawn_points: pygame.sprite.Group = pygame.sprite.Group()
 
-        self.level_groups: List[pygame.sprite.Group] = [self.visible_sprites, self.obstacle_sprites, self.transition_sprites,
-                                                  self.spawn_points]
+        self.level_groups: List[pygame.sprite.Group] = [self.visible_sprites, self.obstacle_sprites,
+                                                        self.transition_sprites,
+                                                        self.spawn_points]
 
         # tile map provides a quick way to access tile objects based on their row, col position (not coords) on the grid
         # e.g the tile in the top left would have row = 0 and col = 0
         self.tile_map: Dict[Tuple[int, int], Tile] = dict()
-        self.enemy_object_pool: EnemyObjectPool = EnemyObjectPool()
+        self.object_pool_handler: ObjectPoolHandler = ObjectPoolHandler()
 
         # initialise map
         self.create_map()
@@ -96,7 +98,8 @@ class Level:
                 health_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Health_Objects")
                 for health_object in health_objects:
                     object_coordinates: Tuple[float, float] = (health_object.x, health_object.y)
-                    HealthObject(position=object_coordinates, level=self)
+                    # HealthObject(position=object_coordinates, level=self)
+                    self.object_pool_handler.acquire(HealthObject, position=object_coordinates, level=self)
 
             create_health_objects()
 
@@ -118,14 +121,15 @@ class Level:
             for spawn_point in self.spawn_points:
                 if spawn_point.get_spawn_point_type() == "enemy":
                     enemy_spawn_point: SpawnPoint = spawn_point
-                    self.enemy_object_pool.acquire(spawnPoint=enemy_spawn_point, level=self)
+                    self.object_pool_handler.acquire(Enemy, spawnPoint=enemy_spawn_point, level=self)
 
         create_tile_objects()
         create_collidable_objects()
-        create_non_collidable_objects()
+        # create_non_collidable_objects()
         create_transition_objects()
         create_spawn_point_objects()
         create_enemies()
+        create_non_collidable_objects()
 
     def get_level_groups(self) -> list[pygame.sprite.Group]:
         return self.level_groups
@@ -240,8 +244,7 @@ class Level:
             if isinstance(sprite, LivingEntity) and garbage_collection_countdown_time_elapsed(sprite):
                 entity: LivingEntity = sprite
                 entity.kill()
-                # del entity  # eventually add object to object pool instead.
-                self.enemy_object_pool.release(entity)
+                self.object_pool_handler.release(entity)
 
     def fade_consumed_object_entities(self) -> None:
         """
@@ -263,13 +266,21 @@ class Level:
         def has_been_consumed(object_entity: ObjectEntity) -> bool:
             return object_entity.has_object_been_used
 
+        def de_spawn_consumed_object(entity: ObjectEntity) -> None:
+            # remove from groups on the level
+            entity.kill()
+            self.object_pool_handler.release(entity)
+
+        def object_still_active(entity: ObjectEntity) -> bool:
+            return self.object_pool_handler.is_in_use(entity)
+
         for obj in self.visible_sprites:
             if isinstance(obj, ObjectEntity):
                 if has_been_consumed(obj):
                     if is_visible(obj):
                         reduce_object_transparency(obj)
-                    else:
-                        pass
+                    elif object_still_active(obj):
+                        de_spawn_consumed_object(obj)
 
     def run(self) -> None:
         try:
@@ -285,7 +296,10 @@ class Level:
         try:
             enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
             # debug(f"enemy pool {self.enemy_object_pool.free}")
-            debug(f"player health {self.player.health_points}, enemy_status {enemy_sprite.status}")
+            # debug(f"player health {self.player.health_points}, enemy_status {enemy_sprite.status}")
+            debug(
+                f"object pool in use: {self.object_pool_handler.current_object_pool.in_use}, free: {self.object_pool_handler.current_object_pool.free}")
+
         except:
             pass
 
@@ -319,11 +333,14 @@ class YSortCameraGroup(pygame.sprite.Group):
 
         # separate floor tiles and non-floor tiles
         floor_tiles: List[Tile] = [sprite for sprite in self.sprites() if not isinstance(sprite, LivingEntity) and
-                                   (hasattr(sprite, "tiled_layer") and sprite.tiled_layer in ["Ground", "Carpet", "Shadows"])]
+                                   (hasattr(sprite, "tiled_layer") and sprite.tiled_layer in ["Ground", "Carpet",
+                                                                                              "Shadows"])]
 
-        non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if isinstance(sprite, AbstractEntity)
+        non_floor_tiles: List[pygame.sprite.Sprite] = [sprite for sprite in self.sprites() if
+                                                       isinstance(sprite, AbstractEntity)
                                                        or
-                                                       (hasattr(sprite, "tiled_layer") and sprite.tiled_layer not in ["Ground", "Carpet", "Shadows"])]
+                                                       (hasattr(sprite, "tiled_layer") and sprite.tiled_layer not in [
+                                                           "Ground", "Carpet", "Shadows"])]
 
         draw_floor_tiles(floor_tiles)
         draw_non_floor_tiles(non_floor_tiles)

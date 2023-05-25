@@ -7,6 +7,7 @@ from titleButton import TitleButton
 from settings import *
 from debug import debug
 from typing import TYPE_CHECKING
+from objectPoolHandler import ObjectPoolHandler
 
 if TYPE_CHECKING:
     from menuHandler import MenuHandler
@@ -28,6 +29,8 @@ class StartMenu(Menu):
         self.cursor_rect.center = (self.buttons[1].text_rect.midleft[0] + self.cursor_offset, self.buttons[1].text_rect.centery)
 
     def start_game(self) -> None:
+        # object_pool_handler: ObjectPoolHandler = ObjectPoolHandler()
+        # object_pool_handler.clear_all_object_pools()
         self.menu_handler.switch_to_level_handler()
 
     @staticmethod
