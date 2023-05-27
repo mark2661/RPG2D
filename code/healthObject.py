@@ -14,19 +14,38 @@ class HealthObject(ObjectEntity):
 
     def __init__(self, position: Tuple[float, float], level: "Level", health: int = 0) -> None:
         self.level: "Level" = level
-        self.groups: List[pygame.sprite.Group] = [level.visible_sprites]
-        self.obstacle_sprites: pygame.sprite.Group = level.obstacle_sprites
+        self.groups: List[pygame.sprite.Group] = [self.level.visible_sprites]
+        self.obstacle_sprites: pygame.sprite.Group = self.level.obstacle_sprites
         asset_images_root_dir_path: str = HEALTH_POTION_IMAGES_FILE_PATH
-        # self.spawn_point = SpawnPoint(pos=position, level=self.level, groups=self.groups)
-        # self.spawn_point = None
         self.hit_box = HitBox(position, (TILE_SIZE, TILE_SIZE), self.groups)
         super().__init__(self.hit_box, asset_images_root_dir_path, self.groups, self.obstacle_sprites)
         self.animation_speed = 0.075
 
-    def reset(self) -> None:
-        def reset_transparency(obj: "HealthObject") -> None:
-            # self.image.set_alpha()
-            pass
+    def reset(self, new_level: "Level") -> None:
+        self.level = new_level
+
+        def reset_transparency() -> None:
+            animations: List[pygame.Surface] = self.animations["health"]
+            for animation in animations:
+                animation.set_alpha(255)
+
+        def reset_level_groups() -> None:
+            # ensure sprite is removed from all previous groups
+            self.kill()
+            # add sprite group to the new levels pygame.sprite.Sprite.groups instance var
+            self.add(self.level.visible_sprites)
+
+            # self.hit_box.kill()
+            # self.hit_box.add(new_level.visible_sprites)
+            self.obstacle_sprites = self.level.obstacle_sprites
+
+        def reset_attributes() -> None:
+            self.has_object_been_used = False
+            # TO-DO: reset health attribute
+
+        reset_transparency()
+        reset_level_groups()
+        reset_attributes()
 
     def collision(self) -> None:
         player: "Player" = self.level.player

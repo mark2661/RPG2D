@@ -1,10 +1,11 @@
 import pygame.display
-from typing import Dict, Tuple, Optional, TYPE_CHECKING, Union
+from typing import Dict, Tuple, Optional, TYPE_CHECKING, Union, Callable
 from settings import *
 from level import Level
 from player import Player
 from observer import Observer
 from menu import Menu
+from collections import defaultdict
 
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
@@ -16,29 +17,37 @@ class LevelHandler(Observer):
         self.event_handler: "EventHandler" = event_handler
         self.display_surface: pygame.Surface = pygame.display.get_surface()
 
-        self.levels: Dict[int, Level] = {
-            0: Level(map_path=os.path.join(MAPS_FILE_PATH, "0.tmx"), level_handler=self),
-            1: Level(map_path=os.path.join(MAPS_FILE_PATH, "1.tmx"), level_handler=self)
-        }  # need to automate
+        # Hash map to store Level objects {level_code: Level}
+        self.levels: Dict[int, Optional[Level]] = defaultdict(lambda: None)
 
         # initialise current level to the starting level
-        self.current_level_code: int = 0
-        self.current_level: Level = self.levels[self.current_level_code]
+        self.current_level_code: int
+        self.current_level: Level
 
         # get the pygame group member objects of the current level
-        self.visible_sprites_group: pygame.sprite.Group = None
-        self.obstacle_sprites_group: pygame.sprite.Group = None
-        self.transition_sprites_group: pygame.sprite.Group = None
-        self.spawn_points_group: pygame.sprite.Group = None
+        self.visible_sprites_group: pygame.sprite.Group
+        self.obstacle_sprites_group: pygame.sprite.Group
+        self.transition_sprites_group: pygame.sprite.Group
+        self.spawn_points_group: pygame.sprite.Group
 
-        self.player: Player = self.init_player()
+        self.player: Player
 
+        self.start_game()
         # call super constructor
         super().__init__(self.player)
 
-        self.start_game()
+    def get_level(self, level_code: int) -> "Level":
+        if level_code not in self.levels:
+            try:
+                self.levels[level_code] = Level(map_path=os.path.join(MAPS_FILE_PATH, f"{level_code}.tmx"),
+                                                level_handler=self)
+            except IOError:
+                file_path: str = os.path.join(MAPS_FILE_PATH, f"{level_code}.tmx")
+                raise Exception(f"Error file: {file_path} does not exist")
 
-    def init_player(self) -> Player:
+        return self.levels[level_code]
+
+    def init_player(self):
 
         self.visible_sprites_group, self.obstacle_sprites_group, \
             self.transition_sprites_group, self.spawn_points_group = self.levels[0].get_level_groups()
@@ -46,20 +55,19 @@ class LevelHandler(Observer):
         # create the player instance that will be passed between levels
         player_spawn_point: "SpawnPoint" = \
             [point for point in self.spawn_points_group if point.spawn_point_type == "player_init"][0]
-        player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH,
-                        [self.visible_sprites_group, self.obstacle_sprites_group],
-                        self.obstacle_sprites_group, self.transition_sprites_group,
-                        self.spawn_points_group,
-                        self.current_level_code)
-
-        return player
+        self.player = Player(player_spawn_point, PLAYER_IMAGES_FILE_PATH,
+                             [self.visible_sprites_group, self.obstacle_sprites_group],
+                             self.obstacle_sprites_group, self.transition_sprites_group,
+                             self.spawn_points_group,
+                             self.current_level_code)
 
     def start_game(self) -> None:
         # initialise current level to the starting level
         self.current_level_code = 0
-        self.current_level = self.levels[self.current_level_code]
+        self.current_level: Level = self.get_level(self.current_level_code)
 
         # pass the player instance to the current level
+        self.init_player()
         self.current_level.set_player(self.player)
 
     def transition(self) -> None:
@@ -69,7 +77,7 @@ class LevelHandler(Observer):
             self.current_level_code = self.player.get_current_level_code()
 
             # change current level
-            self.current_level = self.levels[self.current_level_code]
+            self.current_level = self.get_level(self.current_level_code)
 
         def update_player_attributes() -> None:
             # update group attributes

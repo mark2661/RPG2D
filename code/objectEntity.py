@@ -27,7 +27,7 @@ class ObjectEntity(AbstractEntity):
         self.has_object_been_used: bool = False
 
     @abstractmethod
-    def reset(self) -> None:
+    def reset(self, *args, **kwargs) -> None:
         pass
 
     @abstractmethod

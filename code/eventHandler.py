@@ -22,6 +22,13 @@ class EventHandler:
         pygame.time.set_timer(self.dead_object_garbage_collection_event, DEAD_OBJECT_GARBAGE_COLLECTION_COOLDOWN_TIME)
         pygame.time.set_timer(self.consumed_object_entity_garbage_collection_event, OBJECT_ENTITY_FADE_COOLDOWN_TIME)
 
+    def reset_level_handler(self) -> None:
+        """
+            This method is used to re-initialise the level handler and all the levels that the level handler handles.
+            It should be called why "new game" is selected from the start menu.
+        """
+        self.level_handler = LevelHandler(event_handler=self)
+
     def get_user_event_id_offset(self) -> int:
         offset: int = self.user_event_id_offset
         self.user_event_id_offset += 1
@@ -51,7 +58,7 @@ class EventHandler:
         self.set_current_handler_to_level_handler()
 
     def leave_game_and_return_to_main_menu(self) -> None:
-        self.level_handler = LevelHandler(event_handler=self)
+        # self.level_handler = LevelHandler(event_handler=self)
         self.menu_handler.switch_menu("start_menu")
 
     def process_events(self) -> None:

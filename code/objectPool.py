@@ -19,3 +19,8 @@ class ObjectPool(ABC):
     @abstractmethod
     def clear(self) -> None:
         pass
+
+    def release_all(self) -> None:
+        self.free += self.in_use
+        self.in_use.clear()
+        # print(f" free: {self.free}, in_use: {self.in_use}")

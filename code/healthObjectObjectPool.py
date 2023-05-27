@@ -18,10 +18,14 @@ class HealthObjectObjectPool(ObjectPool):
         self.health_object_factory: HealthObjectFactory = HealthObjectFactory()
 
     def acquire(self, **kwargs) -> "HealthObject":
+        try:
+            level: "Level" = kwargs["level"]
+        except KeyError:
+            assert Exception(f"Error in {__name__} the following parameters are missing: level")
+
         if not self.free:
             try:
                 position: Tuple[float, float] = kwargs["position"]
-                level: "Level" = kwargs["level"]
                 new_health_object: "HealthObject" = self.health_object_factory.create_full_health_object(
                                                     position=position, level=level)
                 self.free.append(new_health_object)
@@ -31,12 +35,12 @@ class HealthObjectObjectPool(ObjectPool):
                 print(f"Error in {__name__} the following parameters are missing: {missing_keys}")
 
         health_object: "HealthObject" = self.free.pop(0)
+        health_object.reset(new_level=kwargs["level"])
         self.in_use.append(health_object)
         return health_object
 
     def release(self, health_object: "HealthObject") -> None:
         self.in_use.remove(health_object)
-        health_object.reset()
         self.free.append(health_object)
 
     def clear(self) -> None:

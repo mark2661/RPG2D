@@ -99,7 +99,10 @@ class Level:
                 for health_object in health_objects:
                     object_coordinates: Tuple[float, float] = (health_object.x, health_object.y)
                     # HealthObject(position=object_coordinates, level=self)
+                    op = self.object_pool_handler.object_pools[HealthObject.__name__]
+                    print(f"free {op.free}, in_use: {op.in_use}")
                     self.object_pool_handler.acquire(HealthObject, position=object_coordinates, level=self)
+                    print(f"After: free {op.free}, in_use: {op.in_use}")
 
             create_health_objects()
 
@@ -125,11 +128,10 @@ class Level:
 
         create_tile_objects()
         create_collidable_objects()
-        # create_non_collidable_objects()
+        create_non_collidable_objects()
         create_transition_objects()
         create_spawn_point_objects()
         create_enemies()
-        create_non_collidable_objects()
 
     def get_level_groups(self) -> list[pygame.sprite.Group]:
         return self.level_groups
@@ -294,7 +296,7 @@ class Level:
 
         # Debugging
         try:
-            enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
+            # enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
             # debug(f"enemy pool {self.enemy_object_pool.free}")
             # debug(f"player health {self.player.health_points}, enemy_status {enemy_sprite.status}")
             debug(

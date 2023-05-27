@@ -61,5 +61,10 @@ class ObjectPoolHandler(metaclass=Singleton):
         for object_pool in self.object_pools.values():
             object_pool.clear()
 
+    def free_all_objects_in_all_object_pools(self) -> None:
+        # print(self.free_all_objects_in_all_object_pools.__name__)
+        for object_pool in self.object_pools.values():
+            object_pool.release_all()
+
 
 
