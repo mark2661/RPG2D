@@ -36,6 +36,9 @@ class AbstractEntity(pygame.sprite.Sprite, ABC):
                 surf = pygame.transform.scale(surf, image_scale)
                 self.animations[folder].append(surf)
 
+    # @abstractmethod
+    # def reset(self, *args, **kwargs) -> None:
+    #     pass
     @abstractmethod
     def animate(self) -> None:
         pass

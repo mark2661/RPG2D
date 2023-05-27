@@ -19,8 +19,6 @@ class Enemy(NPC):
 
         super().__init__(spawn_point, asset_image_root_dir_path, level, groups, obstacle_sprites)
 
-        # set initial health, direction, and status
-        self.reset()
 
         # attack
         self.attack_cooldown_time = ENEMY_ATTACK_COOLDOWN_TIME
@@ -45,18 +43,40 @@ class Enemy(NPC):
         """
         self.radius: int = ENEMY_AGGRESSION_RADIUS
 
-    def reset(self) -> None:
-        """
-        re-initialises health, direction, and status back to their original values
-        """
+        # set initial health, direction, and status
+        self.reset(new_level=level)
 
-        # MOVEMENT PARAMETERS
-        # start enemy moving downwards
-        self.direction = pygame.math.Vector2(0, 1)
-        self.status = "down"
+    def reset(self, new_level: "Level") -> None:
+        self.level = new_level
 
-        # stats
-        self.health_points = ENEMY_HEALTH_POINTS  # override parent variable
+        def reset_level_groups() -> None:
+            self.kill()
+            self.add([self.level.visible_sprites, self.level.obstacle_sprites])
+            self.obstacle_sprites = self.level.obstacle_sprites
+
+        def reset_spawn_point() -> None:
+            self.spawn_point.update_level(self.level)
+
+        def reset_attributes() -> None:
+            """
+            re-initialises health, direction, and status back to their original values
+            """
+
+            # MOVEMENT PARAMETERS
+            # start enemy moving downwards
+            self.direction = pygame.math.Vector2(0, 1)
+            self.status = "down"
+            self.movement_behaviour_mode = self.movement_behaviour_modes["patrol"]
+            self.time_of_death = None
+            self.animation_mode = self.alive_animation
+
+            # stats
+            self.health_points = ENEMY_HEALTH_POINTS  # override parent variable
+
+        reset_level_groups()
+        reset_attributes()
+        reset_spawn_point()
+        self.init_position()
 
     def patrol_mode(self, speed: Union[float, int]) -> None:
         """
@@ -152,6 +172,7 @@ class Enemy(NPC):
         to the next tile in the path list of pathable Tile objects leading to the entities spawn point.
         """
         path_to_spawn_point: Optional[List["Tile"]] = self.get_path_to_spawn_point()
+        # print(path_to_spawn_point)
 
         if self.path_exist(path_to_spawn_point):
             next_tile: "Tile" = path_to_spawn_point[1]
@@ -231,7 +252,8 @@ class Enemy(NPC):
         Calculates a path from the entity to the player (using A*). Returns a list of adjacent pathable tiles,
         if a path exist else None.
         """
-        return a_star(start=self.level.get_tile(self.rect.center), end=self.level.get_tile(self.level.player.rect.center),
+        return a_star(start=self.level.get_tile(self.rect.center),
+                      end=self.level.get_tile(self.level.player.rect.center),
                       level=self.level)
 
     # Overrides parent method

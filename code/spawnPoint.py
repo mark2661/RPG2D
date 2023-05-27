@@ -16,15 +16,17 @@ class SpawnPoint(HitBox):
         self.spawn_point_id: int = spawn_point_id
         self.spawn_point_type: str = spawn_point_type
         self.level: "Level" = level
-        self.tile: "Tile" = self.level.get_tile(self.pos)
 
     def get_spawn_point_id(self) -> Optional[int]:
         return self.spawn_point_id
 
     def get_associated_tile(self) -> "Tile":
-        return self.tile
+        return self.level.get_tile(self.init_pos)
 
     def get_spawn_point_type(self) -> Optional[str]:
         return self.spawn_point_type
+
+    def update_level(self, new_level: "Level") -> None:
+        self.level = new_level
 
 

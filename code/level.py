@@ -98,11 +98,7 @@ class Level:
                 health_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Health_Objects")
                 for health_object in health_objects:
                     object_coordinates: Tuple[float, float] = (health_object.x, health_object.y)
-                    # HealthObject(position=object_coordinates, level=self)
-                    op = self.object_pool_handler.object_pools[HealthObject.__name__]
-                    print(f"free {op.free}, in_use: {op.in_use}")
                     self.object_pool_handler.acquire(HealthObject, position=object_coordinates, level=self)
-                    print(f"After: free {op.free}, in_use: {op.in_use}")
 
             create_health_objects()
 
@@ -124,7 +120,10 @@ class Level:
             for spawn_point in self.spawn_points:
                 if spawn_point.get_spawn_point_type() == "enemy":
                     enemy_spawn_point: SpawnPoint = spawn_point
+                    op = self.object_pool_handler.object_pools[Enemy.__name__]
+                    print(f"Before: free {op.free}, in_use: {op.in_use}")
                     self.object_pool_handler.acquire(Enemy, spawnPoint=enemy_spawn_point, level=self)
+                    print(f"After: free {op.free}, in_use: {op.in_use}")
 
         create_tile_objects()
         create_collidable_objects()
@@ -296,11 +295,12 @@ class Level:
 
         # Debugging
         try:
-            # enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
+            enemy_sprite = [x for x in self.visible_sprites if type(x) == Enemy][0]
             # debug(f"enemy pool {self.enemy_object_pool.free}")
-            # debug(f"player health {self.player.health_points}, enemy_status {enemy_sprite.status}")
-            debug(
-                f"object pool in use: {self.object_pool_handler.current_object_pool.in_use}, free: {self.object_pool_handler.current_object_pool.free}")
+            debug(f"player health {self.player.health_points}, enemy_status {enemy_sprite.status}")
+            # print(id(self.player))
+            # debug(
+                # f"object pool in use: {self.object_pool_handler.current_object_pool.in_use}, free: {self.object_pool_handler.current_object_pool.free}")
 
         except:
             pass

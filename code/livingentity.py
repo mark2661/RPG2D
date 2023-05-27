@@ -28,13 +28,14 @@ class LivingEntity(AbstractEntity):
         self.rect: pygame.Rect = self.image.get_rect(topleft=self.spawn_point.get_associated_tile().rect.topleft)
 
         # animations
-        self.status: str = "down"  # status keeps track of the current action and direction of the player
+        self.status = "down"  # status keeps track of the current action and direction of the player
         self.animation_modes: Dict[str, Callable] = {
-            "alive": self.alive_animation,
-            "dead": self.dead_animation
-        }
+                                                        "alive": self.alive_animation,
+                                                        "dead": self.dead_animation
+                                                    }
 
         self.animation_mode: Callable = self.alive_animation
+        self.init_position()
 
         # stats
         self.health_points: int = DEFAULT_HEALTH_POINTS
@@ -48,6 +49,9 @@ class LivingEntity(AbstractEntity):
         # movement
         self.direction: pygame.math.Vector2 = pygame.math.Vector2()
         self.speed: float = ENTITY_SPEED
+
+    def init_position(self) -> None:
+        self.rect.topleft = self.spawn_point.get_associated_tile().rect.topleft
 
     def get_status(self) -> None:
         if not self.is_dead():

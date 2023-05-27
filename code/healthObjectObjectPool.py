@@ -32,10 +32,10 @@ class HealthObjectObjectPool(ObjectPool):
             except KeyError:
                 required_parameters: List[str] = ["position: Tuple[float, float]", "level: Level"]
                 missing_keys = [param for param in required_parameters if param not in kwargs]
-                print(f"Error in {__name__} the following parameters are missing: {missing_keys}")
+                assert Exception(f"Error in {__name__} the following parameters are missing: {missing_keys}")
 
         health_object: "HealthObject" = self.free.pop(0)
-        health_object.reset(new_level=kwargs["level"])
+        health_object.reset(new_level=level)
         self.in_use.append(health_object)
         return health_object
 

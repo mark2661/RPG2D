@@ -15,11 +15,10 @@ class NPC(LivingEntity):
     def __init__(self, spawn_point: "SpawnPoint", asset_image_root_dir_path: str, level: "Level",
                  groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
                  obstacle_sprites: pygame.sprite.Group) -> None:
-
         super().__init__(spawn_point, asset_image_root_dir_path, groups, obstacle_sprites)
 
         # store the level object in associated with the instance
-        self.level: Level = level
+        # self.level: Level = level
 
     def update_status(self) -> None:
         """
@@ -28,11 +27,15 @@ class NPC(LivingEntity):
         """
         pass
 
+    def reset(self, *args, **kwargs) -> None:
+        pass
+
     def check_if_npc_should_be_dead(self) -> None:
         """
         If the health has dropped to or below zero and the Entity
         is not marked as dead. then kill the Entity
         """
+
         def kill_npc() -> None:
             """
             Sets the Entities status to dead,  Also changes the animation_mode to "dead" which plays the dying animations for the Entity
@@ -52,4 +55,3 @@ class NPC(LivingEntity):
         self.check_if_npc_should_be_dead()
         # print(f"in NPC: {self.is_dead()}")
         super().update()
-

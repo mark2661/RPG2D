@@ -19,10 +19,14 @@ class EnemyObjectPool(ObjectPool):
         self.enemy_factory: EnemyFactory = EnemyFactory()
 
     def acquire(self, **kwargs) -> Enemy:
+        try:
+            level: "Level" = kwargs["level"]
+        except KeyError:
+            raise Exception(f"Error in {__name__} the following parameters are missing: level")
+
         if not self.free:
             try:
                 spawnPoint: "SpawnPoint" = kwargs["spawnPoint"]
-                level: "Level" = kwargs["level"]
                 new_enemy: Enemy = self.enemy_factory.create_enemy(enemy_spawn_point=spawnPoint, enemy_level=level)
                 self.free.append(new_enemy)
             except KeyError:
@@ -31,12 +35,12 @@ class EnemyObjectPool(ObjectPool):
                 print(f"Error in {__name__} the following parameters are missing: {missing_keys}")
 
         enemy: Enemy = self.free.pop(0)
+        enemy.reset(new_level=level)
         self.in_use.append(enemy)
         return enemy
 
     def release(self, enemy: Enemy) -> None:
         self.in_use.remove(enemy)
-        enemy.reset()
         self.free.append(enemy)
 
     def clear(self) -> None:
