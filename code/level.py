@@ -24,6 +24,11 @@ if TYPE_CHECKING:
 
 
 class Level:
+    """
+       The Level class encapsulates the logic and functionality related to a game level. It is responsible for creating
+       and managing various objects within the level, including tiles, obstacles, spawn points, enemies, and transition
+       objects. The class loads map data from a file and uses it to create in-game objects based on the data provided.
+    """
     def __init__(self, map_path: str, level_handler: "LevelHandler", player: Player = None) -> None:
         self.level_handler: "LevelHandler" = level_handler
         # load map

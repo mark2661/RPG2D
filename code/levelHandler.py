@@ -13,6 +13,11 @@ if TYPE_CHECKING:
 
 
 class LevelHandler(Observer):
+    """
+       The LevelHandler class manages game levels, loosely following the facade design pattern.
+       It initializes the current level, handles level transitions, updates player attributes and positions when
+       transitioning, and manages various game events such as enemy attacks and dead object cleanup.
+    """
     def __init__(self, event_handler: "EventHandler") -> None:
         self.event_handler: "EventHandler" = event_handler
         self.display_surface: pygame.Surface = pygame.display.get_surface()
@@ -37,6 +42,10 @@ class LevelHandler(Observer):
         super().__init__(self.player)
 
     def get_level(self, level_code: int) -> "Level":
+        """
+           Retrieves a specific level based on the given level code. If the level is not already loaded,
+           it loads it from a file and caches it for future use.
+        """
         if level_code not in self.levels:
             try:
                 self.levels[level_code] = Level(map_path=os.path.join(MAPS_FILE_PATH, f"{level_code}.tmx"),
@@ -47,7 +56,11 @@ class LevelHandler(Observer):
 
         return self.levels[level_code]
 
-    def init_player(self):
+    def init_player(self) -> None:
+        """
+            Initializes the player character by creating a Player instance and assigning it to the current level.
+            It also sets up the player's sprite groups and spawn point.
+        """
 
         self.visible_sprites_group, self.obstacle_sprites_group, \
             self.transition_sprites_group, self.spawn_points_group = self.levels[0].get_level_groups()
@@ -71,6 +84,11 @@ class LevelHandler(Observer):
         self.current_level.set_player(self.player)
 
     def transition(self) -> None:
+        """
+           Handles level transitions when the player collides with a transition object.
+           It updates the current level instance attribute, player attributes and position according to the
+           new level (i.e. groups and spawn point).
+        """
         # if player has collided with a transition object
         def transition_map() -> None:
             # update current level code
@@ -109,6 +127,12 @@ class LevelHandler(Observer):
 
     # Overrides parent method
     def observer_update(self) -> None:
+        """
+            Overrides the parent method to handle observer updates. Checks if the player has transitioned to a new
+            level and triggers the transition if needed. Otherwise, it instructs Enemy objects in the current level to
+            scan for the player object.
+        """
+
         if self.current_level_code != self.player.get_current_level_code():
             self.transition()
 
@@ -120,9 +144,16 @@ class LevelHandler(Observer):
         self.current_level.make_eligible_enemies_attack_player()
 
     def dead_object_garbage_collection(self) -> None:
+        """
+           Releases "dead" entities to their respective object pool. By instructing the current level to
+           despawn dead entities.
+        """
         self.current_level.de_spawn_dead_entities()
 
     def fade_object_entities(self) -> None:
+        """
+           Initiates fading of consumed object entities by instructing the current level to fade them.
+        """
         self.current_level.fade_consumed_object_entities()
 
     def run(self) -> None:
