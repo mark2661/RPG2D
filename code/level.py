@@ -20,6 +20,7 @@ from objectPoolHandler import ObjectPoolHandler
 
 if TYPE_CHECKING:
     from levelHandler import LevelHandler
+    from objectPool import ObjectPool
 
 
 class Level:
@@ -53,8 +54,9 @@ class Level:
         self.player: Player = player
 
     def create_map(self) -> None:
-        """ This function creates individual tile objects for each tile in the .tmx file assigned to self.tmx_data
-            and adds them to a pygame sprite group
+        """
+        This function crates in-game objects representing tiles and objects defined in the layers withing the levels
+        map-file.
         """
 
         # catch ValueError if Pathing layer doesn't exist
@@ -64,10 +66,18 @@ class Level:
             pathable_tiles = []
 
         def create_tile_objects() -> None:
+            """
+            Iterates over visible layers from the games tile map data and creates Tile objects.
+            For each tile, the code calculates its position based on its coordinates in the map-file and creates a new
+            Tile object using position and image data from the map file Tile objects are then stored in a
+            tile_map dictionary using the tile's coordinates as the keys for quick access.
+            """
             def is_pathable_tile(tile_top_left_pos: tuple[float, float]) -> bool:
                 """
-                    if the tile has the same world coordinates as a tile in pathable tiles then that tile is pathable
-                    since the tiles are the same.
+                    Checks to see whether the tile was declared as pathable in the map-file. A tile is pathable if their
+                    exist a tile in the non-visible pathable tiles layer of the map-file with the same world
+                    coordinates.
+                    Pathable tiles are tiles which non-player entities are permitted to move on.
                 """
                 for index, pathable_tile in enumerate(pathable_tiles):
                     pathable_tile_x: float
@@ -87,6 +97,12 @@ class Level:
                         self.tile_map[(x, y)] = new_tile
 
         def create_collidable_objects() -> None:
+            """
+            Creates collidable objects or obstacles based on objects defined in the "Collision_Objects"
+            layer of the games map data. It iterates over the objects in the objects defined in the layer and retrieves
+            their positions and sizes, and creates corresponding HitBox objects to represent the collidable objects in
+            the game.
+            """
             collidable_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Collision_Objects")
             for collidable_object in collidable_objects:
                 position: Tuple[float, float] = (collidable_object.x, collidable_object.y)
@@ -94,7 +110,19 @@ class Level:
                 HitBox(position, size, [self.obstacle_sprites])
 
         def create_non_collidable_objects() -> None:
+            """
+             Creates non_collidable objects based on objects defined in the non-collidable layers of the
+             games map data. It iterates over non-collidable layers in the map-file and calls corresponding helper
+             functions to create in-game objects representing the objects in the map-file layer, based on the data from
+             the map-file object.
+            """
             def create_health_objects() -> None:
+                """
+                   Creates HealthObject's based on objects defined in the map-file layer named
+                   "Health_Objects". It iterates over the objects in the layer, retrieves their coordinates,
+                   and request and initialises in-game HealthObject instances from an object pool using the
+                   object_pool_handler.
+                """
                 health_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Health_Objects")
                 for health_object in health_objects:
                     object_coordinates: Tuple[float, float] = (health_object.x, health_object.y)
@@ -103,6 +131,13 @@ class Level:
             create_health_objects()
 
         def create_transition_objects() -> None:
+            """
+            Creates transition objects (objects that can trigger events when collided with. i.e a level change or
+            cut scene) from objects defined in an object layer named "Transition_Objects" in the map-file.
+            The function iterates over the objects in the map-file layer, retrieves their positions, sizes, and
+            transition codes (a numeric value mapping the object to an event), and creates corresponding in-game
+            TransitionBox objects.
+            """
             transition_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Transition_Objects")
             for transition_object in transition_objects:
                 position: Tuple[float, float] = (transition_object.x, transition_object.y)
@@ -110,6 +145,11 @@ class Level:
                 TransitionBox(position, size, [self.transition_sprites], transition_object.transition_code)
 
         def create_spawn_point_objects() -> None:
+            """
+               Creates SpawnPoint objects based on objects defined in the map-file object layer named "Spawn_Points".
+               For each object in the layer the function, retrieves their position, and creates corresponding in-game
+               SpawnPoint objects.
+            """
             spawn_point_objects: pytmx.pytmx.TiledObjectGroup = self.tmx_data.get_layer_by_name("Spawn_Points")
             for spawn_point in spawn_point_objects:
                 position: Tuple[float, float] = (spawn_point.x, spawn_point.y)
@@ -117,13 +157,16 @@ class Level:
                            spawn_point_type=spawn_point.spawn_point_type)
 
         def create_enemies() -> None:
+            """
+            Creates Enemy objects using the levels SpawnPoint objects. The function iterates over the spawn points,
+            checks if the spawn point type is "enemy", and acquires instances of the Enemy class from the object
+            pool (via the object pool handler).
+            """
             for spawn_point in self.spawn_points:
                 if spawn_point.get_spawn_point_type() == "enemy":
                     enemy_spawn_point: SpawnPoint = spawn_point
-                    op = self.object_pool_handler.object_pools[Enemy.__name__]
-                    print(f"Before: free {op.free}, in_use: {op.in_use}")
+                    op: "ObjectPool" = self.object_pool_handler.object_pools[Enemy.__name__]
                     self.object_pool_handler.acquire(Enemy, spawnPoint=enemy_spawn_point, level=self)
-                    print(f"After: free {op.free}, in_use: {op.in_use}")
 
         create_tile_objects()
         create_collidable_objects()
@@ -139,8 +182,10 @@ class Level:
         self.player = player
 
     def get_tile(self, pos: Tuple[Union[float, int], Union[float, int]]) -> Optional[Tile]:
-        """ Calculates the row and column number of the position argument and returns the tile at that position
-            if there is no tile at the calculated position returns None """
+        """
+            Calculates the row and column number of the pos argument and returns the in-game tile object for that
+            position. If there is no tile at the calculated position the function returns None
+        """
         row: int = pos[0] // TILE_SIZE
         col: int = pos[1] // TILE_SIZE
 
@@ -148,9 +193,9 @@ class Level:
 
     def get_neighbours(self, tile: Tile, directions: List[Tuple[int, int]]):
         """
-              Returns immediately neighbouring tiles of the tile parameter object, in the directions
-              provided as argument if the neighbour tile exist on the map.
-          """
+          Returns immediately neighbouring tiles of the "tile" argument, for the directions
+          listed in the "directions" argument if the neighbour tile exist on the map.
+        """
 
         neighbours: List[Tile] = []
 
@@ -166,8 +211,8 @@ class Level:
 
     def get_cartesian_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
         """
-            Returns immediately neighbouring tiles in the cartesian directions of the tile parameter object
-            if the neighbour tile exist on the map.
+            Returns immediately neighbouring tiles in the cartesian directions of the "tile" argument.
+            If the neighbour tile exist on the map.
         """
 
         # Cartesian directions only NO DIAGONALS
@@ -176,7 +221,7 @@ class Level:
 
     def get_all_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
         """
-            Returns all immediately neighbouring tiles of the tile parameter object (four cardinal directions
+            Returns all immediately neighbouring tiles of the "tile" argument (four cardinal directions
             plus diagonals) if the neighbour tile exist on the map.
         """
 
@@ -187,7 +232,7 @@ class Level:
     def get_pathable_neighbours(self, tile: Tile) -> Optional[List[Tile]]:
         """
             Returns all PATHABLE immediately neighbouring tiles (cartesian neighbours only)
-             if the tile parameter object if the neighbour tile exist on the map.
+            if the tile parameter object if the neighbour tile exist on the map.
         """
 
         neighbours: Union[List[Tile], None] = self.get_cartesian_neighbours(tile)
@@ -197,9 +242,8 @@ class Level:
         """
         Returns a list of alive Enemy objects present on the Level.
         An Enemy object is alive if it is a member of the obstacle_sprites group and it's status instance variable is
-        not set to "dead".
+        NOT set to "dead".
         """
-
         enemies: List[Enemy] = []
         for sprite in self.obstacle_sprites:
             if type(sprite) == Enemy:
@@ -220,7 +264,8 @@ class Level:
             move, but it will face towards the player.
             Else if the players current position lies within any enemy sprites circle of aggression but not within
             the circle of attack, the enemy's movement_behaviour_mode is set to "seek" meaning the enemy sprite will
-            path towards the player until the player lies within the circle of attack.
+            path towards the player until either the player lies within the circle of attack or a path to the enemy
+            cannot be found.
         """
 
         for enemy in self.get_alive_enemies():
@@ -235,6 +280,10 @@ class Level:
                 enemy.set_movement_behaviour_mode("seek")
 
     def de_spawn_dead_entities(self) -> None:
+        """
+        Releases dead objects of type LivingEntity to their corresponding object pools (via the object pool handler).
+        after a time period defined in settings.py has elapsed.
+        """
         def garbage_collection_countdown_time_elapsed(entity: LivingEntity) -> bool:
             current_time: int = pygame.time.get_ticks()
             if entity.time_of_death:
@@ -251,8 +300,9 @@ class Level:
         """
         Checks to see if consumable objects of type ObjectEntity have been consumed. i.e. their "has_object_been_used"
         instance attribute is set to True. If True the alpha value (transparency) is reduced by a rate defined
-        in settings.py until the object is transparent (alpha value = 0). Once the object is transparent it is sent to
-        the object pool (garbage collected)
+        in settings.py until the object is transparent (alpha value = 0). Once the object transparent it is removed from
+        all the level groups (i.e. no longer intractable or rendered to screen) and sent to it's corresponding object
+        pool (via the object pool handler).
         """
 
         def reduce_object_transparency(object_entity: ObjectEntity) -> None:
