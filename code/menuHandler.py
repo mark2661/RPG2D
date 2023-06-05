@@ -8,6 +8,10 @@ if TYPE_CHECKING:
 
 
 class MenuHandler:
+    """
+    The MenuHandler class is responsible for managing different menus in the game.Its main purpose is to handle
+    menu-related functionality and facilitate smooth transitions between different menus in the game.
+    """
     def __init__(self, event_handler: "EventHandler") -> None:
         self.menus: Dict[str, StartMenu] = {
                                             "start_menu": StartMenu(menu_handler=self),
@@ -19,6 +23,10 @@ class MenuHandler:
         # self.current_menu = self.menus["pause_menu"]
 
     def switch_menu(self, menu_code: str) -> None:
+        """
+           Switches the current menu based on the menu code provided, updating the current menu to the corresponding
+           menu object.
+        """
         if menu_code in self.menus:
             self.current_menu = self.menus[menu_code]
 

@@ -7,6 +7,12 @@ from typing import Union, Dict, Tuple, Callable
 
 
 class EventHandler:
+    """
+   The EventHandler class is responsible for managing game events and controlling the flow of the game. It initializes
+   instances of the LevelHandler and MenuHandler classes. The class handles user input events and delegates them to the
+   appropriate handler based on the current active handler. It also manages timers for events such as enemy attacks and
+   object entity cleanup. Its main purpose is to coordinate between the level and menu handlers, and process events.
+   """
     def __init__(self):
         self.level_handler: LevelHandler = LevelHandler(event_handler=self)
         self.menu_handler: MenuHandler = MenuHandler(event_handler=self)
@@ -35,9 +41,15 @@ class EventHandler:
         return offset
 
     def level_handler_active(self) -> bool:
+        """
+           Returns a boolean indicating if the current handler is the level handler.
+        """
         return self.current_handler == self.level_handler
 
     def menu_handler_active(self) -> bool:
+        """
+           Returns a boolean indicating if the current handler is the menu handler.
+        """
         return self.current_handler == self.menu_handler
 
     def set_current_handler_to_level_handler(self) -> None:
@@ -62,6 +74,10 @@ class EventHandler:
         self.menu_handler.switch_menu("start_menu")
 
     def process_events(self) -> None:
+        """
+           Processes events based on the current handler, calls the corresponding event processing function, and
+           clears the display surface.
+        """
         event_function_map: Dict[object, Callable] = {
             self.level_handler: self.process_level_events,
             self.menu_handler: self.process_menu_events
@@ -71,6 +87,10 @@ class EventHandler:
         self.display.fill("black")
 
     def process_level_events(self) -> None:
+        """
+           Processes events specific to the level handler, handles keyboard events and timers, and calls corresponding
+           level handler methods based on the event type.
+        """
         keys = pygame.key.get_pressed()
 
         for event in pygame.event.get():
@@ -86,6 +106,10 @@ class EventHandler:
                 self.set_pause_menu()
 
     def process_menu_events(self) -> None:
+        """
+           Processes events specific to the menu handler, handles mouse and keyboard events, and calls menu handler
+           methods based on the event type.
+        """
         left_mouse_button_clicked, center_mouse_button_clicked, right_mouse_button_clicked = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
 
