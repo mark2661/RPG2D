@@ -13,6 +13,10 @@ if TYPE_CHECKING:
 
 
 class Enemy(NPC):
+    """
+       Class encapsulates the behavior, movement, and interaction of enemy entities in the game,
+       providing flexibility and customization options for enemy behavior.
+    """
     def __init__(self, spawn_point: "SpawnPoint", asset_image_root_dir_path: str, level: "Level",
                  groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
                  obstacle_sprites: pygame.sprite.Group) -> None:
@@ -47,6 +51,9 @@ class Enemy(NPC):
         self.reset(new_level=level)
 
     def reset(self, new_level: "Level") -> None:
+        """
+           Resets the enemy's attributes, level groups, and spawn point to their initial values.
+        """
         self.level = new_level
 
         def reset_level_groups() -> None:

@@ -14,6 +14,10 @@ if TYPE_CHECKING:
 
 
 class Player(LivingEntity, Observable):
+    """
+       The Player class represents the player character in the game. It extends the LivingEntity class and implements
+       the Observable interface. The class handles player input, movement, collisions, attacks, and health management.
+    """
     def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: list[pygame.sprite.Sprite],
                  obstacle_sprites: pygame.sprite.Group, transition_sprites: pygame.sprite.Group,
                  spawn_points: pygame.sprite.Group, initial_level_code: int, **kwargs):
@@ -42,6 +46,10 @@ class Player(LivingEntity, Observable):
         self.__set_observers(kwargs.get("observers", None))
 
     def __set_observers(self, observers: list[Observer] = None):
+        """
+           Subscribes the provided observers to the player, allowing them to receive notifications when the
+           player's position changes.
+        """
         if observers:
             for observer in observers:
                 self.observable_add(observer)
@@ -63,6 +71,10 @@ class Player(LivingEntity, Observable):
 
     # Override
     def input(self):
+        """
+           Handles player keyboard inputs for movement and attacking. It sets the player's direction and status
+           based on the pressed keys. When the attack key is pressed, it triggers the attack method.
+        """
         keys = pygame.key.get_pressed()
         up, down, left, right = keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]
 
@@ -135,7 +147,7 @@ class Player(LivingEntity, Observable):
     def attack(self) -> None:
         """
         Removes health points from any attackable objects where the Player is within their circle of attack, if
-        the Player and the attackable object are facing one another
+        the Player and the attackable object are facing one another.
         """
         valid_direction_combinations: Dict[str, str] = {"up": "down",
                                                         "right": "left",
@@ -163,13 +175,14 @@ class Player(LivingEntity, Observable):
 
     def check_if_player_should_be_dead(self) -> None:
         """
-             If the health has dropped to or below zero and the Entity
-             is not marked as dead. then kill the Entity
-             """
+           Checks if the player's health points have dropped to or below zero and marks the player as dead if
+           necessary, by setting the player's status instance attribute to "dead".
+        """
 
         def kill_player() -> None:
             """
-            Sets the Entities status to dead,  Also changes the animation_mode to "dead" which plays the dying animations for the Entity
+            Sets the Entities status to dead,  Also changes the animation_mode to "dead" which plays the dying
+            animations for the Entity
             """
             self.status = "dead"
             # set animation mode (in parent class) to "dead"

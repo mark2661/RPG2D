@@ -13,6 +13,12 @@ if TYPE_CHECKING:
 
 
 class LivingEntity(AbstractEntity):
+    """
+   LivingEntity class extends the AbstractEntity class by introducing health-related attributes and methods,
+   enabling the implementation of health systems and survival mechanics for living entities in a game. It provides a
+   foundation for creating characters, creatures, or any other entities that have health and can be damaged or healed
+   during gameplay.
+    """
     def __init__(self, spawn_point: "SpawnPoint", asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group) -> None:
 
@@ -30,9 +36,9 @@ class LivingEntity(AbstractEntity):
         # animations
         self.status = "down"  # status keeps track of the current action and direction of the player
         self.animation_modes: Dict[str, Callable] = {
-                                                        "alive": self.alive_animation,
-                                                        "dead": self.dead_animation
-                                                    }
+            "alive": self.alive_animation,
+            "dead": self.dead_animation
+        }
 
         self.animation_mode: Callable = self.alive_animation
         self.init_position()
@@ -51,9 +57,15 @@ class LivingEntity(AbstractEntity):
         self.speed: float = ENTITY_SPEED
 
     def init_position(self) -> None:
+        """
+           Sets the initial position of the entity to match the position of its associated SpawnPoint.
+        """
         self.rect.topleft = self.spawn_point.get_associated_tile().rect.topleft
 
     def get_status(self) -> None:
+        """
+           Determines the current status of the entity based on its actions and updates the status variable accordingly.
+        """
         if not self.is_dead():
             # idle status
             if all(velocity == 0 for velocity in self.direction) and \
@@ -81,6 +93,9 @@ class LivingEntity(AbstractEntity):
         return not self.is_dead()
 
     def reduce_health(self, damage: float) -> None:
+        """
+           Reduces the health of the entity by the specified amount of damage.
+        """
         self.health_points -= damage
 
     def input(self) -> None:
@@ -153,9 +168,16 @@ class LivingEntity(AbstractEntity):
 
     # implements abstract parent method
     def animate(self) -> None:
+        """
+           Updates the animation of the entity based on its current status. Selects the appropriate frames from the
+           animation based on the status variable.
+        """
         self.animation_mode()
 
     def alive_animation(self) -> None:
+        """
+           Animates the entity when it is alive. Advances through the frames of the animation, looping if necessary.
+        """
         animation: List[pygame.Surface] = self.animations[self.status]
 
         # loop over frame index
@@ -167,6 +189,11 @@ class LivingEntity(AbstractEntity):
         self.rect = self.image.get_rect(center=self.rect.center)
 
     def dead_animation(self) -> None:
+
+        """
+          Animates the entity when it is dead. Advances through the frames of the death animation until the final frame
+          is reached.
+       """
         animation: List[pygame.Surface] = self.animations[self.status]
         final_frame_index: int = len(animation) - 1
 

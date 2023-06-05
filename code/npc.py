@@ -12,6 +12,11 @@ if TYPE_CHECKING:
 
 
 class NPC(LivingEntity):
+    """
+    NPC Class serves as a blueprint for creating NPCs in a game, providing fundamental attributes and methods for
+    movement, collision detection, rendering, and interaction. Subclasses can inherit from this base class to extend its
+    functionality and customize the behavior of specific NPC types.
+    """
     def __init__(self, spawn_point: "SpawnPoint", asset_image_root_dir_path: str, level: "Level",
                  groups: List[Union["YSortCameraGroup", pygame.sprite.Sprite]],
                  obstacle_sprites: pygame.sprite.Group) -> None:
@@ -28,17 +33,21 @@ class NPC(LivingEntity):
         pass
 
     def reset(self, *args, **kwargs) -> None:
+        """
+           Resets the NPC's attributes
+        """
         pass
 
     def check_if_npc_should_be_dead(self) -> None:
         """
-        If the health has dropped to or below zero and the Entity
-        is not marked as dead. then kill the Entity
+        Checks if the NPC's health has dropped to or below zero and sets the NPC's status attribute to "dead"
+        if it's still alive.
         """
 
         def kill_npc() -> None:
             """
-            Sets the Entities status to dead,  Also changes the animation_mode to "dead" which plays the dying animations for the Entity
+            Sets the NPC's status to dead, changes the animation mode to "dead," and resets the frame index for the
+            death animation
             """
             self.status = "dead"
             # recorded time of death for de-spawn algorithm

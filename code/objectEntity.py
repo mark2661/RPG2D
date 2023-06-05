@@ -10,6 +10,11 @@ if TYPE_CHECKING:
 
 
 class ObjectEntity(AbstractEntity):
+    """
+       ObjectEntity class provides a foundation for creating inanimate object entities in a game,
+       allowing for customization and extension by subclasses. It provides an interface for defining common behaviours
+       in game.
+    """
 
     def __init__(self, hit_box: "HitBox", asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
                  obstacle_sprites: pygame.sprite.Group) -> None:

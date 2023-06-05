@@ -7,7 +7,6 @@ from collections import defaultdict
 if TYPE_CHECKING:
     from spawnPoint import SpawnPoint
 
-
 class AbstractEntity(pygame.sprite.Sprite, ABC):
 
     def __init__(self, asset_images_root_dir_path: str, groups: List[pygame.sprite.Group],
